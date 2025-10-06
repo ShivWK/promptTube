@@ -1,0 +1,1 @@
+export const TABS = ["All", "Music", "Mixes", "JavaScript" , "Data Structure", "Live", "Presentation", "Body-building", "New to your"]

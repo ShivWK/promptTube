@@ -1,8 +1,11 @@
-import React from 'react'
+import SideMenu from "../layout/header/SideMenu";
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <main className="pt-28 lg:pt-44 p-36">
+      <p className="text-white">HI buddy</p>
+      <SideMenu />
+    </main>
   )
 }
 

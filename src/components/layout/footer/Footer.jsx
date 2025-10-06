@@ -1,8 +1,8 @@
-import React from 'react'
-
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <footer className="p-4 ">
+      <p></p>
+    </footer>
   )
 }
 
