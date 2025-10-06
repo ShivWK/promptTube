@@ -15,8 +15,8 @@ const Header = () => {
     }, [pathname])
 
     return (
-        <header className='p-2 lg:p-4 backdrop-blur-md fixed left-0 top-0 w-full border-2'>
-            <div className='flex items-center justify-between'>
+        <header className='backdrop-blur-md fixed left-0 top-0 w-full'>
+            <div className='p-2 lg:p-4 flex items-center justify-between'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-4 lg:gap-10'>
                     <SearchBar />
