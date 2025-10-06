@@ -20,7 +20,7 @@ const Header = () => {
                 <LogoAndMenu />
                 <div className='flex items-center gap-4 lg:gap-10'>
                     <SearchBar />
-                    <Link to={""} className='flex gap-1 lg:gap-1.5 items-center p-1 lg:p-2 rounded-md bg-gradient-to-r from-[#ff0033] via-blue-500 to-green-600 font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear'>
+                    <Link to={""} className='flex gap-1 lg:gap-1.5 items-center py-1 px-2 lg:px-3 lg:py-2 rounded-md bg-gradient-to-r from-[#ff0033] via-blue-500 to-green-600 font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear'>
                         <span className='max-md:hidden dark:text-white lg:text-xl tracking-wide'>Try </span>
                         <span className='dark:text-white lg:text-xl tracking-wide'>Promptly</span>
                         <Brain className='dark:text-white' />

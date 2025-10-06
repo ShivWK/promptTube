@@ -1,15 +1,18 @@
-import { Menu } from "lucide-react"
+import { Menu } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const LogoAndMenu = () => {
     const isSmall = window.innerWidth <= 798;
+    const navigate = useNavigate();
 
     return (
         <div className="flex gap-2 lg:gap-5 items-center">
             <Menu size={isSmall ? 30 : 40} className="dark:text-white cursor-pointer" />
-            <div className="flex gap-3">
-                <img src="/favicon/android-chrome-192x192.png" className="h-10 lg:h-12 w-11 lg:w-13"></img>
-                <h1 className="text-[#ff0033] font-bold text-4xl max-md:hidden">
-                    PromptTube
+            <div onClick={() => navigate("/")} className="flex gap-3 cursor-pointer">
+                <img src="/favicon/android-chrome-192x192.png" alt="site_logo" className="h-10 lg:h-12 w-11 lg:w-13"></img>
+                <h1 className="text-[#ff0033] font-bold text-4xl max-md:hidden select-none">
+                    <span className="text-gray-100">Prompt</span>
+                    <span>Tube</span>
                 </h1>
             </div>
         </div>
