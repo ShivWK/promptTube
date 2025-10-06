@@ -17,7 +17,7 @@ const Account = () => {
     return (
       <div className="flex gap-1 lg:gap-1.5 items-center py-1 px-2 lg:px-3 lg:py-2 rounded-md bg-[#ff0033] font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear">
         <span className="text-white lg:text-xl tracking-wide">Sign In</span>
-        <LogIn className="text-white" strokeWidth={3} />
+        <LogIn className="text-white" strokeWidth={isSmall ? 2 : 3} />
       </div>
     )
   }
