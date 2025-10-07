@@ -27,15 +27,21 @@ const authSlice = createSlice({
         setLoggedInStatus: (state, action) => {
             state.isLoggedIn = action.payload;
         },
-        
+
         setOpenAuthForm: (state, action) => {
             const { mode, value } = action.payload;
 
             if (mode === "All") {
                 state.openAuthForm = value;
                 state.slideOpenAuthForm = value;
+
+                // document.body.style.overflow = "hidden"
             } else if (mode === "open") {
                 state.openAuthForm = value;
+
+                // if (!value) {
+                //     document.body.style.overflow = "auto"
+                // }
             } else if (mode === "slide") {
                 state.slideOpenAuthForm = value;
             }

@@ -32,7 +32,9 @@ const EntryDiv = ({
         setMove(false);
     }, [isSignUp])
 
-    const divClickHandler = () => {
+    const divClickHandler = (e) => {
+        e.stopPropagation();
+
         if (move) return;
         InputRef.current.focus();
     }
