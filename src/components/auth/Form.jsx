@@ -145,7 +145,7 @@ const Form = () => {
 
     return (
         <div onClick={divClickHandler} className="absolute top-0 left-0 h-full w-full z-60 bg-black/60 flex items-center justify-center">
-            <form onClick={(e) => e.stopPropagation()} onAnimationEnd={animationEndHandler} onSubmit={submitHandler} className={`absolute ${openSlideAuthForm ? "animate-showAuthModal" : "animate-hideAuthModal"} top-2/6 md:top-2/6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black overflow-hidden w-[95%] lg:w-[35%] px-4 lg:px-8 py-6 transition-all duration-200 ease-linear mt-18 lg:mt-28 rounded-md z-50`}>
+            <form onClick={(e) => e.stopPropagation()} onAnimationEnd={animationEndHandler} onSubmit={submitHandler} className={`absolute ${openSlideAuthForm ? "animate-showAuthModal" : "animate-hideAuthModal"} top-2/6 md:top-2/6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden w-[95%] lg:w-[35%] px-4 lg:px-8 py-6 transition-all duration-200 ease-linear mt-18 lg:mt-28 rounded-md z-50`}>
 
                 <div className="flex justify-between items-center mb-3 lg:mb-5">
                     <h1 className="text-white font-bold text-xl lg:text-2xl">
@@ -166,7 +166,7 @@ const Form = () => {
                     <EntryDiv inputChangeHandler={inputChangeHandler} formData={formData} name="password" placeholder="Password" isSmall={isSmall} type="password" errorMsg={formError.password.errorMsg} isError={formError.password.error} isSignUp={isSignUP} setFormError={setFormError} />
 
                     <div className="flex gap-2 items-center">
-                        <button type="button" className={`flex items-center justify-center gap-1 md:gap-2 text-gary-300 font-semibold text-white tracking-wide w-full bg-white/20 hover:bg-white/10 px-1 py-1.5 lg:py-2 rounded text-lg lg:text-xl ${!gAuthLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer select-none`}>
+                        <button type="button" className={`flex items-center justify-center gap-1 md:gap-2 text-gary-300 font-semibold text-white tracking-wide w-full bg-white/20 hover:bg-white/10 px-1 py-1.5 lg:py-2 rounded lg:text-xl ${!gAuthLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer select-none`}>
                             <span>Continue with</span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +194,7 @@ const Form = () => {
                             </svg>
                         </button>
 
-                        <button type="submit" className={`flex items-center justify-center w-full bg-[rgb(229,9,20)] text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded text-lg lg:text-xl ${!authLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer hover:bg-[rgb(202,3,13)]`}>
+                        <button type="submit" className={`flex items-center justify-center w-full bg-[rgb(229,9,20)] text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded lg:text-xl ${!authLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer hover:bg-[rgb(202,3,13)]`}>
                             {authLoading ? <DotBounceLoader /> : isSignUP ? "Sign Up" : "Sign In"}
                         </button>
                     </div>
@@ -203,7 +203,7 @@ const Form = () => {
                         !isSignUP && <span onClick={handleForgotPasswordClick} className="text-white font-semibold text-center underline lg:text-lg cursor-pointer hover:text-gray-300 transition-all duration-100 ease-linear select-none">Forgot password?</span>
                     }
 
-                    <p className="flex items-center gap-1 text-lg">
+                    <p className="flex items-center gap-1 lg:text-lg">
                         <span className="text-gray-300 lg:font-medium">
                             {isSignUP ? "Already registered?" : "New to PromptTube?"}
                         </span>

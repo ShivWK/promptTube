@@ -20,13 +20,13 @@ const Account = () => {
   if (isLoggedIn) {
     return (
       <div className="flex items-center gap-2.5">
-        <span className="dark:text-gray-200 text-2xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
+        <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
         <CircleUserRound size={isSmall ? 44 : 55} strokeWidth={1.5} className="dark:text-[#ff0033]" />
       </div>
     )
   } else {
     return (
-      <button onClick={authClickHandler} className="flex gap-1 lg:gap-1.5 items-center py-1 px-2 lg:px-3 lg:py-2 rounded-md bg-[#ff0033] font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear">
+      <button onClick={authClickHandler} className="flex gap-1 lg:gap-1.5 items-center py-1 px-2 lg:px-3 rounded-md bg-[#ff0033] font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear">
         <span className="text-white lg:text-xl tracking-wide">Sign In</span>
         <LogIn className="text-white" strokeWidth={isSmall ? 2 : 3} />
       </button>
