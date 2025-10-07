@@ -138,7 +138,7 @@ const Form = () => {
 
     const divClickHandler = () => {
         dispatch(setOpenAuthForm({
-            mode: "open",
+            mode: "slide",
             value: false
         }))
     }
