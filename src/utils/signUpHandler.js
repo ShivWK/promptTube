@@ -1,11 +1,14 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { setToast } from "../features/authSlice";
 
-async function signUpHandler({ email, password, dispatch, setAuthLoading }) {
+async function signUpHandler({ email, password, dispatch, name, setAuthLoading }) {
     try {
-        let userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-        console.log(userCredentials.user);
+        await createUserWithEmailAndPassword(auth, email, password);
+        updateProfile(auth.currentUser, {
+            displayName: name
+        })
+
         setAuthLoading(false)
     } catch (err) {
         let errMsg = "";

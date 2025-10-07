@@ -1,10 +1,11 @@
 import { CircleUserRound, LogIn } from "lucide-react";
 import { selectLoggedInStatus } from "../../../features/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { setOpenAuthForm } from "../../../features/authSlice";
+import { setOpenAuthForm, selectUserDetails } from "../../../features/authSlice";
 
 const Account = () => {
   const isLoggedIn = useSelector(selectLoggedInStatus);
+  const { name, email, id } = useSelector(selectUserDetails);
   const dispatch = useDispatch()
 
   const isSmall = window.innerWidth <= 768;
@@ -19,8 +20,8 @@ const Account = () => {
   if (isLoggedIn) {
     return (
       <div className="flex items-center gap-2.5">
-        <span className="dark:text-gray-200 text-2xl font-semibold tracking-wide max-md:hidden">Name</span>
-        <CircleUserRound size={isSmall ? 45 : 55} className="dark:text-gray-300" />
+        <span className="dark:text-gray-200 text-2xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
+        <CircleUserRound size={isSmall ? 44 : 55} strokeWidth={1.5} className="dark:text-[#ff0033]" />
       </div>
     )
   } else {

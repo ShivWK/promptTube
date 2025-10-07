@@ -112,18 +112,11 @@ const Form = () => {
         };
 
         if (isSignUP) {
-            signUpHandler({ email: formData.email, password: formData.password, dispatch, setAuthLoading })
+            signUpHandler({ email: formData.email, password: formData.password, name: formData.name, dispatch, setAuthLoading })
         } else {
             signInHandler({ email: formData.email, password: formData.password, dispatch, setAuthLoading })
         }
     }
-
-    // const animationEndHandler = () => {
-    //     dispatch(setOpenAuthForm({
-    //         mode: "open",
-    //         value: false,
-    //     }))
-    // }
 
     const animationEndHandler = (e) => {
         const classList = e.target.classList;
@@ -159,7 +152,7 @@ const Form = () => {
                         {isSignUP ? "Sign Up" : "Sign In"}
                     </h1>
 
-                    <CircleX onClick={closeClickHandler} size={isSmall ? 20 : 30} strokeWidth={1.5} className="dark:text-white cursor-pointer" />
+                    <CircleX onClick={closeClickHandler} size={isSmall ? 25 : 30} strokeWidth={1.5} className="dark:text-white cursor-pointer" />
                 </div>
 
                 <div className="flex flex-col gap-4.5">

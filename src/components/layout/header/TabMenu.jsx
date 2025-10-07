@@ -9,7 +9,7 @@ const TabMenu = () => {
   const isSmall = window.innerWidth <= 768;
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef?.current) return;
 
     const handleScroll = () => {
       const ele = containerRef.current;
@@ -18,16 +18,8 @@ const TabMenu = () => {
       const clientW = ele.clientWidth;
       const scrollL = ele.scrollLeft;
 
-      console.log(scrollL, clientW, scrollW);
-
       if (scrollL !== 0) setShowLeft(true);
       else setShowLeft(false);
-
-      // if (scrollW === clientW) {
-      //   setShowRight(false);
-      // } else {
-      //   setShowRight(false);
-      // }
 
       if (scrollL + clientW + 10 >= scrollW) {
         setShowRight(false);

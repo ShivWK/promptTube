@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false,
@@ -73,6 +73,35 @@ export default authSlice.reducer;
 export const selectLoggedInStatus = (state) => state.authSlice.isLoggedIn;
 export const selectOpenAuthFrom = (state) => state.authSlice.openAuthForm;
 export const selectSlideAuthForm = (state) => state.authSlice.slideOpenAuthForm;
+
+export const selectUserDetails = createSelector(
+    [
+        state => state.authSlice.userName,
+        state => state.authSlice.userEmail,
+        state => state.authSlice.userId,
+    ],
+    (name, email, id) => ({ name, email, id })
+)
+
+export const selectSessionTokens = createSelector(
+    [
+        state => state.authSlice.accessToken,
+        state => state.authSlice.refreshToken
+    ],
+    (accessToken, refreshToken) => ({
+        accessToken,
+        refreshToken
+    })
+)
+
+export const selectToast = createSelector(
+    [
+        state => state.authSlice.showToast,
+        state => state.authSlice.toastMessage,
+        state => state.authSlice.toastError,
+    ],
+    (show, message, error) => ({ show, message, error })
+)
 
 export const {
     setLoginStatus,

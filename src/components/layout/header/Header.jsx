@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <header className='backdrop-blur-md fixed left-0 top-0 w-full'>
-            <div className='p-2 pt-3 lg:p-4 flex items-center justify-between'>
+            <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-3 lg:gap-10'>
                     <SearchBar />
