@@ -9,5 +9,47 @@
     scrollbar-width: none;
 }
 
+@theme {
+    
+    --animate-dotBounce: animateDot 0.4s infinite alternate;
+
+    @keyframes animateDot {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(-10px);
+        }
+    }
+
+    --animate-showAuthModal: showAuth 0.3s ease forwards;
+    --animate-hideAuthModal: hideAuth 0.3s ease forwards;
+
+    @keyframes showAuth {
+        0% {
+            transform: scale(0, 0);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1, 1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes hideAuth {
+        0% {
+            transform: scale(1, 1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale(0, 0);
+            opacity: 0;
+        }
+    }
+}
+
 
 /* theme color : #ff0033 */
