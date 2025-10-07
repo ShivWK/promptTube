@@ -4,12 +4,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
-import { selectOpenAuthFrom, setAuthDetails, setLoginStatus } from "../../features/authSlice";
+import Toast from "../common/Toast";
+
+import { 
+    selectOpenAuthFrom, 
+    setAuthDetails, 
+    setLoginStatus, 
+    selectToast 
+} from "../../features/authSlice";
+
 import Form from "../auth/Form";
 import { useEffect } from "react";
 
 const Layout = () => {
     const openAuthForm = useSelector(selectOpenAuthFrom);
+    const { show } = useSelector(selectToast);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -43,9 +52,8 @@ const Layout = () => {
     }, [])
 
     return (<>
-        {
-            openAuthForm && <Form />
-        }
+        { openAuthForm && <Form /> }
+        <Toast />
         <Header />
         <Outlet />
         <Footer />

@@ -64,7 +64,7 @@ const EntryDiv = ({
                     value={formData[name]}
                     name={name}
                     onChange={inputChangeHandler}
-                    className="relative -bottom-4.5 lg:-bottom-5 w-full border-none outline-none text-white font-semibold lg:text-lg"
+                    className="relative -bottom-4.5 lg:-bottom-5 w-full border-none outline-none text-white font-medium lg:font-semibold lg:text-lg"
                 ></input>
                 <p className={`relative text-gray-400 font-medium tracking-wide ${move ? "bottom-7 lg:bottom-8" : "text-xl lg:bottom-5 bottom-5"} transition-all duration-150 ease-linear select-none`}>{placeholder}</p>
             </div>
