@@ -29,8 +29,12 @@ const TabMenu = () => {
     }
     handleScroll();
 
-    containerRef.current.addEventListener("scroll", handleScroll);
-    return () => containerRef.current.addEventListener("scroll", handleScroll)
+    const ele = containerRef.current;
+    ele.addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (ele) ele.removeEventListener("scroll", handleScroll);
+    };
   }, [])
 
   const arrowClickHandler = (dir) => {

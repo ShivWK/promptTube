@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
@@ -16,13 +16,20 @@ import {
 } from "../../features/authSlice";
 
 import Form from "../auth/Form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Layout = () => {
+    const [ showHeader, setShowHeader ] = useState(true);
     const [trigger] = useLazyGetPopularVideosQuery();
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const pathname = useLocation().pathname;
+
+    useEffect(() => {
+        if (pathname === "/gptBrowser") setShowHeader(false);
+        else setShowHeader(true);
+    }, [pathname])
 
     useEffect(() => {
         const popularVideosCall = async () => {
@@ -72,7 +79,7 @@ const Layout = () => {
     return (<>
         {openAuthForm && <Form />}
         <Toast />
-        <Header />
+        {showHeader && <Header />}
         <Outlet />
         <Footer />
     </>)

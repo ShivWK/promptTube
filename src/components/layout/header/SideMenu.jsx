@@ -13,7 +13,7 @@ const SideMenu = () => {
         <span className="dark:text-gray-200 select-none">Home</span>
       </div>
 
-      <div className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-3 lg:px-4 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
+      <div className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
         <CircleUserRound size={isSmall ? 25 : 35} className="dark:text-gray-200" />
         <span className="dark:text-gray-200 select-none">You</span>
       </div>
