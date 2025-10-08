@@ -1,8 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isHomeLoading: true,
     videos: [],
+    openSidebar: false,
+    slideOpenSidebar: false,
 };
 
 const homeSlice = createSlice({
@@ -16,6 +18,19 @@ const homeSlice = createSlice({
 
         setHomeVideos: (state, action) => {
             state.videos = action.payload
+        },
+
+        setSidebar: (state, action) => {
+            const { mode, value } = action.payload;
+
+            if (mode === "All") {
+                state.openSidebar = value;
+                state.slideOpenSidebar = value;
+            } else if (mode === "open") {
+                state.openSidebar = value;
+            } else if (mode === "slide") {
+                state.slideOpenSidebar = value;
+            }
         }
     }
 });
@@ -24,10 +39,21 @@ export default homeSlice.reducer;
 
 export const selectHomeLoading = (state) => state.home.isHomeLoading;
 export const selectHomeVideos = state => state.home.videos;
+export const selectSidebar = createSelector(
+    [ 
+        state => state.home.openSidebar, 
+        state => state.home.slideOpenSidebar 
+    ],
+    (openSidebar, slideOpenSidebar) => ({
+        openSidebar,
+        slideOpenSidebar
+    })
+)
 
 export const {
     setHomeLoading,
-    setHomeVideos
+    setHomeVideos,
+    setSidebar
 } = homeSlice.actions;
 
 [

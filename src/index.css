@@ -63,6 +63,29 @@
             top: 0%;
         }
     }
+
+    --animate-slideHide : slideHide 0.4s ease forwards;
+    --animate-slideShow : slideShow 0.4s ease forwards;
+
+    @keyframes slideShow {
+        0% {
+            left: -100%;
+        }
+
+        100% {
+            left: 0%;
+        }
+    }
+
+    @keyframes slideHide {
+        0% {
+            left: 0%;
+        }
+
+        100% {
+            left: -100%;
+        }
+    }
 }
 
 

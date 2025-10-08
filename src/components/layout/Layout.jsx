@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
-import { setHomeLoading, setHomeVideos } from "../../features/home/homeSlice";
+import { setHomeLoading, setHomeVideos, selectSidebar } from "../../features/home/homeSlice";
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -17,16 +17,36 @@ import {
 
 import Form from "../auth/Form";
 import { useEffect, useState } from "react";
-import SideMenu from "./header/SideMenu";
+import SecondarySideMenu from "./header/SecondarySideMenu";
+import Sidebar from "../common/Sidebar";
 
 const Layout = () => {
+    const [isSmall, setSmall] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
-    const [ showSideMenu, setShowSideMenu ] = useState(true);
+    const [showSideMenu, setShowSideMenu] = useState(true);
     const [trigger] = useLazyGetPopularVideosQuery();
+
     const openAuthForm = useSelector(selectOpenAuthFrom);
+    const { openSidebar } = useSelector(selectSidebar)
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const pathname = useLocation().pathname;
+
+    useEffect(() => {
+        const resizeHandler = () => {
+            if (window.innerWidth <= 768) {
+                setSmall(true);
+            } else {
+                setSmall(false);
+            }
+        }
+
+        resizeHandler();
+
+        window.addEventListener("resize", resizeHandler);
+        return () => window.removeEventListener("resize", resizeHandler);
+    }, [])
 
     useEffect(() => {
         if (pathname === "/gptBrowser") setShowHeader(false);
@@ -80,12 +100,13 @@ const Layout = () => {
 
     return (<>
         {showHeader && <Header />}
-        <Outlet />
+        <Outlet context={isSmall} />
         <Footer />
 
         {openAuthForm && <Form />}
         <Toast />
-        {showSideMenu && <SideMenu /> }
+        {showSideMenu && <SecondarySideMenu />}
+        {openSidebar && <Sidebar isSmall={isSmall}/>}
     </>)
 }
 

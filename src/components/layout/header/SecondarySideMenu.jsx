@@ -1,7 +1,7 @@
 import { CircleUserRound, Home, GripVertical } from "lucide-react"
 import { useState } from "react";
 
-const SideMenu = () => {
+const SecondarySideMenu = () => {
   const isSmall = window.innerWidth <= 786;
   const [ showSideMenu, setShowSideMenu ] = useState(false);
 
@@ -24,5 +24,4 @@ const SideMenu = () => {
     </aside>
   )
 }
-{/* <GripVertical /> */}
-export default SideMenu;
+export default SecondarySideMenu;
