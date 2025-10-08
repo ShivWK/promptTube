@@ -8,7 +8,7 @@ const store = configureStore({
     reducer: {
         [homeApiSlice.reducerPath] : homeApiSlice.reducer,
         authSlice: AuthSliceReducer,
-        homeSlide: homeSliceReducer
+        home: homeSliceReducer
     },
 
     middleware: (defaultMiddlewares) => [

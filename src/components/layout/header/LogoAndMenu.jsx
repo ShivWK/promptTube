@@ -10,7 +10,7 @@ const LogoAndMenu = ({ showMenu = true }) => {
             { showMenu && <Menu size={isSmall ? 30 : 30} className="dark:text-white cursor-pointer" />}
             <div onClick={() => navigate("/")} className="flex gap-3 cursor-pointer">
                 <img src="/favicon/android-chrome-192x192.png" alt="site_logo" className="h-10 lg:h-10 w-11 lg:w-11"></img>
-                <h1 className="text-[#ff0033] font-bold text-3xl max-md:hidden select-none">
+                <h1 className="text-primary font-bold text-3xl max-md:hidden select-none">
                     <span className="text-gray-100">Prompt</span>
                     <span>Tube</span>
                 </h1>

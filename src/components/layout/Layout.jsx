@@ -17,9 +17,11 @@ import {
 
 import Form from "../auth/Form";
 import { useEffect, useState } from "react";
+import SideMenu from "./header/SideMenu";
 
 const Layout = () => {
-    const [ showHeader, setShowHeader ] = useState(true);
+    const [showHeader, setShowHeader] = useState(true);
+    const [ showSideMenu, setShowSideMenu ] = useState(true);
     const [trigger] = useLazyGetPopularVideosQuery();
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const dispatch = useDispatch();
@@ -37,8 +39,8 @@ const Layout = () => {
                 const { items } = await trigger().unwrap();
                 dispatch(setHomeVideos(items));
                 dispatch(setHomeLoading(false));
-                
-                console.log( items );
+
+                console.log(items);
             } catch (err) {
                 console.log(err);
             }
@@ -77,11 +79,13 @@ const Layout = () => {
     }, [])
 
     return (<>
-        {openAuthForm && <Form />}
-        <Toast />
         {showHeader && <Header />}
         <Outlet />
         <Footer />
+
+        {openAuthForm && <Form />}
+        <Toast />
+        {showSideMenu && <SideMenu /> }
     </>)
 }
 

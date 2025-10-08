@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const homeSlice = createSlice({
-    name: "homeSLice",
+    name: "home",
     initialState,
 
     reducers: {
@@ -22,8 +22,8 @@ const homeSlice = createSlice({
 
 export default homeSlice.reducer;
 
-export const selectHomeLoading = (state) => state.homeSlice.isHomeLoading;
-export const selectHomeVideos = state => state.homeSlice.videos;
+export const selectHomeLoading = (state) => state.home.isHomeLoading;
+export const selectHomeVideos = state => state.home.videos;
 
 export const {
     setHomeLoading,

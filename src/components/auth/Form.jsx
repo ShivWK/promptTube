@@ -194,7 +194,7 @@ const Form = () => {
                             </svg>
                         </button>
 
-                        <button type="submit" className={`flex items-center justify-center w-full bg-[rgb(229,9,20)] text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded lg:text-xl ${!authLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer hover:bg-[rgb(202,3,13)]`}>
+                        <button type="submit" className={`flex items-center justify-center w-full bg-primary text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded lg:text-xl ${!authLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer hover:bg-[#df0421]`}>
                             {authLoading ? <DotBounceLoader /> : isSignUP ? "Sign Up" : "Sign In"}
                         </button>
                     </div>
