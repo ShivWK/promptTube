@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebaseConfig";
-import { setToast } from "../features/authSlice";
+import { setToast, setOpenAuthForm } from "../features/authSlice";
 
 async function signUpHandler({ email, password, dispatch, name, setAuthLoading }) {
     try {
@@ -9,6 +9,10 @@ async function signUpHandler({ email, password, dispatch, name, setAuthLoading }
             displayName: name
         })
 
+        dispatch(setOpenAuthForm({
+            mode: "slide",
+            value: false
+        }))
         setAuthLoading(false)
     } catch (err) {
         let errMsg = "";
@@ -19,7 +23,7 @@ async function signUpHandler({ email, password, dispatch, name, setAuthLoading }
 
         dispatch(setToast({
             message: errMsg,
-            error: true, 
+            error: true,
             show: true,
         }))
         console.log("Failed code", err.code, "message", err.message);

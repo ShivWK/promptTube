@@ -45,7 +45,7 @@ const Sidebar = ({ isSmall }) => {
     return (
         <div onClick={divClickHandler} className="absolute top-0 left-0 h-full w-full bg-black/60 flex items-center justify-center z-60">
             <aside onClick={(e) => e.stopPropagation()} onAnimationEnd={animationENdHandler} className={`absolute left-0 top-0 h-full overflow-y-auto p-3 pr-5 flex flex-col gap-3 items-center bg-gray-800 ${slideOpenSidebar ? "animate-slideShow" : "animate-slideHide"}`}>
-                <X onClick={divClickHandler} size={isSmall ? 30 : 30} className="dark:text-white mr-auto rounded-full hover:bg-white/30 transition-all duration-100 ease-linear cursor-pointer mb-4" />
+                <X onClick={divClickHandler} size={isSmall ? 30 : 30} className="dark:text-white mr-auto rounded-full hover:bg-white/30 transition-all duration-100 ease-linear cursor-pointer mb-2" />
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     <div className="flex items-center gap-2 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 rounded-xl p-2 w-full">

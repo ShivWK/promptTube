@@ -1,12 +1,16 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebaseConfig";
-import { setToast } from "../features/authSlice";
+import { setToast, setOpenAuthForm } from "../features/authSlice";
 
 async function signInHandler({ email, password, dispatch, setAuthLoading }) {
     try {
         let userCredentials = await signInWithEmailAndPassword(auth, email, password);
         console.log(userCredentials);
-        setAuthLoading(false)
+        dispatch(setOpenAuthForm({
+            mode: "slide",
+            value: false
+        }))
+        setAuthLoading(false);
     } catch (err) {
         dispatch(setToast({
             show: true,
