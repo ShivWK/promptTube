@@ -145,7 +145,7 @@ const Form = () => {
 
     return (
         <div onClick={divClickHandler} className="absolute top-0 left-0 h-full w-full bg-black/60 flex items-center justify-center z-30">
-            <form onClick={(e) => e.stopPropagation()} onAnimationEnd={animationEndHandler} onSubmit={submitHandler} className={`absolute ${openSlideAuthForm ? "animate-showAuthModal" : "animate-hideAuthModal"} top-2/6 md:top-2/6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden w-[95%] lg:w-[35%] px-4 lg:px-8 py-6 transition-all duration-200 ease-linear mt-18 lg:mt-28 rounded-md z-40`}>
+            <form onClick={(e) => e.stopPropagation()} onAnimationEnd={animationEndHandler} onSubmit={submitHandler} className={`absolute ${openSlideAuthForm ? "animate-showAuthModal" : "animate-hideAuthModal"} top-2/5 md:top-2/6 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden w-[95%] lg:w-[35%] px-4 lg:px-8 py-6 transition-all duration-200 ease-linear mt-18 lg:mt-28 rounded-md z-40`}>
 
                 <div className="flex justify-between items-center mb-3 lg:mb-5">
                     <h1 className="text-white font-bold text-xl lg:text-2xl">

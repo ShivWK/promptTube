@@ -9,6 +9,7 @@ const initialState = {
     toastError: false,
     userName: "",
     userEmail: "",
+    isEmailVerified: false,
     userId: null,
     accessToken: null,
     refreshToken: null,
@@ -56,10 +57,11 @@ const authSlice = createSlice({
         },
 
         setAuthDetails: (state, action) => {
-            const { name, email, userId, accessT, refreshT, } = action.payload;
+            const { name, email, emailVerification, userId, accessT, refreshT, } = action.payload;
 
             state.userName = name;
             state.userEmail = email;
+            state.isEmailVerified = emailVerification;
             state.userId = userId;
             state.accessToken = accessT;
             state.refreshToken = refreshT;
@@ -78,9 +80,10 @@ export const selectUserDetails = createSelector(
     [
         state => state.authSlice.userName,
         state => state.authSlice.userEmail,
+        state => state.authSlice.isEmailVerified,
         state => state.authSlice.userId,
     ],
-    (name, email, id) => ({ name, email, id })
+    (name, email, isEmailVerified, id) => ({ name, email, isEmailVerified, id })
 )
 
 export const selectSessionTokens = createSelector(

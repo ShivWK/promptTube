@@ -76,6 +76,7 @@ const Layout = () => {
                 dispatch(setAuthDetails({
                     name: user.displayName,
                     email: user.email,
+                    emailVerification: user.emailVerified,
                     userId: user.uid,
                     accessT: user.stsTokenManager.accessToken,
                     refreshT: user.stsTokenManager.refreshToken,
