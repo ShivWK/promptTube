@@ -22,7 +22,6 @@ const Account = () => {
 
   useEffect(() => {
     const handleDocClick = () => {
-      console.log("Clicked")
       if (showAccountCard ) {
         setShowAccountCard(false)
       }

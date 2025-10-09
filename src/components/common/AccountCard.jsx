@@ -1,4 +1,4 @@
-import { selectUserDetails } from "../../features/authSlice";
+import { selectUserDetails, setEmailVerification } from "../../features/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CircleCheck, CircleUserRound, Info, LogOut } from "lucide-react";
 import { signOut } from "firebase/auth";
@@ -33,6 +33,14 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
         signout()
     }
 
+    const verifyEmailHandler = () => {
+        setShowAccountCard(false);
+        dispatch(setEmailVerification({
+            mode: "All",
+            value: true,
+        }))
+    }
+
     return (
         <div onClick={(e) => e.stopPropagation()} className="absolute top-13 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70">
             <div className="flex items-center gap-2">
@@ -43,13 +51,13 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
                     <div className="flex items-center gap-1">
                         {isEmailVerified
                             ? <CircleCheck size={isSmall ? 19 : 20} strokeWidth={2.5} className="text-green-400" />
-                            : <Info size={isSmall ? 19 : 20} strokeWidth={2.5} className="text-red-500 cursor-pointer transform active:scale-95 transition-all duration-100 ease-linear" />
+                            : <Info onClick={verifyEmailHandler} size={isSmall ? 19 : 20} strokeWidth={2.5} className="text-red-500 cursor-pointer transform active:scale-95 transition-all duration-100 ease-linear" />
                         }
                         <p className="truncate leading-5">{email}</p>
                     </div>
                 </div>
             </div>
-            <button onClick={signoutClickHandler} className={`flex items-center justify-center gap-2 mt-2 dark:text-white w-full bg-primary hover:bg-[#c2072d] p-1.5 rounded-md cursor-pointer transform transition-all duration-150 ease-linear ${!isLoading && "active:scale-95"}`}>
+            <button onClick={signoutClickHandler} className={`flex items-center justify-center gap-2 mt-2 dark:text-white w-full bg-primary p-1.5 rounded-md cursor-pointer transform transition-all duration-150 ease-linear ${!isLoading && "active:scale-95 hover:bg-[#c2072d]"}`}>
                 {
                     isLoading
                         ? <DotBounceLoader />

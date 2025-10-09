@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSlideAuthForm, setOpenAuthForm } from "../../features/authSlice";
+import { selectSlideAuthForm, selectUserDetails, setOpenAuthForm, setToast } from "../../features/authSlice";
 import EntryDiv from "./EntryDiv";
 import { dataValidator } from "../../utils/dataValidation";
 import signUpHandler from "../../utils/signUpHandler";
@@ -10,6 +10,7 @@ import { CircleX } from "lucide-react";
 
 const Form = () => {
     const openSlideAuthForm = useSelector(selectSlideAuthForm);
+    const { isEmailVerified } = useSelector(selectUserDetails)
     const dispatch = useDispatch();
 
     const [isSmall, setSmall] = useState(false);
@@ -90,13 +91,20 @@ const Form = () => {
     }
 
     const handleForgotPasswordClick = () => {
-        setFormError((pre => ({
-            ...pre,
-            password: {
-                error: true,
-                errorMsg: "New error occurred"
-            }
-        })))
+        // if (!isEmailVerified) {
+        //     dispatch(setToast({
+        //         message: "Your email is not verified. Please verify it first.",
+        //         error: true,
+        //         show: true,
+        //     }))
+        // }
+        // setFormError((pre => ({
+        //     ...pre,
+        //     password: {
+        //         error: true,
+        //         errorMsg: "New error occurred"
+        //     }
+        // })))
     }
 
     const submitHandler = (e) => {
@@ -166,8 +174,8 @@ const Form = () => {
                     <EntryDiv inputChangeHandler={inputChangeHandler} formData={formData} name="password" placeholder="Password" isSmall={isSmall} type="password" errorMsg={formError.password.errorMsg} isError={formError.password.error} isSignUp={isSignUP} setFormError={setFormError} />
 
                     <div className="flex gap-2 items-center">
-                        <button type="button" className={`flex items-center justify-center gap-1 md:gap-2 text-gary-300 font-semibold text-white tracking-wide w-full bg-white/20 hover:bg-white/10 px-1 py-1.5 lg:py-2 rounded lg:text-xl ${!gAuthLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer select-none`}>
-                            <span>Continue with</span>
+                        <button type="button" className={`flex items-center justify-center gap-1 md:gap-2 text-gary-300 font-semibold text-[#3C4043] tracking-wide w-full bg-white hover:bg-[#c8caca] px-1 py-1.5 lg:py-2 rounded lg:text-xl ${!gAuthLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer select-none`}>
+                            <span className="">Continue with</span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 height="24"
@@ -194,7 +202,7 @@ const Form = () => {
                             </svg>
                         </button>
 
-                        <button type="submit" className={`flex items-center justify-center w-full bg-primary text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded lg:text-xl ${!authLoading && "active:scale-95"} transform transition-all duration-75 ease-linear cursor-pointer hover:bg-[#df0421]`}>
+                        <button type="submit" className={`flex items-center justify-center w-full bg-primary text-white font-semibold tracking-wide py-1.5 lg:py-2 rounded lg:text-xl ${!authLoading && "active:scale-95 hover:bg-[#df0421]"} transform transition-all duration-75 ease-linear cursor-pointer`}>
                             {authLoading ? <DotBounceLoader /> : isSignUP ? "Sign Up" : "Sign In"}
                         </button>
                     </div>

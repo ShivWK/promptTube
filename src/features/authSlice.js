@@ -13,6 +13,8 @@ const initialState = {
     userId: null,
     accessToken: null,
     refreshToken: null,
+    openEmailVerification: false,
+    showEmailVerification: false,
 }
 
 const authSlice = createSlice({
@@ -67,6 +69,19 @@ const authSlice = createSlice({
             state.refreshToken = refreshT;
         },
 
+        setEmailVerification: (state, action) => {
+            const { mode, value } = action.payload;
+
+            if ( mode === "All") {
+                state.openEmailVerification = value;
+                state.showEmailVerification = value;
+            } else if (mode === "open") {
+                state.openEmailVerification = value;
+            } else if (mode === "slide") {
+                state.showEmailVerification = value;
+            }
+        }
+
     }
 });
 
@@ -106,9 +121,21 @@ export const selectToast = createSelector(
     (show, message, error) => ({ show, message, error })
 )
 
+export const selectEmailVerification = createSelector(
+    [
+        state => state.authSlice.openEmailVerification,
+        state => state.authSlice.showEmailVerification,
+    ],
+    ( openEmailVerification, showEmailVerification) => ({
+        openEmailVerification,
+        showEmailVerification
+    })
+)
+
 export const {
     setLoginStatus,
     setOpenAuthForm,
+    setEmailVerification,
     setToast,
     setAuthDetails,
 } = authSlice.actions;

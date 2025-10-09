@@ -7,12 +7,13 @@ import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import Toast from "../common/Toast";
+import EmailVerification from "../common/EmailVerification";
 
 import {
     selectOpenAuthFrom,
     setAuthDetails,
     setLoginStatus,
-    selectToast
+    selectEmailVerification
 } from "../../features/authSlice";
 
 import Form from "../auth/Form";
@@ -27,7 +28,8 @@ const Layout = () => {
     const [trigger] = useLazyGetPopularVideosQuery();
 
     const openAuthForm = useSelector(selectOpenAuthFrom);
-    const { openSidebar } = useSelector(selectSidebar)
+    const { openSidebar } = useSelector(selectSidebar);
+    const { openEmailVerification } = useSelector(selectEmailVerification);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -108,6 +110,7 @@ const Layout = () => {
         <Toast />
         {showSideMenu && <SecondarySideMenu />}
         {openSidebar && <Sidebar isSmall={isSmall}/>}
+        {openEmailVerification && <EmailVerification isSmall={isSmall} />}
     </>)
 }
 
