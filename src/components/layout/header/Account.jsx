@@ -2,14 +2,13 @@ import { CircleUserRound, LogIn } from "lucide-react";
 import { selectLoggedInStatus } from "../../../features/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setOpenAuthForm, selectUserDetails } from "../../../features/authSlice";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import AccountCard from "../../common/AccountCard";
 
 const Account = () => {
   const isLoggedIn = useSelector(selectLoggedInStatus);
   const { name } = useSelector(selectUserDetails);
   const [showAccountCard, setShowAccountCard] = useState(false)
-  const accountBTnRef = useRef(null);
   const dispatch = useDispatch()
 
   const isSmall = window.innerWidth <= 768;
@@ -21,25 +20,32 @@ const Account = () => {
     }))
   }
 
-  const blurHandler = () => {
+  useEffect(() => {
+    const handleDocClick = () => {
+      console.log("Clicked")
+      if (showAccountCard ) {
+        setShowAccountCard(false)
+      }
+    }
+    document.addEventListener("click", handleDocClick);
+    return () => document.removeEventListener("click", handleDocClick)
+  }, [showAccountCard])
 
+  const handleAccountClick = (e) => {
+    e.stopPropagation();
+    setShowAccountCard(!showAccountCard)
   }
 
   if (isLoggedIn) {
     return (
       <div className="relative flex items-center gap-2.5">
         <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
-        <button
-          ref={accountBTnRef}
-          onBlur={() => setShowAccountCard(false)}
-          onClick={() => setShowAccountCard(!showAccountCard)}
-        >
-          <CircleUserRound
-            size={isSmall ? 44 : 40} strokeWidth={1.5}
-            className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
-          />
-        </button>
-        {showAccountCard && <AccountCard isSmall={isSmall} setShowAccountCard={setShowAccountCard} accountRef={accountBTnRef} />}
+        <CircleUserRound
+          onClick={handleAccountClick}
+          size={isSmall ? 44 : 40} strokeWidth={1.5}
+          className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
+        />
+        {showAccountCard && <AccountCard isSmall={isSmall} setShowAccountCard={setShowAccountCard} />}
       </div>
     )
   } else {

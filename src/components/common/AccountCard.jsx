@@ -6,13 +6,13 @@ import { auth } from "../../utils/firebaseConfig";
 import { useState } from "react";
 import DotBounceLoader from "./DotBounceLoader";
 
-const AccountCard = ({ isSmall, setShowAccountCard, accountRef }) => {
+const AccountCard = ({ isSmall, setShowAccountCard,  }) => {
     const { name, email, id } = useSelector(selectUserDetails);
     const [isLoading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
-    const signoutClickHandler = () => {
-        accountRef.current.focus()
+    const signoutClickHandler = (e) => {
+        e.stopPropagation()
         if (isLoading) return;
         const signout = async () => {
             setLoading(true);
@@ -34,7 +34,7 @@ const AccountCard = ({ isSmall, setShowAccountCard, accountRef }) => {
     }
 
     return (
-        <div className="absolute top-13 -left-56 lg:-left-32 p-3 rounded-md bg-gray-700 z-70">
+        <div onClick={(e) => e.stopPropagation()} className="absolute top-13 -left-56 lg:-left-32 p-3 rounded-md bg-gray-700 z-70">
             <div className="flex items-center gap-2">
                 {/* <img src="" alt="" /> */}
                 <CircleUserRound size={isSmall ? 50 : 55} strokeWidth={1.5} className="dark:text-primary" />
