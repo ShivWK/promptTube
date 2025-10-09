@@ -39,7 +39,7 @@ const AccountCard = ({ isSmall, setShowAccountCard,  }) => {
                 {/* <img src="" alt="" /> */}
                 <CircleUserRound size={isSmall ? 50 : 55} strokeWidth={1.5} className="dark:text-primary" />
                 <div className="flex flex-col dark:text-white w-44 lg:w-48">
-                    <p className="truncate leading-5">{name}</p>
+                    <p className="truncate leading-5 font-medium">{name}</p>
                     <p className="truncate leading-5">{email}</p>
                 </div>
             </div>
