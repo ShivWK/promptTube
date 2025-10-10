@@ -62,7 +62,7 @@ const Layout = () => {
                 dispatch(setHomeVideos(items));
                 dispatch(setHomeLoading(false));
 
-                console.log(items);
+                // console.log(items);
             } catch (err) {
                 console.log(err);
             }
@@ -74,7 +74,7 @@ const Layout = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log(user)
+                // console.log(user)
                 dispatch(setAuthDetails({
                     name: user.displayName,
                     email: user.email,
