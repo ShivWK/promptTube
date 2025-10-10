@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { setToast, setOpenAuthForm } from "../features/authSlice";
 
-async function signUpHandler({ email, password, dispatch, name, setAuthLoading }) {
+async function signUpHandler({ email, password, dispatch, name, setAuthLoading, navigate }) {
     try {
         await createUserWithEmailAndPassword(auth, email, password);
         updateProfile(auth.currentUser, {
@@ -13,7 +13,8 @@ async function signUpHandler({ email, password, dispatch, name, setAuthLoading }
             mode: "slide",
             value: false
         }))
-        setAuthLoading(false)
+        setAuthLoading(false);
+        navigate("/")
     } catch (err) {
         let errMsg = "";
 

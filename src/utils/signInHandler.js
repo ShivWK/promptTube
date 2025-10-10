@@ -2,7 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { setToast, setOpenAuthForm } from "../features/authSlice";
 
-async function signInHandler({ email, password, dispatch, setAuthLoading }) {
+async function signInHandler({ email, password, dispatch, setAuthLoading, navigate }) {
     try {
         let userCredentials = await signInWithEmailAndPassword(auth, email, password);
         console.log(userCredentials);
@@ -11,6 +11,7 @@ async function signInHandler({ email, password, dispatch, setAuthLoading }) {
             value: false
         }))
         setAuthLoading(false);
+        navigate("/")
     } catch (err) {
         dispatch(setToast({
             show: true,

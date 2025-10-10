@@ -7,6 +7,7 @@ import signUpHandler from "../../utils/signUpHandler";
 import signInHandler from "../../utils/signInHandler";
 import DotBounceLoader from "../common/DotBounceLoader";
 import { CircleX } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
     const openSlideAuthForm = useSelector(selectSlideAuthForm);
@@ -17,6 +18,8 @@ const Form = () => {
     const [isSignUP, setSignUp] = useState(false);
     const [authLoading, setAuthLoading] = useState(false);
     const [gAuthLoading, setGAuthLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -120,9 +123,9 @@ const Form = () => {
         };
 
         if (isSignUP) {
-            signUpHandler({ email: formData.email, password: formData.password, name: formData.name, dispatch, setAuthLoading })
+            signUpHandler({ email: formData.email, password: formData.password, name: formData.name, dispatch, setAuthLoading, navigate })
         } else {
-            signInHandler({ email: formData.email, password: formData.password, dispatch, setAuthLoading })
+            signInHandler({ email: formData.email, password: formData.password, dispatch, setAuthLoading, navigate })
         }
     }
 

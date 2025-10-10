@@ -1,8 +1,8 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
-import { setHomeLoading, setHomeVideos, selectSidebar } from "../../features/home/homeSlice";
+import { setHomeLoading, setHomeVideos, selectSidebar, setIsSmall } from "../../features/home/homeSlice";
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -32,15 +32,16 @@ const Layout = () => {
     const { openEmailVerification } = useSelector(selectEmailVerification);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const pathname = useLocation().pathname;
 
     useEffect(() => {
         const resizeHandler = () => {
             if (window.innerWidth <= 768) {
                 setSmall(true);
+                dispatch(setIsSmall(true));
             } else {
                 setSmall(false);
+                dispatch(setIsSmall(false));
             }
         }
 
@@ -74,7 +75,6 @@ const Layout = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                // console.log(user)
                 dispatch(setAuthDetails({
                     name: user.displayName,
                     email: user.email,
@@ -94,8 +94,6 @@ const Layout = () => {
                 }))
                 dispatch(setLoginStatus(false));
             }
-
-            navigate("/");
         })
 
         return () => unsubscribe();

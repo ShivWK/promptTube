@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    isSmall: false,
     isHomeLoading: true,
     videos: [],
     openSidebar: false,
@@ -12,7 +13,11 @@ const homeSlice = createSlice({
     initialState,
 
     reducers: {
-        setHomeLoading: (state,action) => {
+        setIsSmall: (state, action) => {
+            state.isSmall = action.payload;
+        },
+
+        setHomeLoading: (state, action) => {
             state.isHomeLoading = action.payload
         },
 
@@ -37,6 +42,7 @@ const homeSlice = createSlice({
 
 export default homeSlice.reducer;
 
+export const selectIsSmall = (state) => state.home.isSmall;
 export const selectHomeLoading = (state) => state.home.isHomeLoading;
 export const selectHomeVideos = state => state.home.videos;
 export const selectSidebar = createSelector(
@@ -53,7 +59,8 @@ export const selectSidebar = createSelector(
 export const {
     setHomeLoading,
     setHomeVideos,
-    setSidebar
+    setSidebar,
+    setIsSmall,
 } = homeSlice.actions;
 
 [
