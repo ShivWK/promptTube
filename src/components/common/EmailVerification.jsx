@@ -58,7 +58,7 @@ const EmailVerification = ({ isSmall }) => {
             <div onAnimationEnd={animationEndHandler} className={`${showEmailVerification ? "animate-showAuthModal" : "animate-hideAuthModal"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 rounded-md bg-gray-700 w-[80%] lg:w-[25%] flex flex-col gap-3`}>
                 <div className="flex justify-between items-center">
                     <p className="dark:text-white text-xl font-medium">Email Verification</p>
-                    <CircleX onClick={closeModel} size={isSmall ? 20 : 25} strokeWidth={1.5} className="dark:text-white cursor-pointer" />
+                    <CircleX onClick={closeModel} size={isSmall ? 25 : 25} strokeWidth={1.5} className="dark:text-white cursor-pointer" />
                 </div>
 
                 <p className="text-center dark:text-white leading-5 tracking-wide">
