@@ -56,7 +56,7 @@ const TabMenu = () => {
       <div ref={containerRef} className="flex items-center gap-4 backdrop-blur-md py-1 lg:py-2 px-1 overflow-auto scrollbar-hide">
         {
           TABS.map((item, index) => {
-            return <button className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-xl font-medium cursor-pointer whitespace-nowrap select-none" key={index}>
+            return <button className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide" key={index}>
               {item}
             </button>
           })

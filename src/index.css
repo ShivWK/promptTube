@@ -9,10 +9,24 @@
     scrollbar-width: none;
 }
 
+.pretty-scrollbar::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+.pretty-scrollbar::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #101828;
+}
+
+.pretty-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #ff0044;
+}
+
 @theme {
 
-    --color-primary : #ff0044;
-    
+    --color-primary: #ff0044;
+
     --animate-dotBounce: animateDot 0.4s infinite alternate;
 
     @keyframes animateDot {
@@ -88,5 +102,8 @@
     }
 }
 
-
-/* theme color : #ff0033 */
+@media screen and (max-width: 768px) {
+    .pretty-scrollbar::-webkit-scrollbar {
+        width: 1vw;
+    }
+}

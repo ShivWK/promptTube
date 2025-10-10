@@ -41,7 +41,7 @@ const Account = () => {
         <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
         <CircleUserRound
           onClick={handleAccountClick}
-          size={isSmall ? 44 : 40} strokeWidth={1.5}
+          size={isSmall ? 44 : 40} strokeWidth={1}
           className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
         />
         {showAccountCard && <AccountCard isSmall={isSmall} setShowAccountCard={setShowAccountCard} />}
