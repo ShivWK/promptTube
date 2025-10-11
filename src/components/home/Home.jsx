@@ -42,11 +42,11 @@ const Home = () => {
   }
 
   return (
-    <main className="pt-32 lg:pt-40 md:pl-32 p-2 md:p-3">
+    <main className="pt-32 md:pt-32 lg:pt-40 md:pl-32 p-2 md:p-3">
       {
         loading
           ? <p className="dark:text-white">Loading...</p>
-          : <section className="flex items-center gap-5 flex-wrap">
+          : <section className="flex items-center gap-5 xl:gap-6 flex-wrap">
             {
               videos.map(object => {
                 return <VideoCard key={object.id} object={object} calUploadTime={calUploadTime} countViews={countViews} />
