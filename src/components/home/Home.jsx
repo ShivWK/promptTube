@@ -46,10 +46,10 @@ const Home = () => {
       {
         loading
           ? <p className="dark:text-white">Loading...</p>
-          : <section className="flex items-center gap-3 md:gap-5 flex-wrap">
+          : <section className="flex items-center justify-around flex-wrap">
             {
               videos.map(object => {
-                return <VideoCard object={object} calUploadTime={calUploadTime} countViews={countViews} />
+                return <VideoCard key={object.id} object={object} calUploadTime={calUploadTime} countViews={countViews} />
               })
             }
           </section>
