@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const SecondarySideMenu = () => {
   const isSmall = window.innerWidth <= 786;
-  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [showSideMenu, setShowSideMenu] = useState(true);
   const lastScrollY = useRef(window.scrollY);
 
   useEffect(() => {
