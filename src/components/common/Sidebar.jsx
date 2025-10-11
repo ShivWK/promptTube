@@ -35,7 +35,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        FIRST.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        FIRST.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)
@@ -44,7 +44,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        YOUR.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        YOUR.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)
@@ -53,7 +53,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="pb-2 w-full">
                     {
-                        GENERAL_SUB_CATEGORY.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        GENERAL_SUB_CATEGORY.map((obj, index) => <button key={index} className="flex items-center gap-2 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)
