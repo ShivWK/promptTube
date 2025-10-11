@@ -41,7 +41,7 @@ const SecondarySideMenu = () => {
       </Link>
     </aside>
 
-    <aside className={`fixed bottom-0 md:hidden ${showSideMenu ? "translate-y-0.5" : "translate-y-full"} p-2 justify-around w-full flex items-center backdrop-blur-2xl bg-black/40 transform transition-all duration-300 ease-linear`}>
+    <aside className={`fixed bottom-0 md:hidden ${showSideMenu ? "translate-y-0.5" : "translate-y-full"} p-2 justify-around w-full flex items-center backdrop-blur-2xl bg-black/40 transform transition-all duration-[250ms] ease-linear`}>
 
       <Link to={"/"} className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
         <Home size={isSmall ? 28 : 30} className="dark:text-gray-200" />
