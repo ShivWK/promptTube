@@ -46,7 +46,7 @@ const Home = () => {
       {
         loading
           ? <p className="dark:text-white">Loading...</p>
-          : <section className="flex items-center justify-around flex-wrap">
+          : <section className="flex items-center gap-5 flex-wrap">
             {
               videos.map(object => {
                 return <VideoCard key={object.id} object={object} calUploadTime={calUploadTime} countViews={countViews} />

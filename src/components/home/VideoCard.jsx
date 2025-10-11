@@ -5,6 +5,7 @@ const VideoCard = ({ object, calUploadTime, countViews }) => {
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
                 className="w-full object-cover self-start rounded-2xl aspect-video"
+                
             ></img>
             <div className="p-2 dark:text-white w-full flex flex-col gap-1">
                 <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5">{object.snippet?.localized?.title}</h2>
