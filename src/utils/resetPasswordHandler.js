@@ -1,4 +1,4 @@
-import { sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { setToast } from "../features/authSlice";
 
@@ -12,7 +12,7 @@ const resetPasswordHandler = async ({ setResetPasswordLoading, setResetPasswordM
     } catch (err) {
         console.log(err);
         console.log(err.code);
-        console.lof(err.message);
+        console.log(err.message);
 
         dispatch(setToast({
             error: true,

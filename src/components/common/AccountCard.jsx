@@ -57,7 +57,7 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
                     </div>
                 </div>
             </div>
-            <button onClick={signoutClickHandler} className={`flex items-center justify-center gap-2 mt-2 dark:text-white w-full bg-primary p-1.5 rounded-md cursor-pointer transform transition-all duration-150 ease-linear ${!isLoading && "active:scale-95 hover:bg-[#c2072d]"}`}>
+            <button onClick={signoutClickHandler} className={`flex items-center justify-center gap-2 mt-4 dark:text-white w-full bg-primary p-1.5 rounded-md cursor-pointer transform transition-all duration-150 ease-linear ${!isLoading && "active:scale-95 hover:bg-[#c2072d]"}`}>
                 {
                     isLoading
                         ? <DotBounceLoader />
@@ -74,6 +74,3 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
 }
 
 export default AccountCard;
-
-// <CircleCheck />
-// <Info />
