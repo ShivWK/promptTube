@@ -23,13 +23,13 @@ const Header = () => {
     }, [pathname])
 
     return (
-        <header className='backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40'>
+        <header className='backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 '>
             <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between bg-black/40'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-3 lg:gap-8'>
                     {
                         isSmall
-                            ? <NavLink to={"/search"} className="lg:py-2 p-1 lg:px-4 dark:bg-gray-700 rounded-full overflow-hidden">
+                            ? <NavLink to={"/search"} className="p-2 dark:bg-gray-700 rounded-full overflow-hidden">
                                 <Search size={isSmall ? 20 : 25} className="dark:text-white e" />
                             </NavLink>
                             : <SearchBar />

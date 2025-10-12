@@ -54,6 +54,10 @@ const Layout = () => {
     useEffect(() => {
         if (pathname === "/gptBrowser") setShowHeader(false);
         else setShowHeader(true);
+
+        if (pathname === "/watch") setShowSideMenu(false);
+        else setShowSideMenu(true);
+        
     }, [pathname])
 
     useEffect(() => {
