@@ -35,6 +35,17 @@ const Layout = () => {
     const pathname = useLocation().pathname;
 
     useEffect(() => {
+
+        // const result = fetch()
+        // .then((data) => {
+        //     return data.json()
+        // })
+        // .then(data => {
+        //     console.log(data)
+        // })
+
+        // console.log(result)
+
         const resizeHandler = () => {
             if (window.innerWidth <= 768) {
                 setSmall(true);

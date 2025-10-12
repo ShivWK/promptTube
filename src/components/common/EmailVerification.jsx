@@ -65,7 +65,7 @@ const EmailVerification = ({ isSmall }) => {
                     {`Your email ${email} isn’t verified yet. Please verify it.`}
                 </p>
 
-                { emailSend && <p className="text-center dark:text-green-400 leading-5 tracking-wide font-medium">Email send successfully</p>  }
+                { emailSend && <p className="text-center dark:text-green-400 leading-6 tracking-wide font-medium">Email sent successfully! Check your inbox or spam folder if you don’t see it.</p>  }
 
                 <button onClick={sendLinkHandler} className={`${ emailSend ? "bg-gray-500" : "bg-primary" } text-white rounded-md w-full mt-2 p-1 font-semibold cursor-pointer flex items-center justify-center lg:text-lg transform transition-all duration-150 ease-linear ${(!isLoading && !emailSend) && "active:scale-95 hover:bg-[#c2072d]" }`}>
                     {

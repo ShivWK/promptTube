@@ -21,7 +21,6 @@ const Form = () => {
     const [isSmall, setSmall] = useState(false);
     const [isSignUP, setSignUp] = useState(false);
     const [authLoading, setAuthLoading] = useState(false);
-    const [gAuthLoading, setGAuthLoading] = useState(false);
     const [passwordReset, setPasswordReset] = useState(false);
 
     const [resetPasswordMailSend, setResetPasswordMailSend] = useState(false);

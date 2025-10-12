@@ -2,10 +2,27 @@ import { X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSidebar, setSidebar } from "../../features/home/homeSlice";
 import { FIRST, GENERAL_SUB_CATEGORY, YOUR } from "../../utils/constants";
+import { useEffect } from "react";
 
 const Sidebar = ({ isSmall }) => {
-    const { slideOpenSidebar } = useSelector(selectSidebar);
+    const { openSidebar, slideOpenSidebar } = useSelector(selectSidebar);
     const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     if (openSidebar) {
+    //         const html = document.documentElement;
+    //         const scrollbarWidth = window.innerWidth - html.clientWidth;
+    //         document.body.style.overflow = "hidden";
+    //         document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    //         // console.log(scrollbarWidth, window.innerWidth, html.clientWidth)
+    //     } else {
+    //         document.body.style.overflow = "auto";
+    //         document.body.style.paddingRight = `0px`;
+
+    //         console.log("Called")
+    //     }
+    // }, [openSidebar])
 
     const divClickHandler = () => {
         dispatch(setSidebar({

@@ -44,7 +44,6 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
     return (
         <div onClick={(e) => e.stopPropagation()} className="absolute top-13 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70">
             <div className="flex items-center gap-2">
-                {/* <img src="" alt="" /> */}
                 <CircleUserRound size={isSmall ? 50 : 55} strokeWidth={1.5} className="dark:text-primary" />
                 <div className="flex flex-col dark:text-white w-48 lg:w-52">
                     <p className="truncate leading-6 font-medium">{name}</p>

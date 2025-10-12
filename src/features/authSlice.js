@@ -37,14 +37,8 @@ const authSlice = createSlice({
             if (mode === "All") {
                 state.openAuthForm = value;
                 state.slideOpenAuthForm = value;
-
-                // document.body.style.overflow = "hidden"
             } else if (mode === "open") {
                 state.openAuthForm = value;
-
-                // if (!value) {
-                //     document.body.style.overflow = "auto"
-                // }
             } else if (mode === "slide") {
                 state.slideOpenAuthForm = value;
             }

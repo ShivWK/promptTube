@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-const VideoCard = ({ object, calUploadTime, countViews }) => {
-    return (
-        <Link to={`/watch?id=${object.id}`} key={object.id} className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex flex-col items-center self-start">
+const RelatedVideoCards = ({ object }) => {
+  return (
+    <Link to={`/watch?id=${object.id}`} key={object.id} className="basis-full sm:basis-[48%] md:basis-[30%] lg:basis-full rounded-2xl overflow-hidden flex flex-col lg:flex-row items-center">
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
@@ -19,9 +19,9 @@ const VideoCard = ({ object, calUploadTime, countViews }) => {
                 </div>
             </div>
         </Link>
-    )
+  )
 }
 
-export default VideoCard;
+export default RelatedVideoCards;
 
 // comments "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=[video_id]&maxResults=20&order=relevance&key=[API_KEY]"
