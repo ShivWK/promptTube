@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
+const youtubeRouter = require("./routes/youtubeRouter");
+
 app.use(express.json());
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://prompttube-ai.shivendra.site/",
+    "https://prompttube-ai.shivendra.site",
 ]
 
 app.use(cors({
@@ -31,6 +33,8 @@ app.get("api/server/wake-up", () => {
         message: "I'm awake"
     })
 })
+
+app.use("/api/v1/youtube", youtubeRouter);
 
 app.use((req, res) => {
     res.status(404).send("Not found");
