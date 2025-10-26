@@ -3,6 +3,8 @@ const axios = require("axios");
 exports.getSearchSuggestion = async (req, res) => {
     try {
         const query = req.query.query;
+        console.log(query)
+
         const response = await fetch(`https://suggestqueries.google.com/complete/search?` +
             `client=youtube&` +
             `hl=en&` +
