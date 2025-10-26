@@ -2,10 +2,13 @@ import { selectHomeVideos, selectHomeLoading } from "../../features/home/homeSli
 import { useSelector } from "react-redux";
 import VideoCard from "./VideoCard";
 import { useEffect } from "react";
+import { useGetSearchVideosQuery } from "../../features/home/homeApiSlice";
 
 const Home = () => {
   const loading = useSelector(selectHomeLoading);
   const videos = useSelector(selectHomeVideos);
+  // const data = useGetSearchVideosQuery({ searchedTerm: "John cena" })
+  // console.log("searched data", data)
 
   useEffect(() => {
     // const fetchData = async () => {

@@ -24,3 +24,14 @@ exports.getSearchSuggestion = async (req, res) => {
         })
     }
 }
+
+exports.getSearchedVideos = async (req, res) => {
+    try {
+        const searchedTerm = req.query.searchedTerm;
+        const response = await fetch(``)
+
+
+    } catch (err) {
+
+    }
+}
