@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const VideoCard = ({ object, calUploadTime, countViews }) => {
     return (
-        <Link to={`/watch?id=${object.id}`} key={object.id} className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex flex-col items-center self-start">
+        <Link to={`/watch?id=${object.id}`} key={object.id} className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex flex-col items-center self-start dark:bg-gray-900">
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
