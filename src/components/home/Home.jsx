@@ -11,7 +11,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch("https://prompttube.onrender.com/api/v1/youtube/searchSuggestion?query=john");
-        const data = response.json();
+        const data = await response.json();
         console.log(data);
       } catch (err) {
         console.log("failed", err)
