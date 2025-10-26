@@ -2,7 +2,15 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
-import { setHomeLoading, setHomeVideos, selectSidebar, setIsSmall } from "../../features/home/homeSlice";
+import {
+    setHomeLoading,
+    setHomeVideos,
+    selectSidebar,
+    setIsSmall,
+    selectSuggestions,
+    setSearchSuggestions
+} from "../../features/home/homeSlice";
+
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -30,6 +38,7 @@ const Layout = () => {
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const { openSidebar } = useSelector(selectSidebar);
     const { openEmailVerification } = useSelector(selectEmailVerification);
+    const searchSuggestions = useSelector(selectSuggestions);
 
     const dispatch = useDispatch();
     const pathname = useLocation().pathname;
@@ -52,12 +61,22 @@ const Layout = () => {
     }, [])
 
     useEffect(() => {
+        const handleDocClick = () => {
+            console.log("clicked called", searchSuggestions)
+                dispatch(setSearchSuggestions([]))
+        }
+
+        document.addEventListener("click", handleDocClick);
+        return () => document.removeEventListener("click", handleDocClick);
+    }, [])
+
+    useEffect(() => {
         if (pathname === "/gptBrowser") setShowHeader(false);
         else setShowHeader(true);
 
         if (pathname === "/watch") setShowSideMenu(false);
         else setShowSideMenu(true);
-        
+
     }, [pathname])
 
     useEffect(() => {
@@ -66,8 +85,6 @@ const Layout = () => {
                 const { items } = await trigger().unwrap();
                 dispatch(setHomeVideos(items));
                 dispatch(setHomeLoading(false));
-
-                // console.log(items);
             } catch (err) {
                 console.log(err);
             }
@@ -111,7 +128,7 @@ const Layout = () => {
         {openAuthForm && <Form />}
         <Toast />
         {showSideMenu && <SecondarySideMenu />}
-        {openSidebar && <Sidebar isSmall={isSmall}/>}
+        {openSidebar && <Sidebar isSmall={isSmall} />}
         {openEmailVerification && <EmailVerification isSmall={isSmall} />}
     </>)
 }

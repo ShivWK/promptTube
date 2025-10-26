@@ -2,27 +2,10 @@ import { X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSidebar, setSidebar } from "../../features/home/homeSlice";
 import { FIRST, GENERAL_SUB_CATEGORY, YOUR } from "../../utils/constants";
-import { useEffect } from "react";
 
 const Sidebar = ({ isSmall }) => {
-    const { openSidebar, slideOpenSidebar } = useSelector(selectSidebar);
+    const { slideOpenSidebar } = useSelector(selectSidebar);
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     if (openSidebar) {
-    //         const html = document.documentElement;
-    //         const scrollbarWidth = window.innerWidth - html.clientWidth;
-    //         document.body.style.overflow = "hidden";
-    //         document.body.style.paddingRight = `${scrollbarWidth}px`;
-
-    //         // console.log(scrollbarWidth, window.innerWidth, html.clientWidth)
-    //     } else {
-    //         document.body.style.overflow = "auto";
-    //         document.body.style.paddingRight = `0px`;
-
-    //         console.log("Called")
-    //     }
-    // }, [openSidebar])
 
     const divClickHandler = () => {
         dispatch(setSidebar({
@@ -52,7 +35,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        FIRST.map((obj, index) => <button key={index} className="flex items-center gap-2.5 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        FIRST.map((obj, index) => <button key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)
@@ -61,7 +44,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        YOUR.map((obj, index) => <button key={index} className="flex items-center gap-2.5 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        YOUR.map((obj, index) => <button key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)
@@ -70,7 +53,7 @@ const Sidebar = ({ isSmall }) => {
 
                 <div className="pb-2 w-full">
                     {
-                        GENERAL_SUB_CATEGORY.map((obj, index) => <button key={index} className="flex items-center gap-2.5 lg:gap-3 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
+                        GENERAL_SUB_CATEGORY.map((obj, index) => <button key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
                             <obj.Icon />
                             <span className="">{obj.name}</span>
                         </button>)

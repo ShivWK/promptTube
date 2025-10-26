@@ -17,8 +17,6 @@ const Header = () => {
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const { openEmailVerification } = useSelector(selectEmailVerification);
 
-    console.log(openSidebar)
-
     useEffect(() => {
         if (pathname !== "/") setShowTabs(false);
         else setShowTabs(true);
