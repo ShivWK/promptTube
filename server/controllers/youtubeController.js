@@ -5,11 +5,13 @@ exports.getSearchSuggestion = async (req, res) => {
         const query = req.query.query;
         console.log(query)
 
-        const response = await fetch(`https://suggestqueries.google.com/complete/search?` +
+        const response = await fetch(`http://suggestqueries.google.com/complete/search?` +
             `client=youtube&` +
             `hl=en&` +
             `ds=yt&` +
             `q=${encodeURIComponent(query)}`);
+
+        console.log(response);
 
         const data = await response.json();
         console.log(data);
