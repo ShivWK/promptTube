@@ -33,11 +33,11 @@ const SearchBar = () => {
 
   const inputChangeHandler = (e) => {
     setSearch(e.target.value);
+    dataFetcher.current(search.trim());
   }
 
   const searchClickHandler = () => {
     if (suggestionsLoading) return;
-    dataFetcher.current(search.trim());
   }
 
   const cancelSearchClickHandler = () => {
@@ -53,9 +53,7 @@ const SearchBar = () => {
         <button onClick={searchSuggestion.length !== 0 ? cancelSearchClickHandler : searchClickHandler} className={`lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer ${!suggestionsLoading && "active:bg-gray-400"}`}>
           {suggestionsLoading
             ? <LoaderCircle size={isSmall ? 20 : 25} className="dark:text-white animate-spin" />
-          : searchSuggestion.length !== 0
-              ? <X size={isSmall ? 20 : 25} className="dark:text-white" />
-              : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
+            : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
           }
         </button>
       </div>
@@ -70,3 +68,7 @@ const SearchBar = () => {
 }
 
 export default SearchBar;
+
+// searchSuggestion.length !== 0
+//               ? <X size={isSmall ? 20 : 25} className="dark:text-white" />
+//               : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
