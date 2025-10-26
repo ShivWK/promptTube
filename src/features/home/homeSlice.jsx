@@ -6,6 +6,7 @@ const initialState = {
     videos: [],
     openSidebar: false,
     slideOpenSidebar: false,
+    searchSuggestionsLoading: false,
     searchSuggestions: [],
 };
 
@@ -41,6 +42,10 @@ const homeSlice = createSlice({
 
         setSearchSuggestions: (state, action) => {
             state.searchSuggestions = action.payload;
+        },
+
+        setSearchSuggestionsLoading: (state, action) => {
+            state.searchSuggestionsLoading = action.payload;
         }
     }
 });
@@ -61,6 +66,7 @@ export const selectSidebar = createSelector(
     })
 )
 export const selectSuggestions = (state) => state.home.searchSuggestions;
+export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
 
 export const {
     setHomeLoading,
@@ -68,4 +74,5 @@ export const {
     setSidebar,
     setIsSmall,
     setSearchSuggestions,
+    setSearchSuggestionsLoading,
 } = homeSlice.actions;

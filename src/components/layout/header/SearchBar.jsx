@@ -1,17 +1,24 @@
 import { useRef, useState } from "react";
-import { Search, X} from "lucide-react";
+import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreater from "../../../utils/debounceCreater";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSuggestions, setSearchSuggestions } from "../../../features/home/homeSlice";
+import {
+  selectSuggestions,
+  setSearchSuggestions,
+  selectSuggestionsLoading,
+  setSearchSuggestionsLoading
+} from "../../../features/home/homeSlice";
 
 const SearchBar = () => {
   const [search, setSearch] = useState("");
   const isSmall = window.innerWidth <= 768;
   const dataFetcher = useRef(debounceCreater(getSuggestions, 200));
   const searchSuggestion = useSelector(selectSuggestions);
+  const suggestionsLoading = useSelector(selectSuggestionsLoading);
   const dispatch = useDispatch();
 
   async function getSuggestions(str) {
+    dispatch(setSearchSuggestionsLoading(true));
     try {
       const response = await fetch(`https://prompttube.onrender.com/api/v1/youtube/searchSuggestion?query=${encodeURIComponent(str)}`);
       const data = await response.json();
@@ -20,6 +27,8 @@ const SearchBar = () => {
     } catch (err) {
       console.log("failed", err)
     }
+
+    dispatch(setSearchSuggestionsLoading(false));
   }
 
   const inputChangeHandler = (e) => {
@@ -27,10 +36,12 @@ const SearchBar = () => {
   }
 
   const searchClickHandler = () => {
+    if (suggestionsLoading) return;
     dataFetcher.current(search.trim());
   }
 
   const cancelSearchClickHandler = () => {
+    if (suggestionsLoading) return;
     setSearch("");
     dispatch(setSearchSuggestions([]))
   }
@@ -39,11 +50,12 @@ const SearchBar = () => {
     <div className="relative">
       <div className="flex rounded-4xl overflow-hidden border-2 dark:border-gray-700">
         <input value={search} onChange={inputChangeHandler} type="text" name="search_bar" className="outline-none py-1 lg:py-2 px-5 dark:text-gray-200  dark:bg-gray-900 placeholder:text-gray-400 w-full lg:w-[35rem]" placeholder="Search" />
-        <button onClick={searchSuggestion.length !== 0 ? cancelSearchClickHandler : searchClickHandler} className="lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer active:bg-gray-400">
-          {
-            searchSuggestion.length !== 0
-              ? <X size={isSmall ? 20 : 25} className="dark:text-white e" />
-              : <Search size={isSmall ? 20 : 25} className="dark:text-white e" />
+        <button onClick={searchSuggestion.length !== 0 ? cancelSearchClickHandler : searchClickHandler} className={`lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer ${!suggestionsLoading && "active:bg-gray-400"}`}>
+          {suggestionsLoading
+            ? <LoaderCircle size={isSmall ? 20 : 25} className="dark:text-white animate-spin" />
+          : searchSuggestion.length !== 0
+              ? <X size={isSmall ? 20 : 25} className="dark:text-white" />
+              : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
           }
         </button>
       </div>
