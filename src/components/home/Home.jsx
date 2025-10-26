@@ -1,10 +1,25 @@
 import { selectHomeVideos, selectHomeLoading } from "../../features/home/homeSlice";
 import { useSelector } from "react-redux";
 import VideoCard from "./VideoCard";
+import { useEffect } from "react";
 
 const Home = () => {
   const loading = useSelector(selectHomeLoading);
   const videos = useSelector(selectHomeVideos);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://prompttube.onrender.com/api/v1/youtube/searchSuggestion?query=john");
+        const data = response.json();
+        console.log(data);
+      } catch (err) {
+        console.log("failed", err)
+      }
+    }
+
+    fetchData();
+  }, [])
 
   const countViews = (view) => {
     if (view > 1_000_000) {
@@ -33,7 +48,7 @@ const Home = () => {
     if (seconds < 60) return "just now"
 
     for (let [key, value] of Object.entries(intervals)) {
-      const count = Math.floor(seconds/value);
+      const count = Math.floor(seconds / value);
 
       if (count >= 1) {
         return `${count} ${key}${count > 1 ? "s" : ""} ago`

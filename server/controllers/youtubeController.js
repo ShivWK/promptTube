@@ -2,13 +2,24 @@ const axios = require("axios");
 
 exports.getSearchSuggestion = async (req, res) => {
     try {
-        const query = req.params.query;
+        const query = req.query.query;
         const response = await fetch(`https://clients1.google.com/complete/search?client=youtube&gs_ri=youtube&ds=yt&q=${query}`);
 
-        console.log(response)
+        const data = await response.json();
+        console.log(data);
+
+        return res.status(200).json({
+            status: "success",
+            data
+        })
 
     } catch (err) {
-        console.log("Failed", err)
+        console.log("Failed", err);
+
+        return res.status(500).json({
+            status: "failed",
+            data: err.message
+        })
     }
 }
 

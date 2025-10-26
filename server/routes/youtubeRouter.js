@@ -5,6 +5,6 @@ const {
     getSearchSuggestion
 } = require("../controllers/youtubeController")
 
-youtubeRouter.get("/searchSuggestion/:query", getSearchSuggestion);
+youtubeRouter.get("/searchSuggestion", getSearchSuggestion);
 
 module.exports = youtubeRouter;
