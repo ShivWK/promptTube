@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
     res.status(200).send("PromptTube proxy server is running")
 })
 
-app.get("/api/server/wake-up", () => {
+app.get("/api/server/wake-up", (req, res) => {
     console.log("Wake up call received");
     res.status(200).json({
         status: "success",
