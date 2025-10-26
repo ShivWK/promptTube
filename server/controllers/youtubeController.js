@@ -9,14 +9,23 @@ exports.getSearchSuggestion = async (req, res) => {
 
         console.log(response);
 
-        const data = await response.json();
-        console.log(data);
+        // const data = await response.json();
+        // console.log(data);
 
-        return res.status(200).json({
-            status: "success",
-            data
-        })
+        const text = await response.text();
 
+        // Parse JSONP on the backend
+        const match = text.match(/window\.google\.ac\.h\((.+)\)/);
+        if (match && match[1]) {
+            const data = JSON.parse(match[1]);
+            const suggestions = Array.isArray(data) && data[1] ? data[1].map(item => item[0]) : [];
+            return res.status(200).json({
+                status: "success",
+                data: suggestions,
+            })
+        }
+
+        res.json([]);
     } catch (err) {
         console.log("Failed", err);
 
