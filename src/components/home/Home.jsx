@@ -40,11 +40,9 @@ const Home = () => {
             />
           </div>
           : <section className="flex items-center gap-5 xl:gap-6 flex-wrap">
-            {
-              videos.map(object => {
-                return <VideoCard key={object.id} object={object} />
-              })
-            }
+            {videos.map(object => {
+              return <VideoCard key={object.id} object={object} mode="home" />
+            })}
           </section>
       }
     </main>

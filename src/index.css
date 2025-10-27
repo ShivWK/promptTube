@@ -24,9 +24,8 @@
 }
 
 @theme {
-
+    
     --color-primary: #ff0044;
-
     --animate-dotBounce: animateDot 0.3s infinite alternate;
 
     @keyframes animateDot {
