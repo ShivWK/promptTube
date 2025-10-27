@@ -8,6 +8,7 @@ const initialState = {
     slideOpenSidebar: false,
     searchSuggestionsLoading: false,
     searchSuggestions: [],
+    searchResult: [],
 };
 
 const homeSlice = createSlice({
@@ -46,6 +47,11 @@ const homeSlice = createSlice({
 
         setSearchSuggestionsLoading: (state, action) => {
             state.searchSuggestionsLoading = action.payload;
+        },
+
+        setSearchResult: (state, action) => {
+            console.log(action.payload);
+            state.searchResult = action.payload;
         }
     }
 });
@@ -55,6 +61,7 @@ export default homeSlice.reducer;
 export const selectIsSmall = (state) => state.home.isSmall;
 export const selectHomeLoading = (state) => state.home.isHomeLoading;
 export const selectHomeVideos = state => state.home.videos;
+
 export const selectSidebar = createSelector(
     [
         state => state.home.openSidebar,
@@ -65,8 +72,10 @@ export const selectSidebar = createSelector(
         slideOpenSidebar
     })
 )
+
 export const selectSuggestions = (state) => state.home.searchSuggestions;
 export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
+export const selectSearchResult = (state) => state.home.searchResult;
 
 export const {
     setHomeLoading,
@@ -75,4 +84,5 @@ export const {
     setIsSmall,
     setSearchSuggestions,
     setSearchSuggestionsLoading,
+    setSearchResult,
 } = homeSlice.actions;

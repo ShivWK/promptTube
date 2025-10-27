@@ -61,10 +61,7 @@ const Layout = () => {
     }, [])
 
     useEffect(() => {
-        const handleDocClick = () => {
-            console.log("clicked called", searchSuggestions)
-                dispatch(setSearchSuggestions([]))
-        }
+        const handleDocClick = () => dispatch(setSearchSuggestions([]))
 
         document.addEventListener("click", handleDocClick);
         return () => document.removeEventListener("click", handleDocClick);
