@@ -37,7 +37,7 @@ const Header = () => {
     }, [openSidebar, openAuthForm, openEmailVerification]);
 
     return (
-        <header id='header' className={`backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 z-50`}>
+        <header id='header' className={`backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 z-50 ${pathname === "/search" && "rounded-b-2xl"}`}>
             <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between bg-black/40'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-3 lg:gap-8'>
@@ -57,6 +57,11 @@ const Header = () => {
                 </div>
             </div>
             {showTabs && <TabMenu />}
+            {pathname === "/search" && <div className='w-full backdrop-blur-md flex items-center justify-center py-3 rounded-b-2xl overflow-hidden'>
+                <div className='w-[90%]'>
+                    <SearchBar />
+                </div>
+            </div>}
         </header>
     )
 }
