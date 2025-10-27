@@ -55,6 +55,7 @@ const SearchBar = () => {
 
     try {
       const data = await trigger({ searchedTerm: text }).unwrap();
+      console.log(data.items)
       dispatch(setSearchResult(data.items));
     } catch (err) {
       console.log("Failed to search", err)
