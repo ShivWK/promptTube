@@ -17,7 +17,7 @@ const SearchBar = () => {
   const [search, setSearch] = useState("");
   const [doSearch, setDoSearch] = useState(true)
   const isSmall = window.innerWidth <= 768;
-  const dataFetcher = useRef(debounceCreater(getSuggestions, 150));
+  const dataFetcher = useRef(debounceCreater(getSuggestions, 100));
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);
   const searchResult = useSelector(selectSearchResult);
