@@ -93,8 +93,8 @@ const SearchBar = () => {
         </button>
       </div>
 
-      <div className="rounded-b-xl overflow-hidden absolute dark:bg-gray-700 w-[92%] top-full left-1/2 -translate-x-1/2 dark:text-gray-200 z-80 h-fit">
-        <ul className=" max-h-[22rem] lg:max-h-[29rem] overflow-y-auto pretty-scrollbar">
+      <div className="absolute rounded-b-xl overflow-hidden dark:bg-gray-700 w-[92%] top-full left-1/2 -translate-x-1/2 dark:text-gray-200 z-80 h-fit">
+        <ul className="max-h-[22rem] lg:max-h-[29rem] overflow-y-auto pretty-scrollbar">
           {searchSuggestion.length !== 0 && searchSuggestion.map((text, index) => <li key={index} onClick={() => suggestionClickHandler(text)} className="py-2 px-3 hover:cursor-pointer hover:text-gray-800 hover:bg-gray-300 active:bg-primary active:text-white">{text}</li>)}
         </ul>
       </div>
