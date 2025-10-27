@@ -1,34 +1,44 @@
-import { selectHomeVideos, selectHomeLoading } from "../../features/home/homeSlice";
-import { useSelector } from "react-redux";
+import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 import VideoCard from "./VideoCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DotBounceLoader from "../common/DotBounceLoader";
 
 const Home = () => {
-  const loading = useSelector(selectHomeLoading);
-  const videos = useSelector(selectHomeVideos);
-  // const data = useGetSearchVideosQuery({ searchedTerm: "John cena" })
-  // console.log("searched data", data)
+  const [triggerVideos, { isLoading }] = useLazyGetPopularVideosQuery();
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await fetch("https://prompttube.onrender.com/api/v1/youtube/searchSuggestion?query=namestey javascript");
-    //     const data = await response.json();
-    //     console.log(data);
-    //   } catch (err) {
-    //     console.log("failed", err)
-    //   }
-    // }
+    const popularVideosCall = async () => {
+      try {
+        const { items } = await triggerVideos().unwrap();
+        setVideos(items)
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
-    // fetchData();
+    popularVideosCall();
   }, [])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=IN&key=AIzaSyBbVJX-901TiDIwhPD9nkMMeHWj4cMh8RU");
+  //       const data = await response.json();
+  //       console.log(data);
+  //     } catch (err) {
+  //       console.log("failed", err)
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, [])
 
   return (
     <main className="pt-32 md:pt-32 lg:pt-40 md:pl-32 p-2 md:p-3">
       {
-        loading
-          ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full">
+        isLoading
+          ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[110%]">
             <DotBounceLoader
               fourth={true}
               color1="text-primary"

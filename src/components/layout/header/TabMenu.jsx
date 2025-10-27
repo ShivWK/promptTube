@@ -1,12 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { TABS } from "../../../utils/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLazyGetVideoCategoriesQuery } from "../../../features/home/homeApiSlice";
+import { selectIsSmall } from "../../../features/home/homeSlice";
+import { useSelector } from "react-redux";
 
 const TabMenu = () => {
+  const [triggerCategories, { isLoading }] = useLazyGetVideoCategoriesQuery();
   const containerRef = useRef(null);
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true)
-  const isSmall = window.innerWidth <= 768;
+  const [tags, setTags] = useState([]);
+  const isSmall = useSelector(selectIsSmall);
+  const tabsShimmer = Array.from({ length: 20 })
+
+  useEffect(() => {
+    const videoCategories = async () => {
+      try {
+        const { items } = await triggerCategories().unwrap();
+        setTags(items)
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    videoCategories();
+  }, [])
 
   useEffect(() => {
     if (!containerRef?.current) return;
@@ -35,7 +54,7 @@ const TabMenu = () => {
     return () => {
       if (ele) ele.removeEventListener("scroll", handleScroll);
     };
-  }, [])
+  }, [tags])
 
   const arrowClickHandler = (dir) => {
     if (!containerRef.current) return;
@@ -54,10 +73,11 @@ const TabMenu = () => {
       </button>}
 
       <div ref={containerRef} className="flex items-center gap-4 backdrop-blur-md py-1 lg:py-2 px-1 overflow-auto scrollbar-hide">
-        {
-          TABS.map((item, index) => {
-            return <button className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide" key={index}>
-              {item}
+        {isLoading
+          ? tabsShimmer.map((_, index) => <span className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide">loading...</span>)
+          : tags.map((item) => {
+            return <button className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide" key={item.id}>
+              {item.snippet.title}
             </button>
           })
         }

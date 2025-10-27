@@ -2,8 +2,8 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isSmall: false,
-    isHomeLoading: true,
-    videos: [],
+    homeVideoCategories: [],
+    homeVideoCategoriesLoading: false,
     openSidebar: false,
     slideOpenSidebar: false,
     searchSuggestionsLoading: false,
@@ -21,12 +21,10 @@ const homeSlice = createSlice({
             state.isSmall = action.payload;
         },
 
-        setHomeLoading: (state, action) => {
-            state.isHomeLoading = action.payload
-        },
-
-        setHomeVideos: (state, action) => {
-            state.videos = action.payload
+        setHomeVideoCategories: (state, action) => {
+            const { value, loading } = action.payload;
+            state.homeVideoCategories = value;
+            state.homeVideoCategoriesLoading = loading;
         },
 
         setSidebar: (state, action) => {
@@ -64,8 +62,10 @@ const homeSlice = createSlice({
 export default homeSlice.reducer;
 
 export const selectIsSmall = (state) => state.home.isSmall;
-export const selectHomeLoading = (state) => state.home.isHomeLoading;
-export const selectHomeVideos = state => state.home.videos;
+export const selectSuggestions = (state) => state.home.searchSuggestions;
+export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
+export const selectSearchResult = (state) => state.home.searchResult;
+export const selectSearchLoading = (state) => state.home.searchLoading;
 
 export const selectSidebar = createSelector(
     [
@@ -78,14 +78,19 @@ export const selectSidebar = createSelector(
     })
 )
 
-export const selectSuggestions = (state) => state.home.searchSuggestions;
-export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
-export const selectSearchResult = (state) => state.home.searchResult;
-export const selectSearchLoading = (state) => state.home.searchLoading;
+export const selectHomeVideoCategories = createSelector(
+    [
+        state => state.home.homeVideoCategories,
+        state => state.home.homeVideoCategoriesLoading,
+    ],
+    (value, loading) => ({
+        value,
+        loading,
+    })
+)
 
 export const {
-    setHomeLoading,
-    setHomeVideos,
+    setHomeVideoCategories,
     setSidebar,
     setIsSmall,
     setSearchSuggestions,

@@ -15,7 +15,20 @@ const homeApiSlice = createApi({
             query: () => ({
                 url: `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET"
-            })
+            }),
+
+            keepUnusedDataFor: Number.MAX_VALUE,
+            refetchOnFocus: false
+        }),
+
+        getVideoCategories: builder.query({
+            query: () => ({
+                url: `/videoCategories?part=snippet&regionCode=IN&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                method: "GET"
+            }),
+
+            keepUnusedDataFor: Number.MAX_VALUE,
+            refetchOnFocus: false,
         }),
 
         getRelatedVideos: builder.query({
@@ -45,6 +58,7 @@ export default homeApiSlice;
 
 export const {
     useGetPopularVideosQuery,
+    useLazyGetVideoCategoriesQuery,
     useLazyGetPopularVideosQuery,
     useLazyGetRelatedVideosQuery,
     useLazyGetCommentsQuery,

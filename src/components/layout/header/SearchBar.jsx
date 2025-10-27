@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreater from "../../../utils/debounceCreater";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,21 +10,40 @@ import {
   setSearchSuggestionsLoading,
   setSearchResult,
   setSearchLoading,
-  selectIsSmall
+  selectIsSmall,
+  selectSearchResult,
 } from "../../../features/home/homeSlice";
 
 import { useLazyGetSearchVideosQuery } from "../../../features/home/homeApiSlice";
 
 const SearchBar = () => {
-  const [search, setSearch] = useState("");
+  const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
   const dataFetcher = useRef(debounceCreater(getSuggestions, 100));
+  const [search, setSearch] = useState("");
+
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);
   const isSmall = useSelector(selectIsSmall);
-  const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
+  const searchResults = useSelector(selectSearchResult);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
+
+  // useEffect(() => { 
+  //   const handleBrowserBack = () => {
+  //     console.log("Called out", "pathname", pathname)
+    
+  //     if (searchResults.length !== 0 && (pathname === "/")) {
+  //       console.log("Called in", "pathname", pathname)
+  //       dispatch(setSearchResult([]));
+  //       setSearch("")
+  //     }
+  //   }
+
+  //   window.addEventListener("popstate", handleBrowserBack);
+  //   return window.addEventListener("popstate", handleBrowserBack);
+  // }, [])
 
   async function getSuggestions(str) {
     dispatch(setSearchSuggestionsLoading(true));
@@ -70,13 +89,13 @@ const SearchBar = () => {
     setSearch(suggestion);
     dispatch(setSearchSuggestions([]));
     searchClickHandler(suggestion.trim());
-    if (!isSmall && (pathname !== "/pc-search" || pathname !== "/search")) navigate("/pc_search")
+    if (!isSmall && (pathname !== "/pc_search" && pathname !== "/search")) navigate("/pc_search")
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (isLoading) return;
-    if (!isSmall && (pathname !== "/pc-search" || pathname !== "/search")) navigate("/pc_search");
+    if (!isSmall && (pathname !== "/pc_search" && pathname !== "/search")) navigate("/pc_search");
     searchClickHandler(search.trim());
   }
 
@@ -101,7 +120,7 @@ const SearchBar = () => {
         <ul className="max-h-[22rem] lg:max-h-[29rem] overflow-y-auto pretty-scrollbar">
           {searchSuggestion.length !== 0 && searchSuggestion.map((text, index) => <li key={index} onClick={() => suggestionClickHandler(text)} className="group flex items-center gap-2 py-2 px-3 hover:cursor-pointer hover:text-gray-800 hover:bg-gray-300 active:bg-primary active:text-white">
             <Search size={isSmall ? 15 : 20} className="dark:text-white group-hover:text-gray-800" />
-            <span>{text}</span>
+            <span className="md:text-lg">{text}</span>
           </li>)}
         </ul>
       </div>
