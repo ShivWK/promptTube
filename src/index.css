@@ -27,7 +27,7 @@
 
     --color-primary: #ff0044;
 
-    --animate-dotBounce: animateDot 0.4s infinite alternate;
+    --animate-dotBounce: animateDot 0.3s infinite alternate;
 
     @keyframes animateDot {
         0% {
