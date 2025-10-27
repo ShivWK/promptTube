@@ -9,6 +9,7 @@ const initialState = {
     searchSuggestionsLoading: false,
     searchSuggestions: [],
     searchResult: [],
+    searchLoading: false,
 };
 
 const homeSlice = createSlice({
@@ -52,6 +53,10 @@ const homeSlice = createSlice({
         setSearchResult: (state, action) => {
             console.log(action.payload);
             state.searchResult = action.payload;
+        },
+
+        setSearchLoading: (state, action) => {
+            state.searchLoading = action.payload;
         }
     }
 });
@@ -76,6 +81,7 @@ export const selectSidebar = createSelector(
 export const selectSuggestions = (state) => state.home.searchSuggestions;
 export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
 export const selectSearchResult = (state) => state.home.searchResult;
+export const selectSearchLoading = (state) => state.home.searchLoading;
 
 export const {
     setHomeLoading,
@@ -85,4 +91,5 @@ export const {
     setSearchSuggestions,
     setSearchSuggestionsLoading,
     setSearchResult,
+    setSearchLoading
 } = homeSlice.actions;

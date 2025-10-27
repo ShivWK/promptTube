@@ -17,9 +17,11 @@ const VideoCard = ({ object, mode = "search" }) => {
                     : object.snippet?.localized?.title}</h2>
                 <p className="text-sm dark:text-gray-300">{object.snippet?.channelTitle}</p>
                 <div className="text-sm flex items-center gap-1.5 dark:text-gray-300 -mt-1.5">
-                    <span>{`${countViews(object.statistics?.viewCount)} views`}</span>
-                    <span className="text-xl font-bold">·</span>
-                    { mode !== "search" && <span>{calUploadTime(object.snippet?.publishedAt)}</span> }
+                    {mode !== "search" && <>
+                        <span>{`${countViews(object.statistics?.viewCount)} views`}</span>
+                        <span className="text-xl font-bold">·</span>
+                    </>}
+                    <span>{calUploadTime(object.snippet?.publishedAt)}</span>
                 </div>
             </div>
         </Link>
@@ -30,5 +32,5 @@ export default VideoCard;
 
 // comments "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=[video_id]&maxResults=20&order=relevance&key=[API_KEY]"
 
-// Video by id: curl 
+// Video by id: curl
 //   'https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=[YOUR_API_KEY]' 
