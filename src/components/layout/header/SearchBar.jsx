@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreater from "../../../utils/debounceCreater";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   selectSuggestions,
   setSearchSuggestions,
@@ -24,6 +24,7 @@ const SearchBar = () => {
   const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
 
   async function getSuggestions(str) {
     dispatch(setSearchSuggestionsLoading(true));
@@ -69,30 +70,32 @@ const SearchBar = () => {
     setSearch(suggestion);
     dispatch(setSearchSuggestions([]));
     searchClickHandler(suggestion.trim());
-    if (!isSmall) navigate("/pc_search")
+    if (!isSmall && (pathname !== "/pc-search" || pathname !== "/search")) navigate("/pc_search")
   }
 
-  const searchButtonClickHandler = () => {
-    if (!isSmall) navigate("/pc_search");
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (isLoading) return;
+    if (!isSmall && (pathname !== "/pc-search" || pathname !== "/search")) navigate("/pc_search");
     searchClickHandler(search.trim());
   }
 
   return (
     <div className="relative">
-      <div className="flex rounded-4xl overflow-hidden border-2 dark:border-gray-700">
-        <input value={search} onChange={inputChangeHandler} type="text" name={`no-autofill-${Math.random()}`} className="outline-none py-1 lg:py-2 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full lg:w-[35rem]" placeholder="Search" autoCapitalize="new-password" />
+      <form onSubmit={submitHandler} className="flex rounded-4xl overflow-hidden border-2 dark:border-gray-700 transition-all duration-100 ease-linear">
+        <input value={search} onChange={inputChangeHandler} type="text" className="outline-none py-1 lg:py-2 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full lg:w-[35rem]" placeholder="Search" autoCapitalize="off" />
         {
-          search && <button onClick={cancelSearchClickHandler} className="bg-gray-900 cursor-pointer px-1">
+          search && <button type="button" onClick={cancelSearchClickHandler} className="bg-gray-900 cursor-pointer px-1">
             <X size={isSmall ? 20 : 25} className="dark:text-white" />
           </button>
         }
-        <button onClick={searchButtonClickHandler} className={`lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer ${(!suggestionsLoading && !isLoading) && "active:bg-gray-400"}`}>
+        <button type="submit" className={`lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer ${(!suggestionsLoading && !isLoading) && "active:bg-gray-400"}`}>
           {(suggestionsLoading || isLoading)
             ? <LoaderCircle size={isSmall ? 20 : 25} className="dark:text-white animate-spin" />
             : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
           }
         </button>
-      </div>
+      </form>
 
       <div className="absolute rounded-b-xl overflow-hidden dark:bg-gray-700 w-[92%] top-full left-1/2 -translate-x-1/2 dark:text-gray-200 z-80 h-fit">
         <ul className="max-h-[22rem] lg:max-h-[29rem] overflow-y-auto pretty-scrollbar">
