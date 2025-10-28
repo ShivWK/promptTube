@@ -23,7 +23,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&topicId=/m/02vxn&key=AIzaSyBbVJX-901TiDIwhPD9nkMMeHWj4cMh8RU");
+        const response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&topicId=/m/02vxn&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`);
         const data = await response.json();
         console.log(data);
       } catch (err) {
