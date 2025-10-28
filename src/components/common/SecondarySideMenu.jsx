@@ -25,17 +25,17 @@ const SecondarySideMenu = () => {
   return (<>
     <aside className={"fixed hidden md:flex gap-y-1 top-1/2 -left-1 -translate-y-1/2 rounded-e-2xl p-2 flex-col dark:bg-gray-900"}>
 
-      <Link to={"/"} className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
+      <Link to={"/"} className="rounded-e-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
         <Home size={isSmall ? 25 : 30} className="dark:text-gray-200" />
         <span className="dark:text-gray-200 text-sm select-none">Home</span>
       </Link>
 
-      <Link to={"/gptBrowser"} className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
+      <Link to={"/gptBrowser"} className="rounded-e-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
         <Brain size={isSmall ? 25 : 30} className="dark:text-gray-200" />
         <span className="dark:text-gray-200 text-sm select-none">Promptly</span>
       </Link>
 
-      <Link className="rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
+      <Link className="rounded-e-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear">
         <CircleUserRound size={isSmall ? 25 : 30} className="dark:text-gray-200" />
         <span className="dark:text-gray-200 text-sm select-none">You</span>
       </Link>

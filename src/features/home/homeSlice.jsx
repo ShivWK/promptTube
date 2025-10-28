@@ -2,8 +2,8 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     isSmall: false,
-    homeVideoCategories: [],
-    homeVideoCategoriesLoading: false,
+    categoryVideosLoading: false,
+    categoryVideos:[],
     openSidebar: false,
     slideOpenSidebar: false,
     searchSuggestionsLoading: false,
@@ -17,14 +17,15 @@ const homeSlice = createSlice({
     initialState,
 
     reducers: {
-        setIsSmall: (state, action) => {
-            state.isSmall = action.payload;
+        setCategoryVideo: (state, action) => {
+            const { value, loading } = action.payload;
+
+            state.categoryVideos = value;
+            state.categoryVideosLoading = loading;
         },
 
-        setHomeVideoCategories: (state, action) => {
-            const { value, loading } = action.payload;
-            state.homeVideoCategories = value;
-            state.homeVideoCategoriesLoading = loading;
+        setIsSmall: (state, action) => {
+            state.isSmall = action.payload;
         },
 
         setSidebar: (state, action) => {
@@ -78,10 +79,10 @@ export const selectSidebar = createSelector(
     })
 )
 
-export const selectHomeVideoCategories = createSelector(
+export const selectCategoryVideos = createSelector(
     [
-        state => state.home.homeVideoCategories,
-        state => state.home.homeVideoCategoriesLoading,
+        state => state.home.categoryVideos,
+        state => state.home.categoryVideosLoading,
     ],
     (value, loading) => ({
         value,
@@ -90,11 +91,11 @@ export const selectHomeVideoCategories = createSelector(
 )
 
 export const {
-    setHomeVideoCategories,
     setSidebar,
     setIsSmall,
     setSearchSuggestions,
     setSearchSuggestionsLoading,
     setSearchResult,
-    setSearchLoading
+    setSearchLoading,
+    setCategoryVideo,
 } = homeSlice.actions;

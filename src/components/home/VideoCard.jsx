@@ -8,7 +8,7 @@ const VideoCard = ({ object, mode = "search" }) => {
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
-                className="w-full object-cover self-start rounded-2xl aspect-video"
+                className="w-full object-cover self-start rounded-t-2xl aspect-video"
 
             ></img>
             <div className="p-2 dark:text-white w-full flex flex-col gap-1">

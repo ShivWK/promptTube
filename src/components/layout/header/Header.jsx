@@ -18,8 +18,8 @@ const Header = () => {
     const { openEmailVerification } = useSelector(selectEmailVerification);
 
     useEffect(() => {
-        if (pathname !== "/" && pathname !== "/pc_search") setShowTabs(false);
-        else setShowTabs(true);
+        if (pathname === "/" || pathname === "/pc_search" || pathname === "/category_videos") setShowTabs(true);
+        else setShowTabs(false);
     }, [pathname])
 
     useEffect(() => {

@@ -6,6 +6,7 @@ import GptBrowser from "../components/gpt/GptBrowser";
 import SearchPage from "../components/search/SearchPage";
 import searchLoader from "../components/search/searchLoader";
 import PcSearchPage from "../components/search/PcSearchPage";
+import VideoByCategory from "../components/home/VideoByCategory";
 
 const AppRouter = () => {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -15,6 +16,7 @@ const AppRouter = () => {
             <Route path="gptBrowser" element={<GptBrowser />} />
             <Route path="search" loader={searchLoader} element={<SearchPage />} />
             <Route path="pc_search" element={<PcSearchPage />} />
+            <Route path="category_videos" element={<VideoByCategory />} />
         </Route>
     ))
 

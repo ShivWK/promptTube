@@ -22,7 +22,7 @@ import {
 
 import Form from "../auth/Form";
 import { useEffect, useState } from "react";
-import SecondarySideMenu from "./header/SecondarySideMenu";
+import SecondarySideMenu from "../common/SecondarySideMenu";
 import Sidebar from "../common/Sidebar";
 
 const Layout = () => {
@@ -101,9 +101,9 @@ const Layout = () => {
         {showHeader && <Header />}
         <Outlet context={isSmall} />
         <Footer />
+        <Toast />
 
         {openAuthForm && <Form />}
-        <Toast />
         {showSideMenu && <SecondarySideMenu />}
         {openSidebar && <Sidebar isSmall={isSmall} />}
         {openEmailVerification && <EmailVerification isSmall={isSmall} />}

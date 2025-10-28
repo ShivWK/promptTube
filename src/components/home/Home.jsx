@@ -20,19 +20,19 @@ const Home = () => {
     popularVideosCall();
   }, [])
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=IN&key=AIzaSyBbVJX-901TiDIwhPD9nkMMeHWj4cMh8RU");
-  //       const data = await response.json();
-  //       console.log(data);
-  //     } catch (err) {
-  //       console.log("failed", err)
-  //     }
-  //   }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&topicId=/m/02vxn&key=AIzaSyBbVJX-901TiDIwhPD9nkMMeHWj4cMh8RU");
+        const data = await response.json();
+        console.log(data);
+      } catch (err) {
+        console.log("failed", err)
+      }
+    }
 
-  //   fetchData();
-  // }, [])
+    fetchData();
+  }, [])
 
   return (
     <main className="pt-32 md:pt-32 lg:pt-40 md:pl-32 p-2 md:p-3">
