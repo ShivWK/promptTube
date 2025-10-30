@@ -41,23 +41,9 @@ const homeApiSlice = createApi({
             refetchOnFocus: false,
         }),
 
-        getRelatedVideos: builder.query({
-            query: ({ videoId }) => ({
-                url: `https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=15&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
-                method: "GET",
-            })
-        }),
-
-        getComments: builder.query({
-            query: ({ videoId }) => ({
-                url: `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=${videoId}&maxResults=20&order=relevance&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
-                method: "GET"
-            })
-        }),
-
         getSearchVideos: builder.query({
             query: ({ searchedTerm }) => ({
-                url: `/search?part=snippet&maxResults=25&maxResults=25&type=video&order=rating&q=${searchedTerm}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                url: `/search?part=snippet&maxResults=25&type=video&order=rating&q=${searchedTerm}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET",
             })
         })
@@ -70,8 +56,6 @@ export const {
     useGetPopularVideosQuery,
     useLazyGetVideoCategoriesQuery,
     useLazyGetPopularVideosQuery,
-    useLazyGetRelatedVideosQuery,
-    useLazyGetCommentsQuery,
     useLazyGetSearchVideosQuery,
     useLazyGetCategoryVideosQuery,
 } = homeApiSlice

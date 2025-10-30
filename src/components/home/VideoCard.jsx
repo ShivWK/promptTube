@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
 import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
+import { useDispatch } from "react-redux";
+import { setCurrentPlaying } from "../../features/watch/watchSlice";
 
 const VideoCard = ({ object, mode = "search" }) => {
+    const dispatch = useDispatch();
+    // console.log(object)
+
+    const handleLinkClick = () => {
+        dispatch(setCurrentPlaying(object));
+    }
+
     return (
-        <Link to={`/watch?id=${mode === "search" ? object.id.videoId : object.id}`} className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex flex-col items-center self-start dark:bg-gray-900">
+        <Link onClick={handleLinkClick} to={`/watch?id=${mode === "search" ? object.id.videoId : object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`} className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex flex-col items-center self-start dark:bg-gray-900">
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
