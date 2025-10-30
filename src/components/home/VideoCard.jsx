@@ -6,7 +6,6 @@ import { setCurrentPlaying } from "../../features/watch/watchSlice";
 
 const VideoCard = ({ object, mode = "search" }) => {
     const dispatch = useDispatch();
-    // console.log(object)
 
     const handleLinkClick = () => {
         dispatch(setCurrentPlaying(object));
@@ -38,8 +37,4 @@ const VideoCard = ({ object, mode = "search" }) => {
 }
 
 export default VideoCard;
-
-// comments "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=[video_id]&maxResults=20&order=relevance&key=[API_KEY]"
-
-// Video by id: curl
-//   'https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=[YOUR_API_KEY]' 
+ 
