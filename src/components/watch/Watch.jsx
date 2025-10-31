@@ -67,7 +67,7 @@ const Watch = () => {
           <div className="relative h-[14rem] md:h-[28rem] w-full">
             <iframe onLoad={() => setShowVideoLoader(false)} className='h-full w-full rounded-md overflow-hidden aspect-video' src={`https://www.youtube.com/embed/${id}?si=miUcucQjdj2mjmo3`} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
             {
-              showVideoLoader && <div className="w-full h-full bg-black/50 absolute top-0 left-0 flex items-center justify-center">
+              showVideoLoader && <div className="w-full h-full bg-black/80 absolute top-0 left-0 flex items-center justify-center">
                 <DotBounceLoader allColor={"text-primary"} mdSize="text-4xl" nmSize="text-2xl" fourth={true} />
               </div>
             }
