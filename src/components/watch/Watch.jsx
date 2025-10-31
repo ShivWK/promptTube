@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { selectCurrentPlaying } from "../../features/watch/watchSlice";
 import { useSelector } from "react-redux";
 import DotBounceLoader from "../common/DotBounceLoader";
+import { CircleUserRound } from "lucide-react";
 import Comment from "./Comment";
 
 import {
@@ -68,7 +69,7 @@ const Watch = () => {
           <div className="relative h-[14rem] md:h-[28rem] w-full">
             <iframe onLoad={() => setShowVideoLoader(false)} className='h-full w-full rounded-md overflow-hidden aspect-video' src={`https://www.youtube.com/embed/${id}?si=miUcucQjdj2mjmo3`} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
             {
-              !showVideoLoader && <div className="w-full h-full bg-black/80 absolute top-0 left-0 flex items-center justify-center">
+              showVideoLoader && <div className="w-full h-full bg-black/80 absolute top-0 left-0 flex items-center justify-center">
                 <DotBounceLoader allColor={"text-primary"} mdSize="text-4xl" nmSize="text-2xl" fourth={true} />
               </div>
             }
@@ -93,7 +94,7 @@ const Watch = () => {
                   : <i className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary"></i>}
               </div>
               <div>
-                {!true ? <i class="ri-time-line text-xl md:text-2xl dark:text-white" />
+                {true ? <i class="ri-time-line text-xl md:text-2xl dark:text-white" />
                   : <i class="ri-time-fill text-xl md:text-2xl dark:text-primary" />
                 }
               </div>
@@ -104,31 +105,31 @@ const Watch = () => {
           </div>
 
           {/* Comments */}
-          <div onClick={() => setShowCompleteComment(true)} className={`w-full rounded-md transition-all duration-150 ease-linear dark:bg-gray-800 p-2 dark:text-gray-200 mt-1 pretty-scrollbar ${showCompleteComment ? "max-md:max-h-[30rem] md:h-auto overflow-auto" : "overflow-hidden cursor-pointer"}`}>
-            <h2 className="text-xs md:text-sm">
-              <span>Comments</span>
-              {" "}
-              <span className="text-gray-400">{comments.length}</span>
-            </h2>
+          <div onClick={() => setShowCompleteComment(true)} className={`relative w-full rounded-md transition-all duration-150 ease-linear dark:bg-gray-800 p-2 dark:text-gray-200 mt-1 pretty-scrollbar ${showCompleteComment ? "overflow-auto" : "overflow-hidden cursor-pointer"}`}>
 
-            {
-              !showCompleteComment && <div className="mt-2 flex gap-2 md:gap-3 p-1 my-1">
-                <img src={comments[0]?.snippet?.topLevelComment.snippet.authorProfileImageUrl} alt="commenter_profile" className="rounded-full h-7 w-7 md:h-9 md:w-9 self-start" />
-
-                <div className="flex flex-col gap-1 ">
-                  <p className="text-xs tracking-wide text-gray-300">{comments[0]?.snippet?.topLevelComment.snippet.authorDisplayName}</p>
-
-                  <p className="text-sm leading-4.5 whitespace-normal" dangerouslySetInnerHTML={{ __html: comments[0]?.snippet?.topLevelComment.snippet.textDisplay }}></p>
-                </div>
+            {showCompleteComment && <div className="flex items-center gap-2 md:gap-3 mb-2 bg-gray-800 w-full">
+              <CircleUserRound size={isSmall ? 55 : 55} strokeWidth={1} className="dark:text-primary" />
+              <div className="bg-gray-900 w-full mx-auto flex items-center justify-between rounded-4xl overflow-hidden border border-gray-700">
+                <input className="outline-none border-none w-full py-1 md:py-1.5 pl-3 pr-1.5" placeholder="type your comment..."></input>
+                <button className="bg-primary self-stretch flex items-center justify-center">
+                  <i className="ri-send-plane-2-fill px-3 py-1 md:py-1.5 text-2xl md:text-2xl"></i>
+                </button>
               </div>
-            }
+            </div>}
 
-            {
-              showCompleteComment && <div>
+            <div className={`${showCompleteComment && "max-md:max-h-[25rem] md:h-auto overflow-auto"} pretty-scrollbar`}>
+              <h2 className="text-sm md:text-sm">
+                <span className="font-medium">Comments</span>
+                {" "}
+                <span className="text-gray-400">{comments.length}</span>
+              </h2>
+
+              {!showCompleteComment && <Comment data={comments[0]?.snippet?.topLevelComment.snippet} />}
+
+              {showCompleteComment && <div>
                 {comments.map((comment, index) => <Comment key={index} data={comment?.snippet?.topLevelComment.snippet} />)}
-              </div>
-            }
-
+              </div>}
+            </div>
           </div>
         </div>
       </section>
