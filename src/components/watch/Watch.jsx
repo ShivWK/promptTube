@@ -36,7 +36,6 @@ const Watch = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        // setLoading(true);
         const result = await Promise.all([
           triggerCategory({ id: categoryId }).unwrap(),
           triggerComments({ videoId: id }).unwrap(),
@@ -44,8 +43,6 @@ const Watch = () => {
         ])
 
         const [relatedVideos, comments, channel] = result;
-
-        // console.log("vid", relatedVideos, "com", comments, "Ch", channel) 
 
         setChannel(channel.items);
         setComments(comments.items);
@@ -60,7 +57,10 @@ const Watch = () => {
     getData()
   }, [])
 
-  // console.log(comments)
+  const hideButtonClickHandler = (e) => {
+    e.stopPropagation();
+    setShowCompleteComment(false)
+  }
 
   return (
     <main className='pt-16 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
@@ -130,6 +130,7 @@ const Watch = () => {
                 {comments.map((comment, index) => <Comment key={index} data={comment?.snippet?.topLevelComment.snippet} />)}
               </div>}
             </div>
+            <button onClick={hideButtonClickHandler} className={`${showCompleteComment ? "block md:hidden" : "hidden"} mx-auto text-blue-400 text-sm font-medium pt-2`}>Hide comments</button>
           </div>
         </div>
       </section>
@@ -141,10 +142,3 @@ const Watch = () => {
 }
 
 export default Watch;
-
-// authorDisplayName:  "@SkyzoneGaming"
-// authorProfileImageUrl: "https://yt3.ggpht.com/T2pQ-6g4POQpvXD1uo0rWYKSFOvmU7V8F70CR1pVN3EQU3OaDRiZ4BkdUDZjwsSNfSTSu7rX0A=s48-c-k-c0x00ffffff-no-rj"
-
-// publishedAt: "2025-10-30T14:38:36Z"
-// textDisplay: "Congrats to Netflix for finally finishing a show instead of cancelling it halfway—historic moment!"
-// textOriginal: "Congrats to Netflix for finally finishing a show instead of cancelling it halfway—historic moment!"
