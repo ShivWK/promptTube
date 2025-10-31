@@ -12,10 +12,7 @@ const SearchPage = () => {
       {isLoading ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[110%]">
         <DotBounceLoader
           fourth={true}
-          color1="text-primary"
-          color2="text-primary"
-          color3="text-primary"
-          color4="text-primary"
+          allColor={"text-primary"}
           mdSize="md:text-5xl"
           nmSize="text-3xl"
         />
