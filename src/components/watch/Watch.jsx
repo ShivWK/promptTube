@@ -74,7 +74,7 @@ const Watch = () => {
           </div>
         </div>
 
-        <div className="mt-2 md:mt-5 max-md:px-2 flex flex-col gap-2.5 justify-center">
+        <div className="mt-2 md:mt-5 max-md:px-2 flex flex-col gap-2 md:gap-2.5 justify-center">
           <h1 className="dark:text-gray-200 md:text-xl font-medium line-clamp-2">{currentVideo?.snippet?.title}</h1>
 
           <div className="w-full flex items-center justify-between">
@@ -88,16 +88,14 @@ const Watch = () => {
 
             <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
               <div className="">
-                { true ? <i className="ri-thumb-up-line md:text-2xl dark:text-white"></i>
-                : <i className="ri-thumb-up-fill md:text-2xl dark:text-primary"></i>}
-                {/* <ThumbsUp className="text-white" size={isSmall ? 18 : 25} /> */}
+                { true ? <i className="ri-thumb-up-line text-xl md:text-2xl dark:text-white"></i>
+                : <i className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary"></i>}
               </div>
               <div>
-                {!true ? <i class="ri-time-line md:text-2xl dark:text-white" />
-                : <i class="ri-time-fill md:text-2xl dark:text-primary" />
+                {!true ? <i class="ri-time-line text-xl md:text-2xl dark:text-white" />
+                : <i class="ri-time-fill text-xl md:text-2xl dark:text-primary" />
                 }
               </div>
-              {/* <ClockArrowUp className="text-white" size={isSmall ? 18 : 25} /> */}
               <button className="px-2 md:px-3 py-0.5 md:py-1 rounded bg-primary text-white tracking-wide ">
                 Subscribe
               </button>
