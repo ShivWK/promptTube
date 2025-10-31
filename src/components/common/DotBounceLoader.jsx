@@ -4,7 +4,7 @@ const DotBounceLoader = ({ color1="text-white", color2="text-white", color3="tex
         <span className={`animate-dotBounce ${allColor ? allColor : color2} ${nmSize} ${mdSize}`} style={{ animationDelay: "0.2s"}}>•</span>
         <span className={`animate-dotBounce ${allColor ? allColor : color3} ${nmSize} ${mdSize}`} style={{ animationDelay: "0.4s"}}>•</span>
         {
-          fourth && <span className={`animate-dotBounce ${allColor ? allColor : color4} ${nmSize} ${mdSize}`} style={{ animationDelay: "0.9s"}}>•</span>
+          fourth && <span className={`animate-dotBounce ${allColor ? allColor : color4} ${nmSize} ${mdSize}`} style={{ animationDelay: "0.6s"}}>•</span>
         }
       </p>
 
