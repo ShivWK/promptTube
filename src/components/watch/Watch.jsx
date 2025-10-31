@@ -87,8 +87,17 @@ const Watch = () => {
             </div>
 
             <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
-              <ThumbsUp className="text-white" size={isSmall ? 18 : 25} />
-              <ClockArrowUp className="text-white" size={isSmall ? 18 : 25} />
+              <div className="">
+                { true ? <i className="ri-thumb-up-line md:text-2xl dark:text-white"></i>
+                : <i className="ri-thumb-up-fill md:text-2xl dark:text-primary"></i>}
+                {/* <ThumbsUp className="text-white" size={isSmall ? 18 : 25} /> */}
+              </div>
+              <div>
+                {!true ? <i class="ri-time-line md:text-2xl dark:text-white" />
+                : <i class="ri-time-fill md:text-2xl dark:text-primary" />
+                }
+              </div>
+              {/* <ClockArrowUp className="text-white" size={isSmall ? 18 : 25} /> */}
               <button className="px-2 md:px-3 py-0.5 md:py-1 rounded bg-primary text-white tracking-wide ">
                 Subscribe
               </button>
