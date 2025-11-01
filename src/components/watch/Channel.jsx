@@ -1,23 +1,13 @@
 import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import countViews from "../../utils/countViews";
+import useFetch from "../../hooks/useFetch";
 
-const Channel = ({ channelId }) => {
+const Channel = ({ channelId: id }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
     const [channel, setChannel] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await trigger({ channelId }).unwrap();
-                setChannel(response.items)
-            } catch (err) {
-                console.log("error", err);
-            }
-        }
-
-        fetchData();
-    }, [])
+    useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" })
 
     return (
         <div className="w-full flex items-center justify-between">

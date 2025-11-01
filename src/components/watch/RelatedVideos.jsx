@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLazyGetCategoryVideosQuery } from "../../features/home/homeApiSlice";
 import RelatedVideoCard from "./RelatedVideoCard";
 import {selectCurrentPlaying} from "../../features/watch/watchSlice";
 import { useSelector } from "react-redux";
+import useFetch from "../../hooks/useFetch";
 
-const RelatedVideos = ({ categoryId, setVideoLoader }) => {
+const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
   const [trigger, { isLoading }] = useLazyGetCategoryVideosQuery();
   const [relatedVideos, setRelatedVideos] = useState([])
   const currentVideo = useSelector(selectCurrentPlaying);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await trigger({ id: categoryId }).unwrap();
-        setRelatedVideos(response.items)
-      } catch (err) {
-        console.log("Err", err);
-      }
-    }
-
-    fetchData()
-  }, [currentVideo])
+  useFetch({ trigger, id, setState: setRelatedVideos, fetchWhat: "related videos" })
 
   return (
     <>
