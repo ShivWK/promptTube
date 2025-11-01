@@ -6,6 +6,7 @@ import { useState } from "react";
 import RelatedVideos from "./RelatedVideos";
 import Channel from "./Channel";
 import Comments from "./Comments";
+import SummaryAndQA from "./SummaryAndQA";
 
 const Watch = () => {
   const currentVideo = useSelector(selectCurrentPlaying);
@@ -33,6 +34,9 @@ const Watch = () => {
 
           {/* Channel */}
           <Channel channelId={channelId} />
+
+          {/* Ai section */}
+          <SummaryAndQA />
 
           {/* Comments */}
           <Comments id={id} />

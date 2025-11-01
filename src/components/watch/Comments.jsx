@@ -20,15 +20,11 @@ const Comments = ({ id }) => {
     }
 
     useEffect(() => {
-        if (!isSmall) {
-            setShowCompleteComment(true)
-        }
+        if (!isSmall) setShowCompleteComment(true)
     }, [isSmall])
 
     const commentBoxClickHandler = () => {
-        if (isSmall) {
-            setShowCompleteComment(true)
-        }
+        if (isSmall) setShowCompleteComment(true)
     }
 
     return (
@@ -58,7 +54,7 @@ const Comments = ({ id }) => {
                         {comments.map((comment, index) => <Comment key={index} data={comment?.snippet?.topLevelComment.snippet} />)}
                     </div>}
                 </div>
-                <button onClick={hideButtonClickHandler} className={`${showCompleteComment ? "block md:hidden" : "hidden"} mx-auto text-blue-400 font-medium pt-2 pb-1`}>Hide comments</button>
+                <button onClick={hideButtonClickHandler} className={`${showCompleteComment ? "block" : "hidden"} mx-auto text-blue-400 font-medium pt-2 pb-1 cursor-pointer`}>Hide comments</button>
             </div>
     )
 }
