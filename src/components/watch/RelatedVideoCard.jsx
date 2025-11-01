@@ -3,20 +3,24 @@ import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
 import { setCurrentPlaying } from "../../features/watch/watchSlice";
 import { useDispatch } from "react-redux";
+import { addToLocalStorage } from "../../utils/handleLocalStorage";
 
 const RelatedVideoCard = ({ object, mode="search", setVideoLoader }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleVideoClick = () => {
-        dispatch(setCurrentPlaying(object))
+        dispatch(setCurrentPlaying(object));
         setVideoLoader(true)
+
         navigate(`/watch?id=${mode === "search" ? object.id.videoId : object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         })
+
+        addToLocalStorage({name: "currentPlayingVideo", add: object});
     }
 
     return (

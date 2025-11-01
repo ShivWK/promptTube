@@ -7,6 +7,8 @@ import {
     setSearchSuggestions,
 } from "../../features/home/homeSlice";
 
+import { setCurrentPlaying } from "../../features/watch/watchSlice";
+
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
@@ -24,6 +26,7 @@ import Form from "../auth/Form";
 import { useEffect, useState } from "react";
 import SecondarySideMenu from "../common/SecondarySideMenu";
 import Sidebar from "../common/Sidebar";
+import { getFromLocalStorage } from "../../utils/handleLocalStorage";
 
 const Layout = () => {
     const [isSmall, setSmall] = useState(false);
@@ -38,6 +41,9 @@ const Layout = () => {
     const pathname = useLocation().pathname;
 
     useEffect(() => {
+        const currentPlaying = getFromLocalStorage({get: "currentPlayingVideo"});
+        dispatch(setCurrentPlaying(currentPlaying ?? []));
+
         const resizeHandler = () => {
             if (window.innerWidth <= 768) {
                 setSmall(true);
@@ -50,15 +56,15 @@ const Layout = () => {
 
         resizeHandler();
 
-        window.addEventListener("resize", resizeHandler);
-        return () => window.removeEventListener("resize", resizeHandler);
-    }, [])
-
-    useEffect(() => {
         const handleDocClick = () => dispatch(setSearchSuggestions([]))
 
         document.addEventListener("click", handleDocClick);
-        return () => document.removeEventListener("click", handleDocClick);
+        window.addEventListener("resize", resizeHandler);
+
+        return () => {
+            window.removeEventListener("resize", resizeHandler);
+            document.removeEventListener("click", handleDocClick)
+        };
     }, [])
 
     useEffect(() => {
@@ -67,7 +73,6 @@ const Layout = () => {
 
         if (pathname === "/watch") setShowSideMenu(false);
         else setShowSideMenu(true);
-
     }, [pathname])
 
     useEffect(() => {

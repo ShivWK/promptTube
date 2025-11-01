@@ -3,12 +3,14 @@ import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
 import { useDispatch } from "react-redux";
 import { setCurrentPlaying } from "../../features/watch/watchSlice";
+import { addToLocalStorage } from "../../utils/handleLocalStorage";
 
 const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     const dispatch = useDispatch();
 
     const handleLinkClick = () => {
         dispatch(setCurrentPlaying(object));
+        addToLocalStorage({name: "currentPlayingVideo", add: object});
     }
 
     return (
