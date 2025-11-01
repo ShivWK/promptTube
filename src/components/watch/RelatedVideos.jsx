@@ -23,9 +23,8 @@ const RelatedVideos = ({ categoryId, setVideoLoader }) => {
   }, [currentVideo])
 
   return (
-    <section className='basis-full md:basis-[37%] max-md:px-2'>
+    <>
       <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">Related Videos</h2>
-
       <div className="w-full">
         {isLoading ? <p className="text-white">Loading...</p>
           : <div className="flex flex-col gap-5 md:gap-4 w-full">
@@ -36,7 +35,7 @@ const RelatedVideos = ({ categoryId, setVideoLoader }) => {
             } )}
           </div>}
       </div>
-    </section>
+    </>
   )
 }
 
