@@ -13,6 +13,7 @@ import {
 import { useLazyGetCategoryVideosQuery } from "../../features/home/homeApiSlice";
 import { selectIsSmall } from "../../features/home/homeSlice";
 import { useEffect, useState } from "react";
+import RelatedVideos from "./RelatedVideos";
 
 const Watch = () => {
   const [triggerComments] = useLazyGetCommentsQuery();
@@ -64,7 +65,7 @@ const Watch = () => {
 
   return (
     <main className='pt-16 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
-      <section className='basis-full md:basis-[61%]'>
+      <section className='basis-full md:basis-[61%] self-start'>
         <div className='w-full lg:rounded-2xl overflow-hidden md:shadow-[0_0_15px_1px_rgba(255,255,255,0.4)]'>
           <div className="relative h-[14rem] md:h-[28rem] w-full">
             <iframe onLoad={() => setShowVideoLoader(false)} className='h-full w-full rounded-md overflow-hidden aspect-video' src={`https://www.youtube.com/embed/${id}?si=miUcucQjdj2mjmo3`} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
@@ -94,8 +95,8 @@ const Watch = () => {
                   : <i className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary"></i>}
               </div>
               <div>
-                {true ? <i class="ri-time-line text-xl md:text-2xl dark:text-white" />
-                  : <i class="ri-time-fill text-xl md:text-2xl dark:text-primary" />
+                {true ? <i className="ri-time-line text-xl md:text-2xl dark:text-white" />
+                  : <i className="ri-time-fill text-xl md:text-2xl dark:text-primary" />
                 }
               </div>
               <button className="px-2 md:px-3 py-0.5 md:py-1 rounded bg-primary text-white tracking-wide ">
@@ -134,9 +135,7 @@ const Watch = () => {
           </div>
         </div>
       </section>
-      <section className='basis-full md:basis-[36%] max-md:px-2'>
-        <p className="text-white">{currentVideo.snippet.title}.</p>
-      </section>
+      <RelatedVideos categoryId={categoryId} />
     </main>
   )
 }
