@@ -1,14 +1,10 @@
-export function addToLocalStorage({add, name}) {
-    console.log("Called add", add, name)
-
+export function addToLocalStorage({ add, name }) {
     const stringified = JSON.stringify(add);
     localStorage.setItem(name, stringified);
 }
 
-export function getFromLocalStorage({get}) {
+export function getFromLocalStorage({ get }) {
     const data = localStorage.getItem(get);
     const result = JSON.parse(data);
-    console.log("got", result);
-
     return result;
 }
