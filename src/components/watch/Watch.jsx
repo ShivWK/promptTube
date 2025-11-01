@@ -10,7 +10,6 @@ import {
   useLazyGetChannelDetailsQuery,
 } from "../../features/watch/watchApiSlice";
 
-import { useLazyGetCategoryVideosQuery } from "../../features/home/homeApiSlice";
 import { selectIsSmall } from "../../features/home/homeSlice";
 import { useEffect, useState } from "react";
 import RelatedVideos from "./RelatedVideos";
@@ -18,7 +17,6 @@ import RelatedVideos from "./RelatedVideos";
 const Watch = () => {
   const [triggerComments] = useLazyGetCommentsQuery();
   const [triggerChannel] = useLazyGetChannelDetailsQuery();
-  const [triggerCategory] = useLazyGetCategoryVideosQuery();
   const currentVideo = useSelector(selectCurrentPlaying);
   const isSmall = useSelector(selectIsSmall);
 
@@ -27,7 +25,6 @@ const Watch = () => {
   const channelId = searchParam.get("channelid");
   const categoryId = searchParam.get("categoryid");
 
-  const [relatedVideos, setRelatedVideos] = useState([]);
   const [comments, setComments] = useState([]);
   const [channel, setChannel] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,19 +32,19 @@ const Watch = () => {
   const [showCompleteComment, setShowCompleteComment] = useState(false);
 
   useEffect(() => {
+    if(!loading) setLoading(true);
+
     const getData = async () => {
       try {
         const result = await Promise.all([
-          triggerCategory({ id: categoryId }).unwrap(),
           triggerComments({ videoId: id }).unwrap(),
           triggerChannel({ channelId }).unwrap(),
         ])
 
-        const [relatedVideos, comments, channel] = result;
+        const [comments, channel] = result;
 
         setChannel(channel.items);
         setComments(comments.items);
-        setRelatedVideos(relatedVideos.items);
       } catch (err) {
         console.log(err)
       } finally {
@@ -56,7 +53,7 @@ const Watch = () => {
     }
 
     getData()
-  }, [])
+  }, [currentVideo])
 
   const hideButtonClickHandler = (e) => {
     e.stopPropagation();
@@ -135,7 +132,7 @@ const Watch = () => {
           </div>
         </div>
       </section>
-      <RelatedVideos categoryId={categoryId} />
+      <RelatedVideos categoryId={categoryId} setVideoLoader={setShowVideoLoader} />
     </main>
   )
 }

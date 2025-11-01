@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLazyGetCategoryVideosQuery } from "../../features/home/homeApiSlice";
-import VideoCard from "../home/VideoCard";
 import RelatedVideoCard from "./RelatedVideoCard";
+import {selectCurrentPlaying} from "../../features/watch/watchSlice";
+import { useSelector } from "react-redux";
 
-const RelatedVideos = ({ categoryId }) => {
+const RelatedVideos = ({ categoryId, setVideoLoader }) => {
   const [trigger, { isLoading }] = useLazyGetCategoryVideosQuery();
   const [relatedVideos, setRelatedVideos] = useState([])
+  const currentVideo = useSelector(selectCurrentPlaying);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,16 +20,20 @@ const RelatedVideos = ({ categoryId }) => {
     }
 
     fetchData()
-  }, [])
+  }, [currentVideo])
 
   return (
-    <section className='basis-full md:basis-[36%] max-md:px-2'>
-      <h2>Related Videos</h2>
+    <section className='basis-full md:basis-[37%] max-md:px-2'>
+      <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">Related Videos</h2>
 
       <div className="w-full">
         {isLoading ? <p className="text-white">Loading...</p>
-          : <div className="flex-col gap-4 w-full">
-            {relatedVideos.map((video) => <RelatedVideoCard object={video} mode="related" flexMode="flex-col md:flex-row" />)}
+          : <div className="flex flex-col gap-5 md:gap-4 w-full">
+            {relatedVideos.map((video) => {
+              if (video.id !== currentVideo.id) {
+                return <RelatedVideoCard key={video.id} setVideoLoader={setVideoLoader} object={video} mode="related" flexMode="flex-col md:flex-row" />
+              }
+            } )}
           </div>}
       </div>
     </section>
