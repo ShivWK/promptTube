@@ -58,7 +58,7 @@ const Header = () => {
                 </div>
             </div>
             {showTabs && <TabMenu />}
-            {pathname === "/search" && <div className='w-full backdrop-blur-md flex items-center justify-center py-3 rounded-b-3xl'>
+            {pathname === "/search" && <div className='w-full backdrop-blur-md flex items-center justify-center py-4 rounded-b-3xl'>
                 <div className='w-[95%]'>
                     <SearchBar />
                 </div>
