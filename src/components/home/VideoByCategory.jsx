@@ -7,7 +7,7 @@ const VideoByCategory = () => {
     const { value, loading } = useSelector(selectCategoryVideos);
 
     return (
-        <main className="pt-32 md:pt-32 lg:pt-40 md:pl-32 p-2 md:p-3">
+        <main className="pt-28 lg:pt-36 md:pl-32 p-2 md:p-3">
             {
                 loading
                     ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[110%]">
