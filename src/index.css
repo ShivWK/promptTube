@@ -1,35 +1,38 @@
 @import "tailwindcss";
 
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
+@layer utilities {
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
 
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 
-.pretty-scrollbar::-webkit-scrollbar {
-    width: 0.5vw;
-}
+    .pretty-scrollbar::-webkit-scrollbar {
+        width: 0.5vw;
+    }
 
-.pretty-scrollbar::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background-color: #101828;
-}
+    .pretty-scrollbar::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: #101828;
+    }
 
-.pretty-scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #ff0044;
-}
+    .pretty-scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #ff0044;
+    }
 
-.border-do {
-    border: 2px solid white;
+    .border-do {
+        border: 2px solid white;
+    }
 }
 
 @theme {
-    
+
     --color-primary: #ff0044;
+    --color-shimmerBorder: #990029;
     --animate-dotBounce: animateDot 0.3s infinite alternate;
 
     @keyframes animateDot {
@@ -101,6 +104,22 @@
 
         100% {
             left: -100%;
+        }
+    }
+
+    --animate-shimmer-bg: bgChange 1.5s ease-in infinite forwards;
+
+    @keyframes bgChange {
+        0% {
+            background-color: #9c022b;
+        }
+
+        50% {
+            background-color: #69021e;
+        }
+
+        100% {
+            background-color: #9c022b;
         }
     }
 }

@@ -18,7 +18,7 @@ const Watch = () => {
   const [showVideoLoader, setShowVideoLoader] = useState(true);
 
   return (
-    <main className='pt-16 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
+    <main className='pt-16 pb-20 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
       <section className='basis-full md:basis-[61%] self-start'>
         <div className='w-full lg:rounded-2xl overflow-hidden md:shadow-[0_0_15px_1px_rgba(255,255,255,0.4)]'>
           <div className="relative h-[14rem] md:h-[28rem] w-full">

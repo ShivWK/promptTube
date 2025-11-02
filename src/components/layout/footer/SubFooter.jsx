@@ -3,7 +3,7 @@ import Attribution from "./Attribution"
 
 const SubFooter = () => {
     return (
-        <div className="flex flex-col gap-3 max-w-[1210px] justify-between text-white font-bold p-2 w-full mt-1.5 md:mt-3 mx-auto">
+        <div className="flex flex-col gap-3 max-w-[1210px] justify-between text-white font-bold p-2 w-full my-1.5 md:my-3 mx-auto">
             <LogoAndMenu showMenu={false} showName={true} />
 
             <p className="text-gray-800 dark:text-gray-200">
@@ -19,7 +19,7 @@ const SubFooter = () => {
                 </p>
 
                 <p className="md:hidden">
-                    An AI-powered YouTube clone featuring video summaries, smart Q&A, and intelligent search.
+                    It is an AI-powered YouTube clone featuring video summaries, smart Q&A, and intelligent search.
                     Built with React, Redux & Tailwind CSS.
                 </p>
             </div>

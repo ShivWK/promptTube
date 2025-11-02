@@ -27,11 +27,13 @@ import { useEffect, useState } from "react";
 import SecondarySideMenu from "../common/SecondarySideMenu";
 import Sidebar from "../common/Sidebar";
 import { getFromLocalStorage } from "../../utils/handleLocalStorage";
+import BackToTopButton from "../common/BackToTopBtn";
 
 const Layout = () => {
     const [isSmall, setSmall] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
     const [showSideMenu, setShowSideMenu] = useState(true);
+    const [ showTopBtn, setShowTopBtn ] = useState(true);
 
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const { openSidebar } = useSelector(selectSidebar);
@@ -73,6 +75,9 @@ const Layout = () => {
 
         if (pathname === "/watch") setShowSideMenu(false);
         else setShowSideMenu(true);
+
+        if (pathname === "/watch" || pathname === "/" || pathname === "/memory") setShowTopBtn(true);
+        else setShowTopBtn(false);
     }, [pathname])
 
     useEffect(() => {
@@ -112,6 +117,7 @@ const Layout = () => {
         {showSideMenu && <SecondarySideMenu />}
         {openSidebar && <Sidebar isSmall={isSmall} />}
         {openEmailVerification && <EmailVerification isSmall={isSmall} />}
+        {showTopBtn && <BackToTopButton / >}
     </>)
 }
 

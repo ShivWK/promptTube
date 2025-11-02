@@ -6,6 +6,8 @@ const initialState = {
     categoryVideos:[],
     openSidebar: false,
     slideOpenSidebar: false,
+    showMobileMenu: true,
+
     searchSuggestionsLoading: false,
     searchSuggestions: [],
     searchResult: [],
@@ -41,6 +43,10 @@ const homeSlice = createSlice({
             }
         },
 
+        setMobileMenu: (state, action) => {
+            state.showMobileMenu = action.payload;
+        },
+
         setSearchSuggestions: (state, action) => {
             state.searchSuggestions = action.payload;
         },
@@ -62,6 +68,7 @@ const homeSlice = createSlice({
 export default homeSlice.reducer;
 
 export const selectIsSmall = (state) => state.home.isSmall;
+export const selectMobileMenu = (state) => state.home.showMobileMenu;
 export const selectSuggestions = (state) => state.home.searchSuggestions;
 export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
 export const selectSearchResult = (state) => state.home.searchResult;
@@ -97,4 +104,5 @@ export const {
     setSearchResult,
     setSearchLoading,
     setCategoryVideo,
+    setMobileMenu,
 } = homeSlice.actions;

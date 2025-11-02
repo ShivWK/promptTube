@@ -1,11 +1,12 @@
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 import VideoCard from "./VideoCard";
 import { useEffect, useState } from "react";
-import DotBounceLoader from "../common/DotBounceLoader";
+import VideoCardShimmer from "../common/VideoCardShimmer";
 
 const Home = () => {
   const [triggerVideos, { isLoading }] = useLazyGetPopularVideosQuery();
   const [videos, setVideos] = useState([]);
+  const shimmerArray = Array.from({ length: 15 });
 
   useEffect(() => {
     const popularVideosCall = async () => {
@@ -38,13 +39,8 @@ const Home = () => {
     <main className="pt-28 lg:pt-36 md:pl-32 p-2 md:p-3">
       {
         isLoading
-          ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[110%]">
-            <DotBounceLoader
-              fourth={true}
-              allColor={"text-primary"}
-              mdSize="md:text-5xl"
-              nmSize="text-3xl"
-            />
+          ? <div className="flex items-center gap-5 xl:gap-6 flex-wrap">
+            {shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
           </div>
           : <section className="flex items-center gap-5 xl:gap-6 flex-wrap">
             {videos.map(object => {

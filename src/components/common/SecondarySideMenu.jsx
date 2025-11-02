@@ -1,18 +1,23 @@
 import { CircleUserRound, Home, Brain } from "lucide-react"
 import { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { setMobileMenu } from "../../features/home/homeSlice";
+import { useDispatch } from "react-redux";
 
 const SecondarySideMenu = () => {
   const isSmall = window.innerWidth <= 786;
   const [showSideMenu, setShowSideMenu] = useState(true);
   const lastScrollY = useRef(window.scrollY);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const scrollHandler = () => {
       if (lastScrollY.current > window.scrollY) {
         setShowSideMenu(true);
+        dispatch(setMobileMenu(true));
       } else {
         setShowSideMenu(false)
+        dispatch(setMobileMenu(false));
       }
 
       lastScrollY.current = window.scrollY;
