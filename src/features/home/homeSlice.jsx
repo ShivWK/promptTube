@@ -9,6 +9,7 @@ const initialState = {
     openSidebar: false,
     slideOpenSidebar: false,
     showMobileMenu: true,
+    isFooterVisible: false,
 
     searchSuggestionsLoading: false,
     searchSuggestions: [],
@@ -56,6 +57,11 @@ const homeSlice = createSlice({
             state.showMobileMenu = action.payload;
         },
 
+        setFooterVisibility: (state, action) => {
+            state.isFooterVisible = action.payload;
+        },
+
+
         setSearchSuggestions: (state, action) => {
             state.searchSuggestions = action.payload;
         },
@@ -82,6 +88,7 @@ export const selectSuggestions = (state) => state.home.searchSuggestions;
 export const selectSuggestionsLoading = (state) => state.home.searchSuggestionsLoading;
 export const selectSearchResult = (state) => state.home.searchResult;
 export const selectSearchLoading = (state) => state.home.searchLoading;
+export const selectFooterVisibility = (state) => state.home.isFooterVisible;
 
 export const selectSidebar = createSelector(
     [
@@ -126,4 +133,5 @@ export const {
     setSearchLoading,
     setCategoryVideo,
     setMobileMenu,
+    setFooterVisibility,
 } = homeSlice.actions;

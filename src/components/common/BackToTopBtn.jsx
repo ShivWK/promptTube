@@ -6,8 +6,6 @@ const BackToTopButton = ({}) => {
     const [showBtn, setShowBtn] = useState(false);
     const mobileMenu = useSelector(selectMobileMenu);
 
-    console.log(mobileMenu);
-
     const clickHandler = () => {
         window.scrollTo({
             top: 0,

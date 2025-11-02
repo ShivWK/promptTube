@@ -1,7 +1,7 @@
 const Attribution = () => {
     return (
-        <div className="attibution text-gray-800 w-fit max-md:mb-3">
-            <p className="mb-2 text-lg dark:text-white">Developed By</p>
+        <div className="text-gray-800 w-fit max-md:mb-3">
+            <p className="mb-2 text-lg dark:text-white font-medium tracking-wide">Developed By</p>
             <div className="flex gap-2.5 w-fit">
                 <img
                     onClick={() => {
@@ -13,8 +13,8 @@ const Attribution = () => {
                     src="/images/MY-min.png"
                     alt="Developer image"
                 />
-                <div className="flex flex-col justify-center italic dark:text-gray-200">
-                    <p className="text-lg ">Shivendra Dwivedi</p>
+                <div className="flex flex-col justify-center italic dark:text-white">
+                    <p className="text-lg tracking-wide">Shivendra Dwivedi</p>
                     <p className="flex items-center gap-2 text-sm">
                         <span>Web Developer</span>
                         <p className="text-gray-800 lg:hidden dark:text-gray-300">•</p>
