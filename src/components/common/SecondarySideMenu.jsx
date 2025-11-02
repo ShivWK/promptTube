@@ -44,7 +44,7 @@ const SecondarySideMenu = () => {
   }
 
   return (<>
-    <aside className={"fixed hidden md:flex gap-y-1 top-1/2 -left-1 -translate-y-1/2 rounded-e-2xl p-2 flex-col dark:bg-gray-900"}>
+    <aside className={"fixed hidden md:flex gap-y-1 top-1/2 -left-1 -translate-y-1/2 rounded-e-2xl p-2 flex-col dark:bg-gray-900 z-30"}>
 
       <NavLink to={"/"} className={pcActiveClass}>
         <Home size={isSmall ? 25 : 30} />
@@ -62,7 +62,7 @@ const SecondarySideMenu = () => {
       </NavLink>
     </aside>
 
-    <aside className={`fixed bottom-0 md:hidden ${showSideMenu ? "translate-y-0.5" : "translate-y-full"} p-2 justify-around w-full flex items-center backdrop-blur-2xl bg-black/40 transform transition-all duration-[250ms] ease-linear`}>
+    <aside className={`fixed bottom-0 md:hidden ${showSideMenu ? "translate-y-0.5" : "translate-y-full"} p-2 justify-around w-full flex items-center backdrop-blur-2xl bg-black/40 transform transition-all duration-[250ms] ease-linear z-30`}>
 
       <NavLink to={"/"} className={nmActiveClass}>
         <Home size={isSmall ? 28 : 30} />

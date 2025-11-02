@@ -1,7 +1,7 @@
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 import VideoCard from "./VideoCard";
 import { useEffect, useState } from "react";
-import VideoCardShimmer from "../common/VideoCardShimmer";
+import VideoCardShimmer from "../shimmer/VideoCardShimmer";
 
 const Home = () => {
   const [triggerVideos, { isLoading }] = useLazyGetPopularVideosQuery();
