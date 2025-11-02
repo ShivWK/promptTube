@@ -43,8 +43,9 @@ const Header = () => {
                 <div className='flex items-center gap-3 lg:gap-8'>
                     {
                         isSmall
-                            ? <NavLink to={"/search"} className="p-2 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <Search size={isSmall ? 20 : 25} className="dark:text-white e" />
+                            ? <NavLink to={"/search"} className={({ isActive }) => isActive ? "p-2 dark:bg-primary rounded-full overflow-hidden"
+                                : "p-2 dark:bg-gray-700 rounded-full overflow-hidden"}>
+                                <Search size={isSmall ? 20 : 25} strokeWidth={1.5} className="dark:text-white" />
                             </NavLink>
                             : <SearchBar />
                     }
