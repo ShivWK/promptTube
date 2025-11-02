@@ -8,6 +8,7 @@ import {
   useLazyGetCategoryVideosQuery
 } from "../../../features/home/homeApiSlice";
 import DotBounceLoader from "../../common/DotBounceLoader";
+import useFetch from "../../../hooks/useFetch";
 
 const TabMenu = () => {
   const [triggerCategories, { isLoading }] = useLazyGetVideoCategoriesQuery();
@@ -22,18 +23,7 @@ const TabMenu = () => {
   const pathname = useLocation().pathname;
   const tabsShimmer = Array.from({ length: 20 })
 
-  useEffect(() => {
-    const videoCategories = async () => {
-      try {
-        const { items } = await triggerCategories().unwrap();
-        setTags(items)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    videoCategories();
-  }, [])
+  useFetch({ trigger: triggerCategories, setState: setTags, fetchWhat: "categories", argument: false })
 
   useEffect(() => {
     if (!containerRef?.current) return;
@@ -91,6 +81,7 @@ const TabMenu = () => {
     try {
       const response = await triggerCategoryVideos({ id }).unwrap();
       value = response.items;
+      console.log(value)
     } catch (err) {
       console.log(err);
     } finally {
@@ -112,8 +103,9 @@ const TabMenu = () => {
           ? tabsShimmer.map((_, index) => <span key={index} className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide">
             <DotBounceLoader color1="text-primary" color3="text-primary" nmSize="text-lg" mdSize="text-xl" />
           </span>)
-          : tags.map((item) => {
-            return <button onClick={() => categoryClickHandler(item.id)} className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide" key={item.id}>
+          : tags.slice(0, 17).map((item) => {
+            if (item.snippet.title === "Short Movies" || item.snippet.title === "Travel & Events" || item.snippet.title === "Videoblogging" || item.snippet.title === "Education") return;
+            return <button onClick={() => categoryClickHandler(item.id)} className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap tracking-wide" key={item.id}>
               {item.snippet.title}
             </button>
           })
