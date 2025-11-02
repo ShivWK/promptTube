@@ -1,25 +1,12 @@
-import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
+import { selectHomeVideos } from "../../features/home/homeSlice";
 import VideoCard from "./VideoCard";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import VideoCardShimmer from "../shimmer/VideoCardShimmer";
 
 const Home = () => {
-  const [triggerVideos, { isLoading }] = useLazyGetPopularVideosQuery();
-  const [videos, setVideos] = useState([]);
+  const { value:videos, loading } = useSelector(selectHomeVideos);
   const shimmerArray = Array.from({ length: 15 });
-
-  useEffect(() => {
-    const popularVideosCall = async () => {
-      try {
-        const { items } = await triggerVideos().unwrap();
-        setVideos(items)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    popularVideosCall();
-  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +25,7 @@ const Home = () => {
   return (
     <main className="pt-28 lg:pt-36 md:pl-32 p-2 md:p-3">
       {
-        isLoading
+        loading
           ? <div className="flex items-center gap-5 xl:gap-6 flex-wrap">
             {shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
           </div>

@@ -5,7 +5,10 @@ import {
     selectSidebar,
     setIsSmall,
     setSearchSuggestions,
+    setHomeVideos
 } from "../../features/home/homeSlice";
+
+import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 
 import { setCurrentPlaying } from "../../features/watch/watchSlice";
 
@@ -30,10 +33,11 @@ import { getFromLocalStorage } from "../../utils/handleLocalStorage";
 import BackToTopButton from "../common/BackToTopBtn";
 
 const Layout = () => {
+    const [ trigger ] = useLazyGetPopularVideosQuery();
     const [isSmall, setSmall] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
     const [showSideMenu, setShowSideMenu] = useState(true);
-    const [ showTopBtn, setShowTopBtn ] = useState(true);
+    const [showTopBtn, setShowTopBtn] = useState(true);
 
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const { openSidebar } = useSelector(selectSidebar);
@@ -43,7 +47,30 @@ const Layout = () => {
     const pathname = useLocation().pathname;
 
     useEffect(() => {
-        const currentPlaying = getFromLocalStorage({get: "currentPlayingVideo"});
+        let value = [];
+        dispatch(setHomeVideos({
+            value,
+            loading: true
+        }))
+
+        const popularVideosCall = async () => {
+            try {
+                const { items } = await trigger().unwrap();
+                value = items;
+            } catch (err) {
+                console.log(err);
+            } finally {
+                dispatch(setHomeVideos({
+                    value,
+                    loading: false,
+                }))
+            }
+        }
+        popularVideosCall();
+    }, [])
+
+    useEffect(() => {
+        const currentPlaying = getFromLocalStorage({ get: "currentPlayingVideo" });
         dispatch(setCurrentPlaying(currentPlaying ?? []));
 
         const resizeHandler = () => {
@@ -117,7 +144,7 @@ const Layout = () => {
         {showSideMenu && <SecondarySideMenu />}
         {openSidebar && <Sidebar isSmall={isSmall} />}
         {openEmailVerification && <EmailVerification isSmall={isSmall} />}
-        {showTopBtn && <BackToTopButton / >}
+        {showTopBtn && <BackToTopButton />}
     </>)
 }
 
