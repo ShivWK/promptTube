@@ -21,6 +21,10 @@ const RelatedVideoCard = ({ object, mode="search", setVideoLoader }) => {
         })
 
         addToLocalStorage({name: "currentPlayingVideo", add: object});
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
     }
 
     return (

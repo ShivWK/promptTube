@@ -11,6 +11,10 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     const handleLinkClick = () => {
         dispatch(setCurrentPlaying(object));
         addToLocalStorage({name: "currentPlayingVideo", add: object});
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
     }
 
     return (
