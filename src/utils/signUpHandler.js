@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebaseConfig";
-import { setToast, setOpenAuthForm } from "../features/authSlice";
+import { setToast, setOpenAuthForm } from "../features/auth/authSlice";
 
 async function signUpHandler({ email, password, dispatch, name, setAuthLoading, navigate }) {
     try {

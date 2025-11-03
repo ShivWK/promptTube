@@ -23,7 +23,7 @@ import {
     setAuthDetails,
     setLoginStatus,
     selectEmailVerification
-} from "../../features/authSlice";
+} from "../../features/auth/authSlice";
 
 import Form from "../auth/Form";
 import { useEffect, useState } from "react";

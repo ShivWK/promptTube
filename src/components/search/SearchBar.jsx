@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
-import debounceCreater from "../../../utils/debounceCreater";
+import debounceCreater from "../../utils/debounceCreater";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -11,10 +11,9 @@ import {
   setSearchResult,
   setSearchLoading,
   selectIsSmall,
-  selectSearchResult,
-} from "../../../features/home/homeSlice";
+} from "../../features/home/homeSlice";
 
-import { useLazyGetSearchVideosQuery } from "../../../features/home/homeApiSlice";
+import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
 
 const SearchBar = () => {
   const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
@@ -24,26 +23,10 @@ const SearchBar = () => {
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);
   const isSmall = useSelector(selectIsSmall);
-  const searchResults = useSelector(selectSearchResult);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
-
-  // useEffect(() => { 
-  //   const handleBrowserBack = () => {
-  //     console.log("Called out", "pathname", pathname)
-    
-  //     if (searchResults.length !== 0 && (pathname === "/")) {
-  //       console.log("Called in", "pathname", pathname)
-  //       dispatch(setSearchResult([]));
-  //       setSearch("")
-  //     }
-  //   }
-
-  //   window.addEventListener("popstate", handleBrowserBack);
-  //   return window.addEventListener("popstate", handleBrowserBack);
-  // }, [])
 
   async function getSuggestions(str) {
     dispatch(setSearchSuggestionsLoading(true));
@@ -102,7 +85,7 @@ const SearchBar = () => {
   return (
     <div className="relative">
       <form onSubmit={submitHandler} className="flex rounded-4xl overflow-hidden border-2 dark:border-gray-700 transition-all duration-100 ease-linear">
-        <input value={search} onChange={inputChangeHandler} type="text" className="outline-none py-1 lg:py-2 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full lg:w-[35rem]" placeholder="Search" autoCapitalize="off" />
+        <input value={search} onChange={inputChangeHandler} type="text" className="outline-none py-1 lg:py-1 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full md:w-[24rem] lg:w-[34rem]" placeholder="Search" autoCapitalize="off" />
         {
           search && <button type="button" onClick={cancelSearchClickHandler} className="bg-gray-900 cursor-pointer px-1">
             <X size={isSmall ? 20 : 25} className="dark:text-white" />

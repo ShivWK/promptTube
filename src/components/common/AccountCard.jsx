@@ -1,4 +1,4 @@
-import { selectUserDetails, setEmailVerification } from "../../features/authSlice";
+import { selectUserDetails, setEmailVerification } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CircleCheck, CircleUserRound, Info, LogOut } from "lucide-react";
 import { signOut } from "firebase/auth";

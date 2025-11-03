@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { selectToast, setToast } from "../../features/authSlice";
+import { selectToast, setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Toast = () => {

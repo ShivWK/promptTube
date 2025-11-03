@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSlideAuthForm, setOpenAuthForm } from "../../features/authSlice";
+import { selectSlideAuthForm, setOpenAuthForm } from "../../features/auth/authSlice";
 import EntryDiv from "./EntryDiv";
 import { dataValidator } from "../../utils/dataValidation";
 import signUpHandler from "../../utils/signUpHandler";

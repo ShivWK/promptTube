@@ -1,4 +1,5 @@
 import { selectSearchResult, selectSearchLoading } from "../../features/home/homeSlice";
+import { selectSearchResults } from "../../features/search/searchSlice";
 import { useSelector } from "react-redux";
 import VideoCard from "../home/VideoCard";
 import DotBounceLoader from "../common/DotBounceLoader";

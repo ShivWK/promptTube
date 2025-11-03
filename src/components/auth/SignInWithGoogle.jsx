@@ -2,7 +2,7 @@ import { useState } from "react";
 import DotBounceLoader from "../common/DotBounceLoader";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../utils/firebaseConfig";
-import { setOpenAuthForm } from "../../features/authSlice";
+import { setOpenAuthForm } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 
 const SignInWithGoogle = () => {

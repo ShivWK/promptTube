@@ -1,13 +1,13 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import LogoAndMenu from './LogoAndMenu'
-import SearchBar from './SearchBar'
+import SearchBar from '../../search/SearchBar'
 import { Brain, Search } from 'lucide-react'
 import Account from './Account'
 import TabMenu from './TabMenu'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { selectIsSmall, selectSidebar } from '../../../features/home/homeSlice';
-import { selectEmailVerification, selectOpenAuthFrom } from '../../../features/authSlice'
+import { selectEmailVerification, selectOpenAuthFrom } from '../../../features/auth/authSlice'
 
 const Header = () => {
     const isSmall = useSelector(selectIsSmall);
@@ -40,7 +40,7 @@ const Header = () => {
         <header id='header' className={`backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 z-50 ${pathname === "/search" && "rounded-b-3xl"}`}>
             <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between bg-black/40'>
                 <LogoAndMenu />
-                <div className='flex items-center gap-3 lg:gap-8'>
+                <div className='flex items-center gap-3 md:gap-7'>
                     {
                         isSmall
                             ? <NavLink to={"/search"} className={({ isActive }) => isActive ? "p-2 dark:bg-primary rounded-full overflow-hidden"

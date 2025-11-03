@@ -17,7 +17,7 @@ const Attribution = () => {
                     <p className="text-lg tracking-wide">Shivendra Dwivedi</p>
                     <p className="flex items-center gap-2 text-sm">
                         <span>Web Developer</span>
-                        <p className="text-gray-800 lg:hidden dark:text-gray-300">•</p>
+                        <span className="text-gray-800 lg:hidden dark:text-gray-300">•</span>
                         <a
                             href="https://portfolio.shivendra.site"
                             target="__blank"

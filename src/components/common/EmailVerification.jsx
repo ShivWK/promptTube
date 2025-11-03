@@ -1,4 +1,4 @@
-import { selectEmailVerification, setEmailVerification, selectUserDetails, setToast } from "../../features/authSlice";
+import { selectEmailVerification, setEmailVerification, selectUserDetails, setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { CircleX } from "lucide-react";
 import { useState } from "react";

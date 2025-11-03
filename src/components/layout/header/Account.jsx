@@ -1,7 +1,6 @@
 import { CircleUserRound, LogIn } from "lucide-react";
-import { selectLoggedInStatus } from "../../../features/authSlice";
+import { selectLoggedInStatus, setOpenAuthForm, selectUserDetails } from "../../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { setOpenAuthForm, selectUserDetails } from "../../../features/authSlice";
 import { useEffect, useState } from "react";
 import AccountCard from "../../common/AccountCard";
 
