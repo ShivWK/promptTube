@@ -85,16 +85,16 @@ const SearchBar = () => {
   return (
     <div className="relative">
       <form onSubmit={submitHandler} className="flex rounded-4xl overflow-hidden border-2 dark:border-gray-700 transition-all duration-100 ease-linear">
-        <input value={search} onChange={inputChangeHandler} type="text" className="outline-none py-1 lg:py-1 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full md:w-[24rem] lg:w-[34rem]" placeholder="Search" autoCapitalize="off" />
+        <input value={search} onChange={inputChangeHandler} type="text" className="outline-none py-2 lg:py-1 text-lg pl-5 pr-2 dark:text-gray-200 dark:bg-gray-900 placeholder:text-gray-400 w-full md:w-[24rem] lg:w-[34rem]" placeholder="Search" autoCapitalize="off" />
         {
           search && <button type="button" onClick={cancelSearchClickHandler} className="bg-gray-900 cursor-pointer px-1">
             <X size={isSmall ? 20 : 25} className="dark:text-white" />
           </button>
         }
-        <button type="submit" className={`lg:py-2 p-2 lg:px-4 dark:bg-gray-700 cursor-pointer ${(!suggestionsLoading && !isLoading) && "active:bg-gray-400"}`}>
+        <button type="submit" className={`lg:py-2 p-2 flex items-center justify-center lg:px-4 dark:bg-gray-700 cursor-pointer ${(!suggestionsLoading && !isLoading) && "active:bg-gray-400"}`}>
           {(suggestionsLoading || isLoading)
-            ? <LoaderCircle size={isSmall ? 20 : 25} className="dark:text-white animate-spin" />
-            : <Search size={isSmall ? 20 : 25} className="dark:text-white" />
+            ? <LoaderCircle size={isSmall ? 23 : 25} className="dark:text-white animate-spin" />
+            : <Search size={isSmall ? 23 : 25} className="dark:text-white" />
           }
         </button>
       </form>
