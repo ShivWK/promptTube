@@ -7,7 +7,7 @@ const app = express();
 const youtubeRouter = require("./routes/youtubeRouter");
 
 app.use(express.json());
-dotenv.config();
+dotenv.config("./.env");
 
 const allowedOrigins = [
     "http://localhost:5173",
