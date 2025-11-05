@@ -5,6 +5,7 @@ const cors = require("cors");
 const app = express();
 
 const youtubeRouter = require("./routes/youtubeRouter");
+const userRouter = require("./routes/userActivityRoutes");
 
 app.use(express.json());
 dotenv.config({ path: "./.env" });
@@ -26,7 +27,6 @@ app.use(cors({
 }));
 
 const MONGODB_URI = process.env.MONGODB_CONNECTION_STRING;
-console.log("URi", MONGODB_URI)
 
 mongoose.connect(MONGODB_URI)
     .then(() => {
@@ -49,14 +49,13 @@ app.get("/api/server/wake-up", (req, res) => {
 })
 
 app.use("/api/v1/youtube", youtubeRouter);
+app.use("api/v1/user", userRouter);
 
 app.use((req, res) => {
     res.status(404).send("Not found");
 })
 
 const PORT = process.env.PORT || 5000;
-
-console.log("PORT", PORT)
 
 app.listen(PORT, () => {
     console.log(`PromptTube proxy server is running on port ${PORT}`)
