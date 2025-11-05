@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
 
 const youtubeRouter = require("./routes/youtubeRouter");
 
 app.use(express.json());
+dotenv.config();
 
 const allowedOrigins = [
     "http://localhost:5173",
@@ -24,6 +26,7 @@ app.use(cors({
 }));
 
 const MONGODB_URI = process.env.MONGODB_CONNECTION_STRING;
+console.log("URi", MONGODB_URI)
 
 mongoose.connect(MONGODB_URI)
     .then(() => {
