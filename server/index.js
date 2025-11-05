@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 
@@ -12,7 +13,7 @@ const allowedOrigins = [
 ]
 
 app.use(cors({
-    origin: function(origin, callback) {
+    origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -21,6 +22,16 @@ app.use(cors({
     },
     credentials: true,
 }));
+
+const MONGODB_URI = process.env.MONGODB_CONNECTION_STRING;
+
+mongoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log("Connection made");
+    })
+    .catch(err => {
+        console.log("Connection failed", err);
+    })
 
 app.get("/", (req, res) => {
     res.status(200).send("PromptTube proxy server is running")
