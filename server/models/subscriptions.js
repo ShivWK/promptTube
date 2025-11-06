@@ -7,7 +7,7 @@ const subscriptionsSchema = new mongoose.Schema({
         unique: true,
     },
 
-    videoId: {
+    channelId: {
         type: [String],
         default: []
     }

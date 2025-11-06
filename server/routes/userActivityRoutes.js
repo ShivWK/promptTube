@@ -1,20 +1,28 @@
 const express = require("express");
 const userRouter = express.Router();
-const { getVideo, deleteVideo, updateData } = require("./../controllers/userActivityController");
+const { 
+    addVideo,
+    removeVideo,
+    getVideo,
+    addSubscription,
+    removeSubscription,
+    addComment,
+    removeComment
+ } = require("./../controllers/userActivityController");
 
 userRouter.route("/memoryVideos")
     .get(getVideo)
-    .patch(updateData)
-    .delete(deleteVideo);
+    .patch(addVideo)
+    .delete(removeVideo);
 
-// userRouter.route("/subscription")
-//     .patch()
-//     .get()
-//     .delete();
+userRouter.route("/subscription")
+    .patch(addSubscription)
+    .get()
+    .delete(removeSubscription);
 
-// userRouter.route("/comments")
-//     .patch()
-//     .get()
-//     .delete();
+userRouter.route("/comments")
+    .patch(addComment)
+    .get()
+    .delete(removeComment);
 
 module.exports = userRouter;
