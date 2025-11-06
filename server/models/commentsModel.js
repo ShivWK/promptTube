@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const commentsSchema = mongoose.Schema({
+const commentsSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true
@@ -15,7 +15,7 @@ const commentsSchema = mongoose.Schema({
         type: [String],
         default: []
     }
-})
+}, { versionKey: false })
 
 const CommentsModel = mongoose.model("Comments", commentsSchema);
 module.exports = CommentsModel;

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const subscriptionsSchema = mongoose.Schema({
+const subscriptionsSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
@@ -11,7 +11,7 @@ const subscriptionsSchema = mongoose.Schema({
         type: [String],
         default: []
     }
-})
+}, { versionKey: false })
 
 const SubscriptionsModel = mongoose.model("Subscriptions", subscriptionsSchema);
 module.exports = SubscriptionsModel;

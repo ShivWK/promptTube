@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userActivityModel = mongoose.Schema({
+const userActivityModel = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
@@ -16,7 +16,7 @@ const userActivityModel = mongoose.Schema({
         type: String,
         required: true
     }
-})
+}, { versionKey: false })
 
 const UserActivityModel = mongoose.model("UserActivity", userActivityModel);
 module.exports = UserActivityModel;
