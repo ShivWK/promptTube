@@ -49,7 +49,7 @@ app.get("/api/server/wake-up", (req, res) => {
 })
 
 app.use("/api/v1/youtube", youtubeRouter);
-app.use("api/v1/user", userRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use((req, res) => {
     res.status(404).send("Not found");
