@@ -1,24 +1,44 @@
 const UserActivityModel = require("./../models/userActivityModel");
+const { asyncErrorHandler, requiredFieldsCheck } = require("./../utils/wrapper");
 
-exports.addVideo = async (res, req) => {
+exports.updateData = asyncErrorHandler(async (req, res) => {
     const { userId, videoId, videoType } = req.body;
 
-    try {
-        
-    } catch (err) {
+    // if (!userId || !videoId || !videoType) {
+    //     return res.status(400).json({
+    //         status: "failed",
+    //         message: "Please provide required fields"
+    //     })
+    // }
 
-    }
-}
+    requiredFieldsCheck({ args: [userId, videoId, videoType], res })
 
-exports.getVideo = async (res, req) => {
-    try {
+    const response = await UserActivityModel.findOneAndUpdate(
+        { userId, videoType },
+        { $addToSet: { videoId } },
+        { new: true, upsert: true }
+    );
 
-    } catch (err) {
+    return res.status(200).json({
+        status: "success",
+        data: response
+    })
+})
 
-    }
-}
+exports.getVideo = asyncErrorHandler(async (req, res) => {
+    const { userId } = req.body;
 
-exports.deleteVideo = async (res, req) => {
+    requestIdleCallback({args: [userId], res})
+
+    const response = await UserActivityModel.find({ userId });
+
+    return res.status(200).json({
+        status: "failed",
+        data: response,
+    })
+})
+
+exports.deleteVideo = async (req, res) => {
     try {
 
     } catch (err) {

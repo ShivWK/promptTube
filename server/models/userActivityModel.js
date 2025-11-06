@@ -4,11 +4,11 @@ const userActivityModel = mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unique: true,
     },
 
     videoType: {
         type: String,
+        enum: ["history", "liked", "watch-later"],
         required: true,
     },
 
