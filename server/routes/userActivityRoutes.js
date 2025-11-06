@@ -5,8 +5,10 @@ const {
     removeVideo,
     getVideo,
     addSubscription,
+    getSubscription,
     removeSubscription,
     addComment,
+    getComment,
     removeComment
  } = require("./../controllers/userActivityController");
 
@@ -17,12 +19,12 @@ userRouter.route("/memoryVideos")
 
 userRouter.route("/subscription")
     .patch(addSubscription)
-    .get()
+    .get(getSubscription)
     .delete(removeSubscription);
 
 userRouter.route("/comments")
     .patch(addComment)
-    .get()
+    .get(getComment)
     .delete(removeComment);
 
 module.exports = userRouter;
