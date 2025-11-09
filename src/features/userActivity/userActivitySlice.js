@@ -33,7 +33,8 @@ export const setSubscription = createAsyncThunk("userActivity/setSubscription", 
     }
 });
 
-export const setComments = createAsyncThunk("userActivity/setComments", async (payload, { rejectWithValue }) => {
+export const setComment = createAsyncThunk("userActivity/setComments", async (payload, { rejectWithValue }) => {
+    console.log("Called")
     const { method, userId, videoId, comment } = payload
     try {
         const response = await fetch(import.meta.env.VITE_ADD_COMMENT_URL, {
@@ -99,11 +100,11 @@ const userActivitySlice = createSlice({
                 console.log("Subscription not added");
                 state.subscriptions.pop();
             })
-            .addCase(setComments.fulfilled, (_, action) => {
+            .addCase(setComment.fulfilled, (_, action) => {
                 console.log(action.payload.message, action.payload)
             })
-            .addCase(setComments.rejected, (state) => {
-                console.log("Comment not added");
+            .addCase(setComment.rejected, (state, action) => {
+                console.log("Comment not added", action.payload);
                 state.subscriptions.pop();
             })
     }

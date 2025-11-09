@@ -12,7 +12,7 @@ const commentsSchema = new mongoose.Schema({
     },
 
     comment: {
-        type: [String],
+        type: [mongoose.Schema.Types.Mixed],
         default: []
     }
 }, { versionKey: false })

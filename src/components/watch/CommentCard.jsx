@@ -16,9 +16,9 @@ const Comment = ({ data }) => {
 
     return (
         <div className="mt-2 flex gap-2 md:gap-3 p-1 my-2.5 w-full">
-            <img src={data?.authorProfileImageUrl} alt="commenter_profile" className="rounded-full h-9 w-9 md:h-11 md:w-11 self-start" onError={() => setErrorInImage(true)} />
+            <img src={(errorInImage || data?.authorProfileImageUrl === "") ? "/images/profile-icon.png" : data?.authorProfileImageUrl} alt="commenter_profile" className="rounded-full h-9 w-9 md:h-11 md:w-11 self-start" onError={() => setErrorInImage(true)} />
 
-            <div className={`flex flex-col gap-1`}>
+            <div className={`flex flex-col`}>
                 <div className="flex gap-1 md:gap-1.5 items-center text-xs tracking-wide text-gray-300">
                     <p>{data?.authorDisplayName}</p>
                     <span className="text-xl font-bold">·</span>
