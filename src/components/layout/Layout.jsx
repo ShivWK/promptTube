@@ -57,23 +57,14 @@ const Layout = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // if (id) {
-                // const response = await Promise.all([
-                //     triggerVideos({ userId: id }).unwrap(),
-                //     triggerSubscriptions({ userId: id }).unwrap(),
-                //     triggerComments({ userId: id }).unwrap(),
-                // ])
-
-            //     console.log(response);
-            // }
-
             if (id) {
-                try {
-                    const data = await triggerVideos({ userId: id }).unwrap();
-                    console.log(data);
-                } catch (err) {
-                    console.log("Failed to fetch", err)
-                }
+                const [ videos, subscriptions, comments ] = await Promise.all([
+                    triggerVideos({ userId: id }).unwrap(),
+                    triggerSubscriptions({ userId: id }).unwrap(),
+                    triggerComments({ userId: id }).unwrap(),
+                ])
+
+                // console.log(respons);
             }
         }
 
