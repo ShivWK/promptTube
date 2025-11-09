@@ -2,25 +2,30 @@ import { useNavigate } from "react-router-dom";
 import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
 import { setCurrentPlaying } from "../../features/watch/watchSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
+import { selectUserDetails } from "../../features/auth/authSlice";
 
-const RelatedVideoCard = ({ object, mode="search", setVideoLoader }) => {
+const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
+    const videoId = mode === "search" ? object.id.videoId : object.id;
+    const { id } = useSelector(selectUserDetails);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleVideoClick = () => {
         dispatch(setCurrentPlaying(object));
-        setVideoLoader(true)
+        dispatch(manageHistory({ mode: "add", videoId }));
+        dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
 
-        navigate(`/watch?id=${mode === "search" ? object.id.videoId : object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
+        setVideoLoader(true)
+        navigate(`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         })
 
-        addToLocalStorage({name: "currentPlayingVideo", add: object});
+        addToLocalStorage({ name: "currentPlayingVideo", add: object });
         window.scrollTo({
             top: 0,
             behavior: "smooth"

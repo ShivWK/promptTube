@@ -1,13 +1,77 @@
 import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserDetails } from "../../features/auth/authSlice";
+import { useEffect, useState } from "react";
 import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
+import { manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater } from "../../features/watch/watchSlice";
+import { addVideo } from "../../features/watch/watchSlice";
 
-const Channel = ({ channelId: id }) => {
+const Channel = ({ channelId: id, videoId }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
     const [channel, setChannel] = useState([]);
+    const [liked, setLiked] = useState(false);
+    const [ watchLaterSaved, setWatchLaterSaved ] = useState(false);
+    const { id: userId } = useSelector(selectUserDetails);
+    const likedVideos = useSelector(selectLikedVideos);
+    const watchLaterVideos = useSelector(selectWatchLater);
+    const dispatch = useDispatch();
 
-    useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" })
+    useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
+
+    const likeCLickHandler = (mode) => {
+        if (mode === "add") {
+            dispatch(manageLikedVideos({ mode: "add", videoId }));
+            dispatch(addVideo({
+                method: "PATCH",
+                userId,
+                videoType: "liked",
+                videoId
+            }))
+        } else {
+            dispatch(manageLikedVideos({ mode: "remove", videoId }));
+            dispatch(addVideo({
+                method: "DELETE",
+                userId,
+                videoType: "liked",
+                videoId
+            }))
+        }
+    }
+
+    const watchLaterClickHandler = (mode) => {
+        if (mode === "add") {
+            dispatch(manageWatchLater({ mode: "add", videoId }));
+            dispatch(addVideo({
+                method: "PATCH",
+                userId,
+                videoType: "watch-later",
+                videoId
+            }))
+        } else {
+            dispatch(manageWatchLater({ mode: "remove", videoId }));
+            dispatch(addVideo({
+                method: "DELETE",
+                userId,
+                videoType: "watch-later",
+                videoId
+            }))
+        }
+    }
+
+    const subscribeClickHAndler = () => {
+        
+    }
+
+    useEffect(() => {
+        if (likedVideos.includes(videoId)) setLiked(true);
+        else setLiked(false);
+    }, [likedVideos])
+
+    useEffect(() => {
+        if (watchLaterVideos.includes(videoId)) setWatchLaterSaved(true);
+        else setWatchLaterSaved(false);
+    }, [watchLaterVideos])
 
     return (
         <div className="w-full flex items-center justify-between">
@@ -21,12 +85,12 @@ const Channel = ({ channelId: id }) => {
 
             <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
                 <div className="">
-                    {true ? <i className="ri-thumb-up-line text-xl md:text-2xl dark:text-white cursor-pointer"></i>
-                        : <i className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary cursor-pointer"></i>}
+                    {!liked ? <i onClick={() => likeCLickHandler("add")} className="ri-thumb-up-line text-xl md:text-2xl dark:text-white cursor-pointer"></i>
+                        : <i onClick={() => likeCLickHandler("remove")} className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary cursor-pointer"></i>}
                 </div>
                 <div>
-                    {true ? <i className="ri-time-line text-xl md:text-2xl dark:text-white cursor-pointer" />
-                        : <i className="ri-time-fill text-xl md:text-2xl dark:text-primary cursor-pointer" />
+                    {!watchLaterSaved ? <i onClick={() => watchLaterClickHandler("add")} className="ri-time-line text-xl md:text-2xl dark:text-white cursor-pointer" />
+                        : <i onClick={() => watchLaterClickHandler("remove")} className="ri-time-fill text-xl md:text-2xl dark:text-primary cursor-pointer" />
                     }
                 </div>
                 <button className="px-2 md:px-3 py-0.5 md:py-1 rounded bg-primary text-white tracking-wide cursor-pointer">

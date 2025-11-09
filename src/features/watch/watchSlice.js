@@ -12,37 +12,34 @@ export const logger = (store) => (next) => (action) => {
     next(action)
 }
 
-// export const fetchProducts = createAsyncThunk("watch/setCurrentPlaying", async (payload , { rejectWithValue, fulfillWithValue, dispatch, getState } ) => {
-//     console.log("thunk called")
-//     try {
-//         const response = await fetch("https://dummyjson.com/products");
-//         const data = await response.json();
-
-//         return fulfillWithValue(data);
-//     } catch (err) {
-//         console.log("Failed to fetch products", err);
-//         return rejectWithValue(err);
-//     }
-// })
-
-export const addVideo = createAsyncThunk("watch/manageVideos" , async (payload, { rejectWithValue }) =>{
+export const addVideo = createAsyncThunk("watch/manageVideos", async (payload, { rejectWithValue }) => {
     const { userId, videoId, videoType, method } = payload;
-    console.log("Caled", userId, videoId, videoType)
+    console.log("Called", userId, videoId, videoType)
     try {
         const response = await fetch("https://prompttube.onrender.com/api/v1/user/memoryVideos", {
             method,
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
                 userId, videoId, videoType
             })
         });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            return rejectWithValue(errorData)
+        }
+
         const data = await response.json();
         return data;
     } catch (err) {
-        console.log("Error in fetching", err);
-        return rejectWithValue(err);
+        return rejectWithValue({
+            message: err.message || "Something went wrong while adding video.",
+            videoType,
+        });
     }
-}) 
+})
 
 const watchSlice = createSlice({
     name: "watch",
@@ -76,25 +73,31 @@ const watchSlice = createSlice({
         },
 
         manageLikedVideos: (state, action) => {
+            console.log("is it called")
             const { mode, videoId } = action.payload;
 
             if (mode === "add") {
-                state.history.push(videoId);
+                state.liked_videos.push(videoId);
             } else {
-                const i = state.history.indexOf(videoId);
-                state.history.splice(i, 1);
+                const i = state.liked_videos.indexOf(videoId);
+                state.liked_videos.splice(i, 1);
             }
         }
     },
 
     extraReducers: (builder) => {
         builder
-            .addCase(addVideo.fulfilled, (state, action) => {
-                console.log("Video added", action.payload)
+            .addCase(addVideo.fulfilled, (_, action) => {
+                console.log("Video added", action.payload);
             })
 
             .addCase(addVideo.rejected, (state, action) => {
-                console.log("Video not added", action.payload)
+                const { message, videoType } = action.payload;
+                console.log("Video not added", message);
+
+                if (videoType === "history") state.history.pop();
+                else if (videoType === "watch-later") state.watch_later.pop();
+                else state.liked_videos.pop();
             })
     }
 });
@@ -106,9 +109,9 @@ export const selectWatchLater = state => state.watch.watch_later;
 export const selectHistory = state => state.watch.history;
 export const selectLikedVideos = state => state.watch.liked_videos;
 
-export const { 
+export const {
     setCurrentPlaying,
     manageHistory,
     manageWatchLater,
     manageLikedVideos,
- } = watchSlice.actions;
+} = watchSlice.actions;

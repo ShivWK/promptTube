@@ -7,7 +7,7 @@ const clearIfEmpty = require("./../utils/wrapper");
 exports.addVideo = asyncErrorHandler(async (req, res) => {
     const { userId, videoId, videoType } = req.body;
     console.log("Body", req.body)
-    
+
     requiredFieldsCheck({ args: [userId, videoId, videoType], fields: ["userId", "videoId", "videoType"] })
 
     const doc = await UserActivityModel.findOneAndUpdate(
@@ -49,14 +49,14 @@ exports.removeVideo = asyncErrorHandler(async (req, res) => {
         message: "video removed successfully"
     })
 
-    clearIfEmpty({ Model: UserActivityModel, filter: { userId, videoType }, field: "videoId" })
+    // clearIfEmpty({ Model: UserActivityModel, filter: { userId, videoType }, field: "videoId" })
 
-    // const doc2 = await UserActivityModel.findOne({ userId, videoType });
+    const doc2 = await UserActivityModel.findOne({ userId, videoType });
 
-    // if (doc2 && doc2.videoId.length === 0) {
-    //     const doc = await UserActivityModel.findOneAndDelete({ userId, videoType });
-    //     console.log("Removed Document", doc);
-    // }
+    if (doc2 && doc2.videoId.length === 0) {
+        const doc = await UserActivityModel.findOneAndDelete({ userId, videoType });
+        console.log("Removed Document", doc);
+    }
 })
 
 exports.addSubscription = asyncErrorHandler(async (req, res) => {
@@ -102,14 +102,14 @@ exports.removeSubscription = asyncErrorHandler(async (req, res) => {
         message: "Unsubscribed successfully"
     })
 
-    clearIfEmpty({ Model: SubscriptionsModel, filter: { userId }, field: "channelId" })
+    // clearIfEmpty({ Model: SubscriptionsModel, filter: { userId }, field: "channelId" })
 
-    // const doc2 = await SubscriptionsModel.findOne({ userId });
+    const doc2 = await SubscriptionsModel.findOne({ userId });
 
-    // if (doc2 && doc2.channelId.length === 0) {
-    //     const doc = await SubscriptionsModel.findOneAndDelete({ userId });
-    //     console.log("Removed Document", doc);
-    // }
+    if (doc2 && doc2.channelId.length === 0) {
+        const doc = await SubscriptionsModel.findOneAndDelete({ userId });
+        console.log("Removed Document", doc);
+    }
 })
 
 exports.addComment = asyncErrorHandler(async (req, res) => {
@@ -155,13 +155,12 @@ exports.removeComment = asyncErrorHandler(async (req, res) => {
         message: "Unsubscribed successfully"
     })
 
-    clearIfEmpty({ Model: CommentsModel, filter: { userId, videoId }, field: "comment" })
+    // clearIfEmpty({ Model: CommentsModel, filter: { userId, videoId }, field: "comment" })
 
-    // const doc2 = await CommentsModel.findOne({ userId, videoId });
+    const doc2 = await CommentsModel.findOne({ userId, videoId });
 
-    // if (doc2 && doc2.comment.length === 0) {
-    //     const doc = await CommentsModel.findOneAndDelete({ userId, videoId });
-    //     console.log("Removed Document", doc);
-    // }
+    if (doc2 && doc2.comment.length === 0) {
+        const doc = await CommentsModel.findOneAndDelete({ userId, videoId });
+        console.log("Removed Document", doc);
+    }
 })
-

@@ -33,7 +33,7 @@ const Watch = () => {
           <h1 className="dark:text-gray-200 md:text-xl font-medium line-clamp-2">{currentVideo?.snippet?.title}</h1>
 
           {/* Channel */}
-          <Channel channelId={channelId} />
+          <Channel channelId={channelId} videoId={id}/>
 
           {/* Ai section */}
           <SummaryAndQA />
