@@ -35,11 +35,14 @@ const Comments = ({ id }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         const message = e.target.comment.value;
+        const id = Math.floor(Math.random() * 100000 + 1);
+
         dispatch(setComment({
             method: "PATCH",
             userId,
             videoId: id,
             comment: {
+                id,
                 snippet: {
                     topLevelComment: {
                         snippet: {
@@ -57,6 +60,7 @@ const Comments = ({ id }) => {
         setComments((prv) => {
             return [
                 {
+                    id,
                     snippet: {
                         topLevelComment: {
                             snippet: {
@@ -74,13 +78,6 @@ const Comments = ({ id }) => {
         })
         e.target.comment.value = "";
     }
-
-    // {
-    //     authorProfileImageUrl: "",
-    //     authorDisplayName: "",
-    //     publishedAt: "",
-    //     textDisplay: "",
-    // }
 
     useEffect(() => {
 
