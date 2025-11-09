@@ -34,7 +34,7 @@ export const setSubscription = createAsyncThunk("userActivity/setSubscription", 
 });
 
 export const setComment = createAsyncThunk("userActivity/setComments", async (payload, { rejectWithValue }) => {
-    console.log("Called")
+    // console.log("Called")
     const { method, userId, videoId, comment } = payload
     try {
         const response = await fetch(import.meta.env.VITE_ADD_COMMENT_URL, {

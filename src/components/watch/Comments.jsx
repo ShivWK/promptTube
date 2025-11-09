@@ -83,7 +83,7 @@ const Comments = ({ id }) => {
 
     }, [storedComments])
 
-    console.log(comments)
+    // console.log(comments)
 
     return (
         isLoading ? <p>Loading...</p>

@@ -14,7 +14,7 @@ export const logger = (store) => (next) => (action) => {
 
 export const addVideo = createAsyncThunk("watch/manageVideos", async (payload, { rejectWithValue }) => {
     const { userId, videoId, videoType, method } = payload;
-    console.log("Called", userId, videoId, videoType)
+    // console.log("Called", userId, videoId, videoType)
     try {
         const response = await fetch(import.meta.env.VITE_ADD_VIDEO_URL, {
             method,
