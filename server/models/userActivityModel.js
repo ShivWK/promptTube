@@ -13,7 +13,7 @@ const userActivityModel = new mongoose.Schema({
     },
 
     videoId: {
-        type: [mongoose.Schema.Types.Mixed],
+        type: [String],
         required: true,
         default: []
     }
