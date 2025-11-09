@@ -6,7 +6,6 @@ const clearIfEmpty = require("./../utils/wrapper");
 
 exports.addVideo = asyncErrorHandler(async (req, res) => {
     const { userId, videoId, videoType } = req.body;
-    console.log("Body", req.body)
 
     requiredFieldsCheck({ args: [userId, videoId, videoType], fields: ["userId", "videoId", "videoType"] })
 

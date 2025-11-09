@@ -6,15 +6,19 @@ import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
 import { manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater } from "../../features/watch/watchSlice";
 import { addVideo } from "../../features/watch/watchSlice";
+import { manageSubscriptions, selectSubscriptions } from "../../features/userActivity/userActivitySlice";
 
 const Channel = ({ channelId: id, videoId }) => {
-    const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
-    const [channel, setChannel] = useState([]);
-    const [liked, setLiked] = useState(false);
+    const [ trigger, { isLoading } ] = useLazyGetChannelDetailsQuery();
+    const [ channel, setChannel ] = useState([]);
+    const [ liked, setLiked ] = useState(false);
     const [ watchLaterSaved, setWatchLaterSaved ] = useState(false);
+    const [ subscribed, setSubscription ] = useState(false);
+
     const { id: userId } = useSelector(selectUserDetails);
     const likedVideos = useSelector(selectLikedVideos);
     const watchLaterVideos = useSelector(selectWatchLater);
+    const subscriptions = useSelector(selectSubscriptions);
     const dispatch = useDispatch();
 
     useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
@@ -59,8 +63,18 @@ const Channel = ({ channelId: id, videoId }) => {
         }
     }
 
-    const subscribeClickHAndler = () => {
-        
+    const subscribeClickHandler = (mode) => {
+        if (!subscribed) {
+            dispatch(manageSubscriptions({
+                mode: "add",
+                channelId: id
+            }))
+        } else {
+             dispatch(manageSubscriptions({
+                mode: "remove",
+                channelId: id
+            }))
+        }
     }
 
     useEffect(() => {
@@ -71,7 +85,12 @@ const Channel = ({ channelId: id, videoId }) => {
     useEffect(() => {
         if (watchLaterVideos.includes(videoId)) setWatchLaterSaved(true);
         else setWatchLaterSaved(false);
-    }, [watchLaterVideos])
+    }, [watchLaterVideos]);
+
+    useEffect(() => {
+        if (subscriptions.includes(id)) setSubscription(true);
+        else setSubscription(false);
+    }, [subscriptions])
 
     return (
         <div className="w-full flex items-center justify-between">
@@ -93,8 +112,8 @@ const Channel = ({ channelId: id, videoId }) => {
                         : <i onClick={() => watchLaterClickHandler("remove")} className="ri-time-fill text-xl md:text-2xl dark:text-primary cursor-pointer" />
                     }
                 </div>
-                <button className="px-2 md:px-3 py-0.5 md:py-1 rounded bg-primary text-white tracking-wide cursor-pointer">
-                    Subscribe
+                <button onClick={subscribeClickHandler} className={`px-3 py-1 rounded ${subscribed ? "bg-gray-300 text-black" : "bg-primary text-white active:scale-95"} transform transition-all duration-150 ease-linear tracking-wide cursor-pointer max-md:text-sm`}>
+                    { subscribed ? "Subscribed" : "Subscribe" }
                 </button>
             </div>
         </div>
