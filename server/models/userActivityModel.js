@@ -13,8 +13,9 @@ const userActivityModel = new mongoose.Schema({
     },
 
     videoId: {
-        type: String,
-        required: true
+        type: [mongoose.Schema.Types.Mixed],
+        required: true,
+        default: []
     }
 }, { versionKey: false })
 
