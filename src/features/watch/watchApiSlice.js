@@ -29,7 +29,7 @@ const watchApiSlice = createApi({
                 url: `channels?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET"
             })
-        })
+        }),
     })
 });
 

@@ -7,12 +7,13 @@ import watchApiSlice from "../features/watch/watchApiSlice";
 import watchSliceReducer from "../features/watch/watchSlice";
 import searchSliceReducer from "../features/search/searchSlice";
 import userActivityReducer from "../features/userActivity/userActivitySlice";
-import { logger } from "../features/watch/watchSlice";
+import userActivityApiSlice from "../features/userActivity/userActivityApiSlice";
 
 const store = configureStore({
     reducer: {
         [homeApiSlice.reducerPath] : homeApiSlice.reducer,
         [watchApiSlice.reducerPath] : watchApiSlice.reducer,
+        [userActivityApiSlice.reducerPath] : userActivityApiSlice.reducer,
         auth: AuthSliceReducer,
         home: homeSliceReducer,
         watch: watchSliceReducer,
@@ -24,6 +25,7 @@ const store = configureStore({
         ...defaultMiddlewares(),
         homeApiSlice.middleware,
         watchApiSlice.middleware,
+        userActivityApiSlice.middleware,
     ] 
 });
 

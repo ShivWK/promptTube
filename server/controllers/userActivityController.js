@@ -22,7 +22,7 @@ exports.addVideo = asyncErrorHandler(async (req, res) => {
 })
 
 exports.getVideo = asyncErrorHandler(async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] })
 
     const doc = await UserActivityModel.find({ userId });
@@ -75,7 +75,7 @@ exports.addSubscription = asyncErrorHandler(async (req, res) => {
 })
 
 exports.getSubscription = asyncErrorHandler(async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.query;
     requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
     const doc = await SubscriptionsModel.find({ userId })
@@ -128,10 +128,10 @@ exports.addComment = asyncErrorHandler(async (req, res) => {
 })
 
 exports.getComment = asyncErrorHandler(async (req, res) => {
-    const { userId, videoId } = req.body;
-    requiredFieldsCheck({ args: [userId, videoId], fields: ["userId", "videoId"] });
+    const { userId } = req.query;
+    requiredFieldsCheck({ args: [userId], fields: ["userId"] });
 
-    const doc = await CommentsModel.find({ userId, videoId })
+    const doc = await CommentsModel.find({ userId })
 
     return res.status(200).json({
         status: "success",
