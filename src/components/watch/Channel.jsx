@@ -9,11 +9,11 @@ import { addVideo } from "../../features/watch/watchSlice";
 import { manageSubscriptions, selectSubscriptions } from "../../features/userActivity/userActivitySlice";
 
 const Channel = ({ channelId: id, videoId }) => {
-    const [ trigger, { isLoading } ] = useLazyGetChannelDetailsQuery();
-    const [ channel, setChannel ] = useState([]);
-    const [ liked, setLiked ] = useState(false);
-    const [ watchLaterSaved, setWatchLaterSaved ] = useState(false);
-    const [ subscribed, setSubscription ] = useState(false);
+    const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
+    const [channel, setChannel] = useState([]);
+    const [liked, setLiked] = useState(false);
+    const [watchLaterSaved, setWatchLaterSaved] = useState(false);
+    const [subscribed, setSubscription] = useState(false);
 
     const { id: userId } = useSelector(selectUserDetails);
     const likedVideos = useSelector(selectLikedVideos);
@@ -65,15 +65,9 @@ const Channel = ({ channelId: id, videoId }) => {
 
     const subscribeClickHandler = (mode) => {
         if (!subscribed) {
-            dispatch(manageSubscriptions({
-                mode: "add",
-                channelId: id
-            }))
+            dispatch(manageSubscriptions({ mode: "add", channelId: id }))
         } else {
-             dispatch(manageSubscriptions({
-                mode: "remove",
-                channelId: id
-            }))
+            dispatch(manageSubscriptions({ mode: "remove", channelId: id }))
         }
     }
 
@@ -112,8 +106,8 @@ const Channel = ({ channelId: id, videoId }) => {
                         : <i onClick={() => watchLaterClickHandler("remove")} className="ri-time-fill text-xl md:text-2xl dark:text-primary cursor-pointer" />
                     }
                 </div>
-                <button onClick={subscribeClickHandler} className={`px-3 py-1 rounded ${subscribed ? "bg-gray-300 text-black" : "bg-primary text-white active:scale-95"} transform transition-all duration-150 ease-linear tracking-wide cursor-pointer max-md:text-sm`}>
-                    { subscribed ? "Subscribed" : "Subscribe" }
+                <button onClick={subscribeClickHandler} className={`px-3 py-1 rounded ${subscribed ? "bg-gray-300 text-black" : "bg-primary text-white active:scale-95"} transform transition-all duration-150 ease-linear tracking-wide cursor-pointer max-md:text-sm font-medium`}>
+                    {subscribed ? "Subscribed" : "Subscribe"}
                 </button>
             </div>
         </div>

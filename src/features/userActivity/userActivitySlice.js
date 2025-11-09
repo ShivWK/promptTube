@@ -1,9 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     subscriptions: [],
     comments: []
 }
+
+export const setSubscription = createAsyncThunk("userActivity/setSubscription", () => {});
+
+export const setComment = createAsyncThunk("userActivity/setComment", () => {})
 
 const userActivitySlice = createSlice({
     name: "userActivity",
