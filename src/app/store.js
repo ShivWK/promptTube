@@ -6,6 +6,8 @@ import homeSliceReducer from "../features/home/homeSlice";
 import watchApiSlice from "../features/watch/watchApiSlice";
 import watchSliceReducer from "../features/watch/watchSlice";
 import searchSliceReducer from "../features/search/searchSlice";
+import userActivityReducer from "../features/userActivity/userActivitySlice";
+import { logger } from "../features/watch/watchSlice";
 
 const store = configureStore({
     reducer: {
@@ -14,7 +16,8 @@ const store = configureStore({
         auth: AuthSliceReducer,
         home: homeSliceReducer,
         watch: watchSliceReducer,
-        search: searchSliceReducer
+        search: searchSliceReducer,
+        userActivity: userActivityReducer,
     },
 
     middleware: (defaultMiddlewares) => [

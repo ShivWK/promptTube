@@ -1,15 +1,22 @@
 import { Link } from "react-router-dom";
 import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
-import { useDispatch } from "react-redux";
-import { setCurrentPlaying } from "../../features/watch/watchSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { manageHistory, setCurrentPlaying } from "../../features/watch/watchSlice";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
+import { addVideo } from "../../features/watch/watchSlice";
+import { selectUserDetails } from "../../features/auth/authSlice";
 
 const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
+    const videoId = mode === "search" ? object.id.videoId : object.id;
+    const { id } = useSelector(selectUserDetails);
     const dispatch = useDispatch();
 
     const handleLinkClick = () => {
         dispatch(setCurrentPlaying(object));
+        dispatch(manageHistory({ mode: "add", videoId}));
+        dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+
         addToLocalStorage({name: "currentPlayingVideo", add: object});
         window.scrollTo({
             top: 0,
@@ -18,7 +25,7 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     }
 
     return (
-        <Link onClick={handleLinkClick} to={`/watch?id=${mode === "search" ? object.id.videoId : object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`} className={` basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
+        <Link onClick={handleLinkClick} to={`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`} className={` basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
