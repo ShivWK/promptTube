@@ -34,8 +34,7 @@ export const setSubscription = createAsyncThunk("userActivity/setSubscription", 
 });
 
 export const setComment = createAsyncThunk("userActivity/setComments", async (payload, { rejectWithValue }) => {
-    // console.log("Called")
-    const { method, userId, videoId, comment } = payload
+    const { method, userId, videoId, comment, setCommentState, commentArray } = payload
     try {
         const response = await fetch(import.meta.env.VITE_ADD_COMMENT_URL, {
             method,
@@ -50,16 +49,17 @@ export const setComment = createAsyncThunk("userActivity/setComments", async (pa
         })
 
         if (!response.ok) {
-            const errorData = await response.json();
-            return rejectWithValue(errorData);
+            commentArray.shift();
+            setCommentState(commentArray);
+            return rejectWithValue("");
         }
 
         const data = await response.json();
         return data;
     } catch (err) {
-        return rejectWithValue({
-            message: err.message || "Something went wrong"
-        })
+        commentArray.shift();
+        setCommentState(commentArray);
+        return rejectWithValue(err);
     }
 });
 
@@ -93,18 +93,8 @@ const userActivitySlice = createSlice({
 
     extraReducers: (builder) => {
         builder
-            .addCase(setSubscription.fulfilled, (_, action) => {
-                console.log(action.payload.message, action.payload)
-            })
             .addCase(setSubscription.rejected, (state) => {
                 console.log("Subscription not added");
-                state.subscriptions.pop();
-            })
-            .addCase(setComment.fulfilled, (_, action) => {
-                console.log(action.payload.message, action.payload)
-            })
-            .addCase(setComment.rejected, (state, action) => {
-                console.log("Comment not added", action.payload);
                 state.subscriptions.pop();
             })
     }

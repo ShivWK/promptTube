@@ -54,7 +54,9 @@ const Comments = ({ id }) => {
                         }
                     }
                 }
-            }
+            },
+            setCommentState: setComments,
+            commentArray: [...comments]
         }))
 
         setComments((prv) => {

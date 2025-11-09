@@ -87,10 +87,6 @@ const watchSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
-            .addCase(addVideo.fulfilled, (_, action) => {
-                console.log("Video added", action.payload);
-            })
-
             .addCase(addVideo.rejected, (state, action) => {
                 const { message, videoType } = action.payload;
                 console.log("Video not added", message);
