@@ -73,7 +73,6 @@ const watchSlice = createSlice({
         },
 
         manageLikedVideos: (state, action) => {
-            console.log("is it called")
             const { mode, videoId } = action.payload;
 
             if (mode === "add") {

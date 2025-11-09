@@ -28,7 +28,7 @@ exports.getVideo = asyncErrorHandler(async (req, res) => {
     const doc = await UserActivityModel.find({ userId });
 
     return res.status(200).json({
-        status: "failed",
+        status: "success",
         data: doc,
     })
 })
