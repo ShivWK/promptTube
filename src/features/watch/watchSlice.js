@@ -16,7 +16,7 @@ export const addVideo = createAsyncThunk("watch/manageVideos", async (payload, {
     const { userId, videoId, videoType, method } = payload;
     console.log("Called", userId, videoId, videoType)
     try {
-        const response = await fetch("https://prompttube.onrender.com/api/v1/user/memoryVideos", {
+        const response = await fetch(import.meta.env.VITE_ADD_VIDEO_URL, {
             method,
             headers: {
                 "Content-Type": "application/json"

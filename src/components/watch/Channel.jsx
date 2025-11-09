@@ -6,14 +6,14 @@ import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
 import { manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater } from "../../features/watch/watchSlice";
 import { addVideo } from "../../features/watch/watchSlice";
-import { manageSubscriptions, selectSubscriptions } from "../../features/userActivity/userActivitySlice";
+import { manageSubscriptions, selectSubscriptions, setSubscription } from "../../features/userActivity/userActivitySlice";
 
 const Channel = ({ channelId: id, videoId }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
     const [channel, setChannel] = useState([]);
     const [liked, setLiked] = useState(false);
     const [watchLaterSaved, setWatchLaterSaved] = useState(false);
-    const [subscribed, setSubscription] = useState(false);
+    const [subscribed, setSubscribed] = useState(false);
 
     const { id: userId } = useSelector(selectUserDetails);
     const likedVideos = useSelector(selectLikedVideos);
@@ -65,9 +65,19 @@ const Channel = ({ channelId: id, videoId }) => {
 
     const subscribeClickHandler = (mode) => {
         if (!subscribed) {
-            dispatch(manageSubscriptions({ mode: "add", channelId: id }))
+            dispatch(manageSubscriptions({ mode: "add", channelId: id }));
+            dispatch(setSubscription({
+                method: "PATCH",
+                userId,
+                channelId: id
+            }))
         } else {
-            dispatch(manageSubscriptions({ mode: "remove", channelId: id }))
+            dispatch(manageSubscriptions({ mode: "remove", channelId: id }));
+            dispatch(setSubscription({
+                method: "DELETE",
+                userId,
+                channelId: id
+            }))
         }
     }
 
@@ -82,8 +92,8 @@ const Channel = ({ channelId: id, videoId }) => {
     }, [watchLaterVideos]);
 
     useEffect(() => {
-        if (subscriptions.includes(id)) setSubscription(true);
-        else setSubscription(false);
+        if (subscriptions.includes(id)) setSubscribed(true);
+        else setSubscribed(false);
     }, [subscriptions])
 
     return (
