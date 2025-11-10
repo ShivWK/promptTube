@@ -1,4 +1,4 @@
-import { CircleUserRound, Home, Brain } from "lucide-react"
+import { Search, Home, Brain } from "lucide-react"
 import { useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { setMobileMenu, selectFooterVisibility } from "../../features/home/homeSlice";
@@ -37,7 +37,7 @@ const SecondarySideMenu = () => {
     return "rounded-e-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear dark:text-gray-200"
   }
 
-   const nmActiveClass = ({ isActive }) => {
+  const nmActiveClass = ({ isActive }) => {
     if (isActive) {
       return "rounded-xl flex flex-col justify-center items-center py-1.5 px-2 lg:py-2 lg:px-3 active:bg-gray-400/30 hover:bg-gray-400/30 transition-all duration-100 ease-linear text-primary"
     }
@@ -46,6 +46,8 @@ const SecondarySideMenu = () => {
   }
 
   return (<>
+
+    {/* PC */}
     <aside ref={pcSecondarySidebar} className={`fixed hidden md:flex gap-y-1 top-1/2 ${footerVisible ? "-translate-x-full" : "-translate-x-1"} -translate-y-[40%] rounded-e-2xl p-2 flex-col dark:bg-gray-900 transition-all duration-150 ease-linear z-30`}>
 
       <NavLink to={"/"} className={pcActiveClass}>
@@ -58,27 +60,25 @@ const SecondarySideMenu = () => {
         <span className="text-sm select-none">Promptly</span>
       </NavLink>
 
-      <NavLink to={"/account"} className={pcActiveClass}>
+      {/* <NavLink to={"/account"} className={pcActiveClass}>
         <CircleUserRound size={isSmall ? 25 : 30} />
         <span className="text-sm select-none">You</span>
-      </NavLink>
+      </NavLink> */}
     </aside>
 
+    {/* Mobile */}
     <aside className={`fixed bottom-0 md:hidden ${showSideMenu ? "translate-y-0.5" : "translate-y-full"} p-2 justify-around w-full flex items-center backdrop-blur-2xl bg-black/40 transform transition-all duration-[250ms] ease-linear z-30`}>
 
       <NavLink to={"/"} className={nmActiveClass}>
         <Home size={isSmall ? 28 : 30} />
-        <span className="text-sm hidden md:block select-none">Home</span>
+      </NavLink>
+
+      <NavLink to={"/search"} className={nmActiveClass}>
+        <Search size={isSmall ? 28 : 30} />
       </NavLink>
 
       <NavLink to={"/gptBrowser"} className={nmActiveClass}>
         <Brain size={isSmall ? 28 : 30} />
-        <span className="text-sm hidden md:block select-none">Promptly</span>
-      </NavLink>
-
-      <NavLink to={"/account"} className={nmActiveClass}>
-        <CircleUserRound size={isSmall ? 28 : 30} />
-        <span className="text-sm hidden md:block select-none">You</span>
       </NavLink>
     </aside>
   </>)

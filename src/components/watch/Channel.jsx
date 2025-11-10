@@ -11,7 +11,7 @@ import useAuthCheck from "../../hooks/useAuthCheck";
 
 const Channel = ({ channelId: id, videoId }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
-    const [ user, checkAuth ] = useAuthCheck()
+    const [ _, checkAuth ] = useAuthCheck()
     const [channel, setChannel] = useState([]);
     const [liked, setLiked] = useState(false);
     const [watchLaterSaved, setWatchLaterSaved] = useState(false);

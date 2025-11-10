@@ -1,13 +1,16 @@
 import { CircleUserRound, LogIn } from "lucide-react";
 import { selectLoggedInStatus, setOpenAuthForm, selectUserDetails } from "../../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AccountCard from "../../common/AccountCard";
 
 const Account = () => {
   const isLoggedIn = useSelector(selectLoggedInStatus);
   const { name } = useSelector(selectUserDetails);
-  const [showAccountCard, setShowAccountCard] = useState(false)
+  const [showAccountCard, setShowAccountCard] = useState(false);
+  const [animateAccountCard, setAnimateAccountCard] = useState(false);
+  const accountRef = useRef(null);
+  const timer = useRef(null);
   const dispatch = useDispatch()
 
   const isSmall = window.innerWidth <= 768;
@@ -21,8 +24,8 @@ const Account = () => {
 
   useEffect(() => {
     const handleDocClick = () => {
-      if (showAccountCard ) {
-        setShowAccountCard(false)
+      if (showAccountCard) {
+        setAnimateAccountCard(false)
       }
     }
     document.addEventListener("click", handleDocClick);
@@ -31,19 +34,46 @@ const Account = () => {
 
   const handleAccountClick = (e) => {
     e.stopPropagation();
-    setShowAccountCard(!showAccountCard)
+    // setShowAccountCard(!showAccountCard)
+  }
+
+  const disableAccountCard = () => {
+    console.log("Called")
+    timer.current = setTimeout(() => {
+      setAnimateAccountCard(false)
+    }, 1000)
+  }
+
+  const handleMouseEnter = () => {
+    clearTimeout(timer.current);
+
+    if (!animateAccountCard) {
+      setAnimateAccountCard(true)
+      setShowAccountCard(true);
+    }
   }
 
   if (isLoggedIn) {
     return (
       <div className="relative flex items-center gap-2.5">
         <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
-        <CircleUserRound
-          onClick={handleAccountClick}
-          size={isSmall ? 44 : 40} strokeWidth={1}
-          className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
-        />
-        {showAccountCard && <AccountCard isSmall={isSmall} setShowAccountCard={setShowAccountCard} />}
+        <div onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} >
+          <CircleUserRound
+            ref={accountRef}
+            onClick={handleAccountClick}
+            size={isSmall ? 44 : 40} strokeWidth={1}
+            className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
+          />
+        </div>
+
+        {showAccountCard && <AccountCard
+          isSmall={isSmall}
+          setShowAccountCard={setShowAccountCard}
+          animate={animateAccountCard}
+          timeoutTimer={timer}
+          disableAccountCard={disableAccountCard}
+          setAnimateAccountCard={setAnimateAccountCard}
+        />}
       </div>
     )
   } else {

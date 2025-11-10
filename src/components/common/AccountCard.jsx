@@ -5,8 +5,9 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../utils/firebaseConfig";
 import { useState } from "react";
 import DotBounceLoader from "./DotBounceLoader";
+import { setToast } from "../../features/auth/authSlice";
 
-const AccountCard = ({ isSmall, setShowAccountCard, }) => {
+const AccountCard = ({ isSmall, setShowAccountCard, animate, timeoutTimer, disableAccountCard, setAnimateAccountCard }) => {
     const { name, email, isEmailVerified } = useSelector(selectUserDetails);
     const [isLoading, setLoading] = useState(false);
     const dispatch = useDispatch();
@@ -14,35 +15,46 @@ const AccountCard = ({ isSmall, setShowAccountCard, }) => {
     const signoutClickHandler = (e) => {
         e.stopPropagation()
         if (isLoading) return;
+
         const signout = async () => {
             setLoading(true);
             try {
                 await signOut(auth);
-                setShowAccountCard(false)
+                setAnimateAccountCard(false)
                 setLoading(false)
             } catch (err) {
                 setLoading(false);
-                dispatch({
+                dispatch(setToast({
                     message: "Unable to sign out. Please ty again!",
                     show: true,
                     error: true,
-                })
+                }))
             }
         }
-
         signout()
     }
 
     const verifyEmailHandler = () => {
-        setShowAccountCard(false);
+        setAnimateAccountCard(false);
         dispatch(setEmailVerification({
             mode: "All",
             value: true,
         }))
     }
 
+    const animationEndHandler = (e) => {
+        const ele = e.target;
+        const isPresent = ele.classList.contains("animate-hideAuthModal");
+
+        if (isPresent) setShowAccountCard(false);
+    }
+
+    const handleMouseEnter = () => {
+        clearTimeout(timeoutTimer.current)
+    }
+
     return (
-        <div onClick={(e) => e.stopPropagation()} className="absolute top-13 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70">
+        <div onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} onAnimationEnd={animationEndHandler} onClick={(e) => e.stopPropagation()} className={`absolute top-14.5 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70 ${animate ? "animate-showAuthModal" : "animate-hideAuthModal"}`}>
             <div className="flex items-center gap-2">
                 <CircleUserRound size={isSmall ? 50 : 55} strokeWidth={1.5} className="dark:text-primary" />
                 <div className="flex flex-col dark:text-white w-48 lg:w-52">
