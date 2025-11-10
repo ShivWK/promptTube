@@ -14,7 +14,6 @@ export const logger = (store) => (next) => (action) => {
 
 export const addVideo = createAsyncThunk("watch/manageVideos", async (payload, { rejectWithValue }) => {
     const { userId, videoId, videoType, method } = payload;
-    // console.log("Called", userId, videoId, videoType)
     try {
         const response = await fetch(import.meta.env.VITE_ADD_VIDEO_URL, {
             method,
@@ -55,6 +54,8 @@ const watchSlice = createSlice({
 
             if (mode === "add") {
                 state.history.push(videoId);
+            } else if (mode === "base") {
+                state.history = videoId;
             } else {
                 const i = state.history.indexOf(videoId);
                 state.history.splice(i, 1);
@@ -66,6 +67,8 @@ const watchSlice = createSlice({
 
             if (mode === "add") {
                 state.watch_later.push(videoId);
+            } else if (mode === "base") {
+                state.watch_later = videoId;
             } else {
                 const i = state.watch_later.indexOf(videoId);
                 state.watch_later.splice(i, 1);
@@ -77,6 +80,8 @@ const watchSlice = createSlice({
 
             if (mode === "add") {
                 state.liked_videos.push(videoId);
+            } else if (mode === "base") {
+                state.liked_videos = videoId;
             } else {
                 const i = state.liked_videos.indexOf(videoId);
                 state.liked_videos.splice(i, 1);

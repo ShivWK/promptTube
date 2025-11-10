@@ -5,9 +5,11 @@ import { setCurrentPlaying } from "../../features/watch/watchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
 import { selectUserDetails } from "../../features/auth/authSlice";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
     const videoId = mode === "search" ? object.id.videoId : object.id;
+    const [_, checkAuth] = useAuthCheck({ showToast: false });
     const { id } = useSelector(selectUserDetails);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -15,7 +17,10 @@ const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
     const handleVideoClick = () => {
         dispatch(setCurrentPlaying(object));
         dispatch(manageHistory({ mode: "add", videoId }));
-        dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+
+        if (checkAuth()) {
+            dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+        }
 
         setVideoLoader(true)
         navigate(`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);

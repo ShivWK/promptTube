@@ -73,6 +73,8 @@ const userActivitySlice = createSlice({
 
             if (mode === "add") {
                 state.subscriptions.push(channelId);
+            } else if (mode === "base") {
+                state.subscriptions = channelId;
             } else {
                 const i = state.subscriptions.indexOf(channelId);
                 state.subscriptions.splice(i, 1);
@@ -84,6 +86,8 @@ const userActivitySlice = createSlice({
 
             if (mode === "add") {
                 state.comments.push(comment);
+            } else if (mode === "base") {
+                state.comments = comment;
             } else {
                 const i = state.comments.indexOf(comment);
                 state.comments.splice(i, 1);

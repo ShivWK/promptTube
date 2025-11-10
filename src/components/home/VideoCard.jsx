@@ -4,18 +4,22 @@ import countViews from "../../utils/countViews";
 import { useDispatch, useSelector } from "react-redux";
 import { manageHistory, setCurrentPlaying } from "../../features/watch/watchSlice";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
-import { addVideo } from "../../features/watch/watchSlice";
+import useAuthCheck from "../../hooks/useAuthCheck";
 import { selectUserDetails } from "../../features/auth/authSlice";
 
 const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     const videoId = mode === "search" ? object.id.videoId : object.id;
+    const [ _, checkAuth ] = useAuthCheck({ showToast: false });
     const { id } = useSelector(selectUserDetails);
     const dispatch = useDispatch();
 
     const handleLinkClick = () => {
         dispatch(setCurrentPlaying(object));
         dispatch(manageHistory({ mode: "add", videoId}));
-        dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+        
+        if (checkAuth()) {
+            dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+        }
 
         addToLocalStorage({name: "currentPlayingVideo", add: object});
         window.scrollTo({

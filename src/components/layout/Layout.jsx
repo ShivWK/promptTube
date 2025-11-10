@@ -9,11 +9,7 @@ import {
 } from "../../features/home/homeSlice";
 
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
-import {
-    useLazyGetSavedVideosQuery,
-    useLazyGetCommentsQuery,
-    useLazyGetSubscriptionsQuery
-} from "../../features/userActivity/userActivityApiSlice";
+
 import { setCurrentPlaying } from "../../features/watch/watchSlice";
 
 import { auth } from "../../utils/firebaseConfig";
@@ -27,7 +23,6 @@ import {
     setAuthDetails,
     setLoginStatus,
     selectEmailVerification,
-    selectUserDetails
 } from "../../features/auth/authSlice";
 
 import Form from "../auth/Form";
@@ -36,12 +31,10 @@ import SecondarySideMenu from "../common/SecondarySideMenu";
 import Sidebar from "../common/Sidebar";
 import { getFromLocalStorage } from "../../utils/handleLocalStorage";
 import BackToTopButton from "../common/BackToTopBtn";
+import useFetchSavedData from "../../hooks/useFetchSavedData";
 
 const Layout = () => {
     const [trigger] = useLazyGetPopularVideosQuery();
-    const [triggerVideos] = useLazyGetSavedVideosQuery();
-    const [triggerSubscriptions] = useLazyGetSubscriptionsQuery();
-    const [triggerComments] = useLazyGetCommentsQuery();
     const [isSmall, setSmall] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
     const [showSideMenu, setShowSideMenu] = useState(true);
@@ -50,26 +43,11 @@ const Layout = () => {
     const openAuthForm = useSelector(selectOpenAuthFrom);
     const { openSidebar } = useSelector(selectSidebar);
     const { openEmailVerification } = useSelector(selectEmailVerification);
-    const { id } = useSelector(selectUserDetails);
 
     const dispatch = useDispatch();
     const pathname = useLocation().pathname;
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (id) {
-                const [ videos, subscriptions, comments ] = await Promise.all([
-                    triggerVideos({ userId: id }).unwrap(),
-                    triggerSubscriptions({ userId: id }).unwrap(),
-                    triggerComments({ userId: id }).unwrap(),
-                ])
-
-                // console.log(respons);
-            }
-        }
-
-        fetchData();
-    }, [id])
+    useFetchSavedData();
 
     useEffect(() => {
         let value = [];
