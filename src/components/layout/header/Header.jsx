@@ -1,7 +1,7 @@
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import LogoAndMenu from './LogoAndMenu'
 import SearchBar from '../../search/SearchBar'
-import { Brain, Search } from 'lucide-react'
+import { Brain } from 'lucide-react'
 import Account from './Account'
 import TabMenu from './TabMenu'
 import { useEffect, useState } from 'react'
@@ -41,7 +41,7 @@ const Header = () => {
             <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between bg-black/40'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-3 md:gap-7'>
-                    {!isSmall && <SearchBar />}
+                    {(!isSmall) && <SearchBar />}
                     <Link to={"/gptBrowser"} className='flex gap-1 lg:gap-1.5 items-center py-1 lg:py-1.5 px-2 lg:px-3 rounded-md bg-gradient-to-r from-primary via-blue-500 to-green-400 font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear'>
                         <span className='max-md:hidden dark:text-white tracking-wide'>Try </span>
                         <span className='dark:text-white tracking-wide'>Promptly</span>

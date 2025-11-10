@@ -59,11 +59,6 @@ const SecondarySideMenu = () => {
         <Brain size={isSmall ? 25 : 30} />
         <span className="text-sm select-none">Promptly</span>
       </NavLink>
-
-      {/* <NavLink to={"/account"} className={pcActiveClass}>
-        <CircleUserRound size={isSmall ? 25 : 30} />
-        <span className="text-sm select-none">You</span>
-      </NavLink> */}
     </aside>
 
     {/* Mobile */}

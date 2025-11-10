@@ -1,19 +1,27 @@
 import { CircleUserRound, LogIn } from "lucide-react";
-import { selectLoggedInStatus, setOpenAuthForm, selectUserDetails } from "../../../features/auth/authSlice";
+import { 
+  selectLoggedInStatus, 
+  setOpenAuthForm, 
+  selectUserDetails 
+} from "../../../features/auth/authSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import AccountCard from "../../common/AccountCard";
+import { NavLink, useLocation } from "react-router-dom";
+import { selectIsSmall } from "../../../features/home/homeSlice";
 
 const Account = () => {
   const isLoggedIn = useSelector(selectLoggedInStatus);
   const { name } = useSelector(selectUserDetails);
   const [showAccountCard, setShowAccountCard] = useState(false);
   const [animateAccountCard, setAnimateAccountCard] = useState(false);
+  const [ showShadow, setShowShadow ] = useState(false);
   const accountRef = useRef(null);
   const timer = useRef(null);
   const dispatch = useDispatch()
-
-  const isSmall = window.innerWidth <= 768;
+  const isSmall = useSelector(selectIsSmall);
+  const pathname = useLocation().pathname;
 
   const authClickHandler = () => {
     dispatch(setOpenAuthForm({
@@ -33,8 +41,9 @@ const Account = () => {
   }, [showAccountCard])
 
   const handleAccountClick = (e) => {
-    e.stopPropagation();
-    // setShowAccountCard(!showAccountCard)
+    // e.stopPropagation();
+    setAnimateAccountCard(false);
+    // navigate("/account");
   }
 
   const disableAccountCard = () => {
@@ -53,20 +62,25 @@ const Account = () => {
     }
   }
 
+  const activeClassHandler = ({ isActive }) => {
+    if (isActive) setShowShadow(true);
+    else setShowShadow(false);
+  }
+
   if (isLoggedIn) {
     return (
       <div className="relative flex items-center gap-2.5">
         <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} >
+        <NavLink to={"/account"} className={activeClassHandler} onClick={handleAccountClick} onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} >
           <CircleUserRound
             ref={accountRef}
             onClick={handleAccountClick}
             size={isSmall ? 44 : 40} strokeWidth={1}
-            className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${showAccountCard && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
+            className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${(showAccountCard || showShadow) && "shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
           />
-        </div>
+        </NavLink>
 
-        {showAccountCard && <AccountCard
+        {(showAccountCard && pathname !== "/account" && !isSmall) && <AccountCard
           isSmall={isSmall}
           setShowAccountCard={setShowAccountCard}
           animate={animateAccountCard}
