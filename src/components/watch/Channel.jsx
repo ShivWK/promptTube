@@ -7,9 +7,11 @@ import useFetch from "../../hooks/useFetch";
 import { manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater } from "../../features/watch/watchSlice";
 import { addVideo } from "../../features/watch/watchSlice";
 import { manageSubscriptions, selectSubscriptions, setSubscription } from "../../features/userActivity/userActivitySlice";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const Channel = ({ channelId: id, videoId }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
+    const [ user, checkAuth ] = useAuthCheck()
     const [channel, setChannel] = useState([]);
     const [liked, setLiked] = useState(false);
     const [watchLaterSaved, setWatchLaterSaved] = useState(false);
@@ -24,6 +26,9 @@ const Channel = ({ channelId: id, videoId }) => {
     useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
 
     const likeCLickHandler = (mode) => {
+        const check = checkAuth();
+        if (!check) return;
+
         if (mode === "add") {
             dispatch(manageLikedVideos({ mode: "add", videoId }));
             dispatch(addVideo({
@@ -44,6 +49,9 @@ const Channel = ({ channelId: id, videoId }) => {
     }
 
     const watchLaterClickHandler = (mode) => {
+        const check = checkAuth();
+        if (!check) return;
+
         if (mode === "add") {
             dispatch(manageWatchLater({ mode: "add", videoId }));
             dispatch(addVideo({
@@ -64,6 +72,9 @@ const Channel = ({ channelId: id, videoId }) => {
     }
 
     const subscribeClickHandler = (mode) => {
+        const check = checkAuth();
+        if (!check) return;
+
         if (!subscribed) {
             dispatch(manageSubscriptions({ mode: "add", channelId: id }));
             dispatch(setSubscription({

@@ -5,11 +5,13 @@ import { CircleUserRound } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import Comment from "./CommentCard"
 import useFetch from "../../hooks/useFetch";
-import { manageComments, selectComments, setComment } from "../../features/userActivity/userActivitySlice";
+import { selectComments, setComment } from "../../features/userActivity/userActivitySlice";
 import { selectUserDetails } from "../../features/auth/authSlice";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const Comments = ({ id }) => {
     const [trigger, { isLoading }] = useLazyGetCommentsQuery();
+    const [ user, checkAuth ] = useAuthCheck();
     const [showCompleteComment, setShowCompleteComment] = useState(false);
     const [comments, setComments] = useState([]);
     const storedComments = useSelector(selectComments)
@@ -34,6 +36,9 @@ const Comments = ({ id }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        const check = checkAuth();
+        if (!check) return;
+
         const message = e.target.comment.value;
         const idRandom = Math.floor(Math.random() * 100000 + 1);
 
@@ -93,7 +98,7 @@ const Comments = ({ id }) => {
 
                 {showCompleteComment && <div className="flex items-center gap-2 md:gap-3 mb-2 bg-gray-800 w-full">
                     <CircleUserRound size={isSmall ? 55 : 55} strokeWidth={1} className="dark:text-primary" />
-                    <form onSubmit={submitHandler} className="bg-gray-900 w-full mx-auto flex items-center justify-between rounded-4xl overflow-hidden border border-gray-700">
+                    <form onSubmit={submitHandler} className="bg-gray-900 w-full mx-auto flex items-center justify-between rounded-4xl overflow-hidden border border-primary">
                         <input name="comment" className="outline-none border-none w-full py-1 md:py-1.5 pl-3 pr-1.5" placeholder="type your comment..."></input>
                         <button className="bg-primary self-stretch flex items-center justify-center cursor-pointer active:scale-95 transform transition-all duration-150 ease-linear">
                             <i className="ri-send-plane-2-fill px-2 md:px-3 text-2xl md:text-2xl"></i>
