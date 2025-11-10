@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
 import { useDispatch, useSelector } from "react-redux";
-import { manageHistory, setCurrentPlaying } from "../../features/watch/watchSlice";
+import { manageHistory, setCurrentPlaying, addVideo } from "../../features/watch/watchSlice";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import { selectUserDetails } from "../../features/auth/authSlice";
@@ -11,9 +11,16 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     const videoId = mode === "search" ? object.id.videoId : object.id;
     const [ _, checkAuth ] = useAuthCheck({ showToast: false });
     const { id } = useSelector(selectUserDetails);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleLinkClick = () => {
+        navigate(`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        })
+
         dispatch(setCurrentPlaying(object));
         dispatch(manageHistory({ mode: "add", videoId}));
         
@@ -22,14 +29,10 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
         }
 
         addToLocalStorage({name: "currentPlayingVideo", add: object});
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
     }
 
     return (
-        <Link onClick={handleLinkClick} to={`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`} className={` basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
+        <div onClick={handleLinkClick} className={` basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
@@ -48,7 +51,7 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
                     <span>{calUploadTime(object.snippet?.publishedAt)}</span>
                 </div>
             </div>
-        </Link>
+        </div>
     )
 }
 

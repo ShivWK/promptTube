@@ -31,6 +31,8 @@ const Attribution = () => {
                         className="hidden lg:inline text-primary text-sm tracking-wider underline underline-offset-2">
                         Portfolio
                     </a>
+
+                    {/* Mobile */}
                     <div className="max-md:flex gap-3 mt-2 hidden">
                         <a
                             href="https://www.linkedin.com/in/shivendra-dwivedi"
@@ -38,7 +40,7 @@ const Attribution = () => {
                             target="__block"
                         >
                             <i
-                                className="fa-brands fa-linkedin text-xl text-[#0077b5] dark:text-[rgb(41,140,240)]"
+                                className="fa-brands fa-linkedin text-2xl text-[#0077b5] dark:text-[rgb(41,140,240)]"
                             ></i>
                         </a>
                         <a
@@ -46,14 +48,14 @@ const Attribution = () => {
                             className="hover:scale-[1.3] hover:shadow-lg transition-all duration-100 ease-in"
                             target="__block"
                         >
-                            <i className="fa-brands fa-square-github text-xl dark:text-gray-300"></i>
+                            <i className="fa-brands fa-square-github text-2xl dark:text-gray-300"></i>
                         </a>
                         <a
                             href="https://x.com/Shivendrawk"
                             className="hover:scale-[1.3] hover:shadow-lg transition-all duration-100 ease-in"
                             target="__block"
                         >
-                            <i className="fa-brands fa-square-x-twitter text-xl dark:text-gray-300"></i>
+                            <i className="fa-brands fa-square-x-twitter text-2xl dark:text-gray-300"></i>
                         </a>
                         <a
                             href="https://instagram.com/shivendrawk"
@@ -61,7 +63,7 @@ const Attribution = () => {
                             target="__block"
                         >
                             <i
-                                className="fa-brands fa-instagram text-xl"
+                                className="fa-brands fa-instagram text-2xl"
                                 style={{ color: "#e1306c" }}
                             ></i>
                         </a>
@@ -70,13 +72,15 @@ const Attribution = () => {
                             className="hover:scale-[1.3] hover:shadow-lg transition-all duration-100 ease-in"
                         >
                             <i
-                                className="fa-solid fa-envelope text-xl"
+                                className="fa-solid fa-envelope text-2xl"
                                 style={{ color: "#d93025" }}
                             ></i>
                         </a>
                     </div>
                 </div>
             </div>
+
+            {/* PC */}
             <div className="hidden md:flex flex-col gap-2 w-full mt-7">
                 <p className="dark:text-white">Social Links</p>
                 <div className="flex gap-3">

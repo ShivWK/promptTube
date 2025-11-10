@@ -25,7 +25,7 @@ const Channel = ({ channelId: id, videoId }) => {
 
     useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
 
-    const likeCLickHandler = (mode) => {
+    const likeClickHandler = (mode) => {
         const check = checkAuth();
         if (!check) return;
 
@@ -119,8 +119,8 @@ const Channel = ({ channelId: id, videoId }) => {
 
             <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
                 <div className="">
-                    {!liked ? <i onClick={() => likeCLickHandler("add")} className="ri-thumb-up-line text-xl md:text-2xl dark:text-white cursor-pointer"></i>
-                        : <i onClick={() => likeCLickHandler("remove")} className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary cursor-pointer"></i>}
+                    {!liked ? <i onClick={() => likeClickHandler("add")} className="ri-thumb-up-line text-xl md:text-2xl dark:text-white cursor-pointer"></i>
+                        : <i onClick={() => likeClickHandler("remove")} className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary cursor-pointer"></i>}
                 </div>
                 <div>
                     {!watchLaterSaved ? <i onClick={() => watchLaterClickHandler("add")} className="ri-time-line text-xl md:text-2xl dark:text-white cursor-pointer" />

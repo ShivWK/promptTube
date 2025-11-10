@@ -2,6 +2,7 @@ import { manageComments, manageSubscriptions } from "../features/userActivity/us
 import { manageHistory, manageLikedVideos, manageWatchLater } from "../features/watch/watchSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserDetails } from "../features/auth/authSlice";
+import { setSavedDataLoading } from "../features/home/homeSlice";
 import { useEffect } from "react"
 
 import {
@@ -25,8 +26,6 @@ const useFetchSavedData = () => {
                     triggerSubscriptions({ userId }).unwrap(),
                     triggerComments({ userId }).unwrap(),
                 ])
-
-                console.log(videos);
 
                 dispatch(manageSubscriptions({
                     mode: "base",
@@ -56,6 +55,8 @@ const useFetchSavedData = () => {
                         }))
                     }
                 }
+
+                dispatch(setSavedDataLoading(false));
             }
         }
 
