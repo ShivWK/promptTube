@@ -82,7 +82,7 @@ const ProfileCard = () => {
                 }
             </button>
 
-            <div className="self-start mt-1 hidden md:block w-64">
+            <div className="self-start mt-1 hidden md:block w-full">
                 <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
                 <div className="flex flex-col gap-2 h-80 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
                     {(isLoading || savedDataLoading) ? <p>Loading...</p>

@@ -1,4 +1,4 @@
-import { useRef, memo, useEffect } from "react";
+import { useRef, memo, useEffect, useState } from "react";
 import debounceCreater from "../../utils/debounceCreater";
 import Button from "./Button";
 
@@ -8,6 +8,9 @@ const HorizontalCarousel = memo(({
   dataToMap,
   Card,
 }) => {
+  const [disableLeft, setDisableLeft] = useState(false);
+  const [disableRight, setDisableRight] = useState(false);
+
   const clicked = useRef(false);
   const rightBtnRef = useRef(null);
   const leftBtnRef = useRef(null);
@@ -16,18 +19,18 @@ const HorizontalCarousel = memo(({
   const debouncedHandleRightClick = useRef(debounceCreater(handleRightClick, 100));
   const debouncedHandleLeftClick = useRef(debounceCreater(handleLeftClick, 100));
 
-  // useEffect(() => {
-  //   const container = containerRef.current;
-  //   if (!container) return;
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  //   const clientWidth = container.clientWidth;
-  //   const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    const scrollWidth = container.scrollWidth;
 
-  //   if (clientWidth === scrollWidth) {
-  //     rightBtnRef.current.hidden = true;
-  //     leftBtnRef.current.hidden = true;
-  //   }
-  // }, [])
+    if (clientWidth === scrollWidth) {
+      rightBtnRef.current.hidden = true;
+      leftBtnRef.current.hidden = true;
+    }
+  }, [])
 
   function handleScroll() {
     const container = containerRef.current;
@@ -39,21 +42,19 @@ const HorizontalCarousel = memo(({
     const viewed = clientWidth + scrollLeft;
 
     if (viewed >= scrollWidth) {
-      rightBtnRef.current.disabled = true;
+      setDisableRight(true);
     } else {
-      rightBtnRef.current.disabled = false;
+      setDisableRight(false);
     }
 
     if (!(scrollLeft > 0)) {
-      leftBtnRef.current.disabled = true;
+      setDisableLeft(true);
     } else {
-      leftBtnRef.current.disabled = false;
+      setDisableLeft(false);
     }
   }
 
   function handleRightClick() {
-    clicked.current = true;
-
     const container = containerRef.current;
     if (!container) return;
 
@@ -64,9 +65,6 @@ const HorizontalCarousel = memo(({
   }
 
   function handleLeftClick(e) {
-    rightBtnRef.current.disabled = false;
-    clicked.current = true;
-
     const container = containerRef.current;
     if (!container) return;
 
@@ -77,7 +75,7 @@ const HorizontalCarousel = memo(({
   }
 
   return (
-    <div className="overflow-auto scrollbar-hide w-full border-do">
+    <div className="overflow-auto scrollbar-hide w-full">
       <div className="flex justify-between flex-wrap items-center" style={{ marginBottom: margin_bottom }}>
         {heading && (
           <h2 className="text-xl md:text-2xl tracking-wide font-medium mb-4">
@@ -89,11 +87,13 @@ const HorizontalCarousel = memo(({
             ref={leftBtnRef}
             clickHandler={debouncedHandleLeftClick.current}
             iconClass="left"
+            isDisabled={disableLeft}
           />
           <Button
             ref={rightBtnRef}
             clickHandler={debouncedHandleRightClick.current}
             iconClass="right"
+            isDisabled={disableRight}
           />
         </div>
       </div>
@@ -102,7 +102,6 @@ const HorizontalCarousel = memo(({
           onScroll={handleScroll}
           ref={containerRef}
           className="w-full flex justify-start gap-3 md:gap-7 overflow-x-auto scrollbar-hide py-2"
-          onTouchEnd={() => clicked.current = true}
         >
           {dataToMap.map((video) => <Card key={video.id} object={video} />)}
         </div>

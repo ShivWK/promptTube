@@ -41,17 +41,6 @@ const SavedVideosSection = () => {
         fetchData()
     }, [likedVideoIds, historyVideoIds, watchLaterVideoIds, savedDataLoading])
 
-    const containerScrollHandler = (e) => {
-        const element = e.target;
-
-        const scrollW = element.scrollWidth;
-        const scrollL = element.scrollLeft;
-        const scrollC = element.clientWidth;
-
-        const percentage = ((scrollL) / (scrollW - scrollC)) * 100;
-        setScrollPercentage(percentage);
-    }
-
     return (
         <div className="self-start p-4 text-white w-full">
             {videosLoading ? <p>Loading...</p>
