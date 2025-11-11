@@ -59,7 +59,7 @@ const ProfileCard = () => {
     }
 
     return (
-        <div className="flex flex-col gap-2 max-md:rounded-2xl items-center text-white bg-primary/40 p-4 px-6 w-[80%] text-xl max-md:mx-auto md:w-full">
+        <div className="flex flex-col gap-2 max-md:rounded-2xl items-center text-white p-4 px-6 w-[80%] text-xl max-md:mx-auto md:w-full self-stretch">
             <CircleUserRound strokeWidth={0.5} className="h-26 w-26 rounded-full" />
             <p>{name}</p>
             <div className="flex items-center gap-1">
@@ -82,7 +82,7 @@ const ProfileCard = () => {
 
             <div className="self-start mt-1 hidden md:block w-full">
                 <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
-                <div className="flex flex-col gap-2 h-80 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
+                <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
                     {(isLoading || savedDataLoading) ? <p>Loading...</p>
                         : subscribedChannels.map((channel) => <ChannelCard channel={channel} />)
                     }

@@ -42,21 +42,27 @@ const SavedVideosSection = () => {
     }, [likedVideoIds, historyVideoIds, watchLaterVideoIds, savedDataLoading])
 
     return (
-        <div className="self-start p-4 text-white w-full">
+        <div className="self-start p-4 text-white w-full flex flex-col gap-6">
             {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
                     Card={HistoryVideoCard}
                     heading="History"
                     dataToMap={historyVideos}
-
                 />}
 
+            {videosLoading ? <p>Loading...</p>
+                : <HorizontalCarousel
+                    Card={HistoryVideoCard}
+                    heading="Liked Videos"
+                    dataToMap={likedVideos}
+                />}
 
-            {/* <h2 className="text-xl tracking-wide">Liked videos</h2>
-          <div></div>
-
-          <h2 className="text-xl tracking-wide">Watch later</h2>
-          <div></div> */}
+            {videosLoading ? <p>Loading...</p>
+                : <HorizontalCarousel
+                    Card={HistoryVideoCard}
+                    heading="Watch Later"
+                    dataToMap={watchLaterVideos}
+                />}
         </div>
     )
 }

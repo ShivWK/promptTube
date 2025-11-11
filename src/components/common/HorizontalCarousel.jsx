@@ -8,7 +8,7 @@ const HorizontalCarousel = memo(({
   dataToMap,
   Card,
 }) => {
-  const [disableLeft, setDisableLeft] = useState(false);
+  const [disableLeft, setDisableLeft] = useState(true);
   const [disableRight, setDisableRight] = useState(false);
 
   const clicked = useRef(false);
