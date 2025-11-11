@@ -59,7 +59,7 @@ const ProfileCard = () => {
     }
 
     return (
-        <div className="flex flex-col gap-2 max-md:rounded-2xl items-center text-white p-4 px-6 w-[80%] text-xl max-md:mx-auto md:w-full self-stretch">
+        <div className="flex flex-col gap-2 max-md:rounded-2xl items-center text-white p-4 px-6 text-xl max-md:mx-auto self-stretch">
             <CircleUserRound strokeWidth={0.5} className="h-26 w-26 rounded-full" />
             <p>{name}</p>
             <div className="flex items-center gap-1">
