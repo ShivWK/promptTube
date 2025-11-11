@@ -53,7 +53,7 @@ const SavedVideosSection = () => {
     }
 
     return (
-        <div className="w-full self-start p-4 text-white">
+        <div className="self-start p-4 text-white w-full">
             {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
                     Card={HistoryVideoCard}
@@ -61,14 +61,7 @@ const SavedVideosSection = () => {
                     dataToMap={historyVideos}
 
                 />}
-            {/* <h2 className="text-xl md:text-2xl tracking-wide font-medium mb-4">History</h2>
-            <div className="w-full overflow-auto scrollbar-hide">
-                <div onScroll={containerScrollHandler} className="flex items-center py-2 gap-2 md:gap-4">
-                    {videosLoading ? <p>loading...</p>
-                        : historyVideos.map((video) => <HistoryVideoCard key={video.id} object={video} />)}
-                </div>
-                <Scrollbar scrolledPercentage={scrollPercentage} marginTop={20} />
-            </div> */}
+
 
             {/* <h2 className="text-xl tracking-wide">Liked videos</h2>
           <div></div>

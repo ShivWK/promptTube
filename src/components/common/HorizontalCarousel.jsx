@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo } from "react";
+import { useRef, memo, useEffect } from "react";
 import debounceCreater from "../../utils/debounceCreater";
 import Button from "./Button";
 
@@ -7,16 +7,27 @@ const HorizontalCarousel = memo(({
   margin_bottom = 0,
   dataToMap,
   Card,
-  autoScrollWidth = 300,
 }) => {
   const clicked = useRef(false);
-  const direction = useRef(1);
   const rightBtnRef = useRef(null);
   const leftBtnRef = useRef(null);
   const containerRef = useRef(null);
 
   const debouncedHandleRightClick = useRef(debounceCreater(handleRightClick, 100));
   const debouncedHandleLeftClick = useRef(debounceCreater(handleLeftClick, 100));
+
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //   if (!container) return;
+
+  //   const clientWidth = container.clientWidth;
+  //   const scrollWidth = container.scrollWidth;
+
+  //   if (clientWidth === scrollWidth) {
+  //     rightBtnRef.current.hidden = true;
+  //     leftBtnRef.current.hidden = true;
+  //   }
+  // }, [])
 
   function handleScroll() {
     const container = containerRef.current;
@@ -29,16 +40,14 @@ const HorizontalCarousel = memo(({
 
     if (viewed >= scrollWidth) {
       rightBtnRef.current.disabled = true;
+    } else {
+      rightBtnRef.current.disabled = false;
     }
 
     if (!(scrollLeft > 0)) {
       leftBtnRef.current.disabled = true;
-    }
-
-    if (scrollLeft == 0 && clientWidth === scrollWidth) {
-      rightBtnRef.current.hidden = true;
-      leftBtnRef.current.hidden = true;
-      setHideScrollBar(true)
+    } else {
+      leftBtnRef.current.disabled = false;
     }
   }
 
@@ -68,7 +77,7 @@ const HorizontalCarousel = memo(({
   }
 
   return (
-    <>
+    <div className="overflow-auto scrollbar-hide w-full border-do">
       <div className="flex justify-between flex-wrap items-center" style={{ marginBottom: margin_bottom }}>
         {heading && (
           <h2 className="text-xl md:text-2xl tracking-wide font-medium mb-4">
@@ -92,13 +101,13 @@ const HorizontalCarousel = memo(({
         <div
           onScroll={handleScroll}
           ref={containerRef}
-          className="flex justify-start gap-3 md:gap-7 overflow-y-visible overflow-x-auto scrollbar-hide py-2"
+          className="w-full flex justify-start gap-3 md:gap-7 overflow-x-auto scrollbar-hide py-2"
           onTouchEnd={() => clicked.current = true}
         >
           {dataToMap.map((video) => <Card key={video.id} object={video} />)}
         </div>
       </div>
-    </>
+    </div>
   );
 });
 
