@@ -1,4 +1,4 @@
-function debounceCreater(func, delay) {
+function debounceCreator(func, delay) {
   let timer = null;
 
   return (...args) => {
@@ -7,4 +7,4 @@ function debounceCreater(func, delay) {
   }
 }
 
-export default debounceCreater;
+export default debounceCreator;

@@ -7,6 +7,8 @@ import { setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import DotBounceLoader from "../common/DotBounceLoader";
 import ChannelCard from "../common/ChannelCard";
+import { auth } from "../../utils/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 import useFetch from "./../../hooks/useFetch";
 import { signOut } from "firebase/auth";
 import { useState } from "react";
@@ -22,6 +24,7 @@ const ProfileCard = () => {
     const [subscribedChannels, setSubscribedChannels] = useState([]);
     const [logoutLoading, setLogoutLoading] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     useFetch({
         trigger,
@@ -38,8 +41,10 @@ const ProfileCard = () => {
             setLogoutLoading(true);
             try {
                 await signOut(auth);
-                setLogoutLoading(false)
+                setLogoutLoading(false);
+                navigate("/", { replace: true })
             } catch (err) {
+                console.log("Error in logout", err)
                 setLogoutLoading(false);
                 dispatch(setToast({
                     message: "Unable to sign out. Please ty again!",

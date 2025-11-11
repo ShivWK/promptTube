@@ -1,5 +1,5 @@
 import { useRef, memo, useEffect, useState } from "react";
-import debounceCreater from "../../utils/debounceCreater";
+import debounceCreator from "../../utils/debounceCreator";
 import Button from "./Button";
 
 const HorizontalCarousel = memo(({
@@ -16,8 +16,8 @@ const HorizontalCarousel = memo(({
   const leftBtnRef = useRef(null);
   const containerRef = useRef(null);
 
-  const debouncedHandleRightClick = useRef(debounceCreater(handleRightClick, 100));
-  const debouncedHandleLeftClick = useRef(debounceCreater(handleLeftClick, 100));
+  const debouncedHandleRightClick = useRef(debounceCreator(handleRightClick, 100));
+  const debouncedHandleLeftClick = useRef(debounceCreator(handleLeftClick, 100));
 
   useEffect(() => {
     const container = containerRef.current;
@@ -33,16 +33,16 @@ const HorizontalCarousel = memo(({
     }
   }, [])
 
-  function handleScroll() {
-    const container = containerRef.current;
-    if (!container) return
+  function handleScroll(e) {
+    const container = e.target;;
 
     const clientWidth = container.clientWidth;
     const scrollLeft = container.scrollLeft;
     const scrollWidth = container.scrollWidth;
     const viewed = clientWidth + scrollLeft;
+    const TOLERANCE = 10;
 
-    if (viewed >= scrollWidth) {
+    if (viewed >= (scrollWidth - TOLERANCE)) {
       setDisableRight(true);
     } else {
       setDisableRight(false);
@@ -65,7 +65,7 @@ const HorizontalCarousel = memo(({
     });
   }
 
-  function handleLeftClick(e) {
+  function handleLeftClick() {
     const container = containerRef.current;
     if (!container) return;
 

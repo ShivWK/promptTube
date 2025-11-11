@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentPlaying: {},
+    currentChannel: {},
     history: [],
     watch_later: [],
     liked_videos: []
@@ -47,6 +48,10 @@ const watchSlice = createSlice({
     reducers: {
         setCurrentPlaying: (state, action) => {
             state.currentPlaying = action.payload;
+        },
+
+        setCurrentChannel: (state, action) => {
+            state.currentChannel = action.payload;
         },
 
         manageHistory: (state, action) => {
@@ -105,12 +110,14 @@ const watchSlice = createSlice({
 export default watchSlice.reducer;
 
 export const selectCurrentPlaying = state => state.watch.currentPlaying;
+export const selectCurrentChannel = state => state.watch.currentChannel;
 export const selectWatchLater = state => state.watch.watch_later;
 export const selectHistory = state => state.watch.history;
 export const selectLikedVideos = state => state.watch.liked_videos;
 
 export const {
     setCurrentPlaying,
+    setCurrentChannel,
     manageHistory,
     manageWatchLater,
     manageLikedVideos,

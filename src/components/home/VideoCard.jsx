@@ -15,7 +15,7 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     const dispatch = useDispatch();
 
     const handleLinkClick = () => {
-        navigate(`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
+        navigate(`/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId || 1}`);
         window.scrollTo({
             top: 0,
             behavior: "smooth"

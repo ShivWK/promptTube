@@ -10,7 +10,7 @@ import {
 
 import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 
-import { setCurrentPlaying } from "../../features/watch/watchSlice";
+import { setCurrentChannel, setCurrentPlaying } from "../../features/watch/watchSlice";
 
 import { auth } from "../../utils/firebaseConfig";
 import Header from "./header/Header";
@@ -75,6 +75,8 @@ const Layout = () => {
     useEffect(() => {
         const currentPlaying = getFromLocalStorage({ get: "currentPlayingVideo" });
         dispatch(setCurrentPlaying(currentPlaying ?? []));
+        const currentChannel = getFromLocalStorage({ get: "currentChannel" });
+        dispatch(setCurrentChannel(currentChannel));
 
         const resizeHandler = () => {
             if (window.innerWidth <= 768) {

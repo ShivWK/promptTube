@@ -2,7 +2,7 @@ import { setCurrentPlaying } from "../../features/watch/watchSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const HistoryVideoCard = ({ object }) => {
+const VideoCard = ({ object }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -17,7 +17,7 @@ const HistoryVideoCard = ({ object }) => {
   }
 
   return (
-    <div onClick={cardClickHandler} className="flex shrink-0 h-60 w-72 flex-col gap-1 bg-gray-900 rounded-xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-150 ease-linear border border-gray-600">
+    <div onClick={cardClickHandler} className="flex shrink-0 h-60 w-72 flex-col gap-1 bg-gray-900 rounded-xl overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-150 ease-linear border border-gray-900">
       <img
         alt="thumbnail"
         src={object.snippet.thumbnails?.high?.url}
@@ -34,4 +34,4 @@ const HistoryVideoCard = ({ object }) => {
   )
 }
 
-export default HistoryVideoCard;
+export default VideoCard;

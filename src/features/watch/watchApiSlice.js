@@ -26,10 +26,17 @@ const watchApiSlice = createApi({
 
         getChannelDetails: builder.query({
             query: ({ id }) => ({
-                url: `channels?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                url: `channels?part=snippet%2CcontentDetails%2Cstatistics%2CbrandingSettings&id=${id}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET"
             })
         }),
+
+        getChannelVideos: builder.query({
+            query: ({ playListId }) => ({
+                url: `playlistItems?part=snippet%2CcontentDetails&playlistId=${playListId}&maxResults=50&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                method: 'GET'
+            })
+        })
     })
 });
 
@@ -38,5 +45,6 @@ export default watchApiSlice;
 export const {
     useLazyGetVideoByIdQuery,
     useLazyGetChannelDetailsQuery,
-    useLazyGetCommentsQuery
+    useLazyGetCommentsQuery,
+    useLazyGetChannelVideosQuery,
 } = watchApiSlice;

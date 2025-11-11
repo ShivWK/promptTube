@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
-import debounceCreater from "../../utils/debounceCreater";
+import debounceCreator from "../../utils/debounceCreator";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -17,7 +17,7 @@ import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
 
 const SearchBar = () => {
   const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
-  const dataFetcher = useRef(debounceCreater(getSuggestions, 100));
+  const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
   const [search, setSearch] = useState("");
 
   const searchSuggestion = useSelector(selectSuggestions);

@@ -2,7 +2,7 @@ import { selectLikedVideos, selectHistory, selectWatchLater } from "../../featur
 import { useLazyGetVideoByIdQuery } from "../../features/watch/watchApiSlice";
 import { selectSavedDataLoading } from "../../features/home/homeSlice";
 import { useState, useEffect, useRef } from "react";
-import HistoryVideoCard from "./HistoryVideoCard";
+import VideoCard from "./VideoCard";
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
 
@@ -42,26 +42,26 @@ const SavedVideosSection = () => {
     }, [likedVideoIds, historyVideoIds, watchLaterVideoIds, savedDataLoading])
 
     return (
-        <div className="self-start p-4 text-white w-full flex flex-col gap-6">
+        <div className="self-start px-1 text-white w-full flex flex-col gap-6">
             {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
-                    Card={HistoryVideoCard}
+                    Card={VideoCard}
                     heading="History"
-                    dataToMap={historyVideos}
+                    dataToMap={[...historyVideos].reverse()}
                 />}
 
             {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
-                    Card={HistoryVideoCard}
+                    Card={VideoCard}
                     heading="Liked Videos"
-                    dataToMap={likedVideos}
+                    dataToMap={[...likedVideos].reverse()}
                 />}
 
             {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
-                    Card={HistoryVideoCard}
+                    Card={VideoCard}
                     heading="Watch Later"
-                    dataToMap={watchLaterVideos}
+                    dataToMap={[...watchLaterVideos].reverse()}
                 />}
         </div>
     )
