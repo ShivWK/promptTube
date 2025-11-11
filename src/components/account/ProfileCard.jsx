@@ -23,8 +23,6 @@ const ProfileCard = () => {
     const [logoutLoading, setLogoutLoading] = useState(false);
     const dispatch = useDispatch();
 
-    console.log(isLoading)
-
     useFetch({
         trigger,
         setState: setSubscribedChannels,
