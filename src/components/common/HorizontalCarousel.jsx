@@ -1,6 +1,6 @@
 import { useEffect, useRef, memo } from "react";
 import debounceCreater from "../../utils/debounceCreater";
-import Button from "./BUtton";
+import Button from "./Button";
 
 const HorizontalCarousel = memo(({
   heading = null,
