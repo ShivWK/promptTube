@@ -12,6 +12,7 @@ dotenv.config({ path: "./.env" });
 
 const allowedOrigins = [
     "http://localhost:5173/",
+    "http://localhost:5173",
     "https://prompttube-ai.shivendra.site",
 ]
 
