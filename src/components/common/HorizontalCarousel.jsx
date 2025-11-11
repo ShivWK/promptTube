@@ -10,8 +10,8 @@ const HorizontalCarousel = memo(({
 }) => {
   const [disableLeft, setDisableLeft] = useState(true);
   const [disableRight, setDisableRight] = useState(false);
+  const [bothHidden, setBothHidden] = useState(false);
 
-  const clicked = useRef(false);
   const rightBtnRef = useRef(null);
   const leftBtnRef = useRef(null);
   const containerRef = useRef(null);
@@ -29,6 +29,7 @@ const HorizontalCarousel = memo(({
     if (clientWidth === scrollWidth) {
       rightBtnRef.current.hidden = true;
       leftBtnRef.current.hidden = true;
+      setBothHidden(true);
     }
   }, [])
 
@@ -78,7 +79,7 @@ const HorizontalCarousel = memo(({
     <div className="overflow-auto scrollbar-hide w-full">
       <div className="flex justify-between flex-wrap items-center" style={{ marginBottom: margin_bottom }}>
         {heading && (
-          <h2 className="text-xl md:text-2xl tracking-wide font-medium mb-4">
+          <h2 className={`text-xl md:text-2xl tracking-wide font-medium ${bothHidden && "mb-3"}`}>
             {heading}
           </h2>
         )}
