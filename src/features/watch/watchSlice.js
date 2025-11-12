@@ -58,7 +58,9 @@ const watchSlice = createSlice({
             const { mode, videoId } = action.payload;
 
             if (mode === "add") {
-                state.history.push(videoId);
+                if (!state.history.includes(videoId)) {
+                    state.history.push(videoId);
+                }
             } else if (mode === "base") {
                 state.history = videoId;
             } else {
@@ -71,7 +73,9 @@ const watchSlice = createSlice({
             const { mode, videoId } = action.payload;
 
             if (mode === "add") {
-                state.watch_later.push(videoId);
+                if (!state.watch_later.includes(videoId)) {
+                    state.watch_later.push(videoId);
+                }
             } else if (mode === "base") {
                 state.watch_later = videoId;
             } else {
@@ -84,7 +88,9 @@ const watchSlice = createSlice({
             const { mode, videoId } = action.payload;
 
             if (mode === "add") {
-                state.liked_videos.push(videoId);
+                if (!state.liked_videos.includes(videoId)) {
+                    state.liked_videos.push(videoId);
+                }
             } else if (mode === "base") {
                 state.liked_videos = videoId;
             } else {
