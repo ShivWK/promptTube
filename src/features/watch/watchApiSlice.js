@@ -32,8 +32,8 @@ const watchApiSlice = createApi({
         }),
 
         getChannelVideos: builder.query({
-            query: ({ playListId }) => ({
-                url: `playlistItems?part=snippet%2CcontentDetails&playlistId=${playListId}&maxResults=50&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+            query: ({ id }) => ({
+                url: `playlistItems?part=snippet%2CcontentDetails&playlistId=${id}&maxResults=50&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: 'GET'
             })
         })

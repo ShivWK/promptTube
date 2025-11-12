@@ -26,7 +26,7 @@ export const FIRST = [
     {
         name: "Subscription",
         Icon: MailPlus,
-        url: "/account"
+        url: "/account?section=subscription"
     },
 ]
 
@@ -34,18 +34,19 @@ export const YOUR = [
     {
         name: "Watch Later",
         Icon: Clock,
-        url: "/account"
+        url: "/account?section=watchLater"
     },
 
     {
         name: "Liked videos",
         Icon: ThumbsUp,
-        url: "/account"
+        url: "/account?section=likedVideo"
     },
+    
     {
         name: "History",
         Icon: History,
-        url: "/account"
+        url: "/account?section=history"
     },
 ]
 

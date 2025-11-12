@@ -8,7 +8,8 @@ import searchLoader from "../components/search/searchLoader";
 import PcSearchPage from "../components/search/PcSearchPage";
 import VideoByCategory from "../components/home/VideoByCategory";
 import Account from "../components/account/Account";
-import accountLoader from "../components/account/accountLoader";
+import authCheckLoader from "../components/account/authCheckLoader";
+import Channel from "../components/subscribedChannels/Channel";
 
 const AppRouter = () => {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -19,7 +20,8 @@ const AppRouter = () => {
             <Route path="search" loader={searchLoader} element={<SearchPage />} />
             <Route path="pc_search" element={<PcSearchPage />} />
             <Route path="category_videos" element={<VideoByCategory />} />
-            <Route path="account" loader={accountLoader} element={<Account />} />
+            <Route path="account" loader={authCheckLoader} element={<Account />} />
+            <Route path="channel" loader={authCheckLoader} element={<Channel />} />
         </Route>
     ))
 

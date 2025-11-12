@@ -43,26 +43,32 @@ const SavedVideosSection = () => {
 
     return (
         <div className="self-start px-1 text-white w-full flex flex-col gap-6">
-            {videosLoading ? <p>Loading...</p>
+            <div id="history">
+                {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
                     Card={VideoCard}
                     heading="History"
                     dataToMap={[...historyVideos].reverse()}
                 />}
+            </div>
 
-            {videosLoading ? <p>Loading...</p>
+            <div id="likedVideos">
+                {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
                     Card={VideoCard}
                     heading="Liked Videos"
                     dataToMap={[...likedVideos].reverse()}
                 />}
+            </div>
 
-            {videosLoading ? <p>Loading...</p>
+            <div id="watchLater">
+                {videosLoading ? <p>Loading...</p>
                 : <HorizontalCarousel
                     Card={VideoCard}
                     heading="Watch Later"
                     dataToMap={[...watchLaterVideos].reverse()}
                 />}
+            </div>
         </div>
     )
 }

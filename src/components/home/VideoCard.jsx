@@ -27,7 +27,6 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
         if (checkAuth()) {
             dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
         }
-
         addToLocalStorage({name: "currentPlayingVideo", add: object});
     }
 
