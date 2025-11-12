@@ -9,8 +9,6 @@ const Subscriptions = () => {
     const savedDataLoading = useSelector(selectSavedDataLoading);
     const subscriptionLoading = useSelector(selectSubscriptionLoading);
 
-
-
     return (
         (savedDataLoading || subscriptionLoading) ? <p>Loading...</p>
             : <div className="md:hidden px-1 mt-2">
