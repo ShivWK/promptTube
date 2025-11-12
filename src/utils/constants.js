@@ -19,28 +19,33 @@ import {
 export const FIRST = [
     {
         name: "Home",
-        Icon: House
+        Icon: House,
+        url: "/"
     },
 
     {
         name: "Subscription",
-        Icon: MailPlus
+        Icon: MailPlus,
+        url: "/account"
     },
 ]
 
 export const YOUR = [
     {
         name: "Watch Later",
-        Icon: Clock
+        Icon: Clock,
+        url: "/account"
     },
 
     {
         name: "Liked videos",
-        Icon: ThumbsUp
+        Icon: ThumbsUp,
+        url: "/account"
     },
     {
         name: "History",
-        Icon: History
+        Icon: History,
+        url: "/account"
     },
 ]
 
