@@ -31,11 +31,13 @@ const ProfileCard = () => {
         trigger,
         setState: setSubscribedChannels,
         fetchWhat: "subscribed channels",
-        id: subscriptions.join(",")
+        id: subscriptions.join(","),
+        dependencies: [savedDataLoading]
     })
 
     useEffect(() => {
-        dispatch(manageSubscribedChannelData(subscribedChannels));
+        console.log("Subs", subscriptions, subscribedChannels)
+        dispatch(manageSubscribedChannelData(subscribedChannels || []));
     }, [subscribedChannels])
 
     useEffect(() => {
@@ -102,7 +104,7 @@ const ProfileCard = () => {
                 <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
                 <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
                     {(isLoading || savedDataLoading) ? <p>Loading...</p>
-                        : subscribedChannels.map((channel) => <ChannelCard key={channel.id} object={channel} />)
+                        : (subscribedChannels || []).map((channel) => <ChannelCard key={channel.id} object={channel} />)
                     }
                 </div>
             </div>

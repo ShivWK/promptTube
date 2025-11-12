@@ -2,7 +2,7 @@ import { selectCurrentPlaying } from "../features/watch/watchSlice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWork = null}) => {
+const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWork = null, dependencies=[]}) => {
     const currentPlayingVideo = useSelector(selectCurrentPlaying);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWo
         }
 
         fetchData();
-    }, [currentPlayingVideo, id])
+    }, [currentPlayingVideo, id, ...dependencies])
 }
 
 export default useFetch;
