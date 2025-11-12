@@ -36,7 +36,6 @@ const ProfileCard = () => {
     })
 
     useEffect(() => {
-        console.log("Subs", subscriptions, subscribedChannels)
         dispatch(manageSubscribedChannelData(subscribedChannels || []));
     }, [subscribedChannels])
 

@@ -12,18 +12,13 @@ const Channel = () => {
     const currentChannel = useSelector(selectCurrentChannel);
     const uploadsId = currentChannel?.contentDetails?.relatedPlaylists?.uploads;
 
-    console.log("id", uploadsId)
-
     const [ readMore, setReadMore ] = useState(false);
     const [ newUploads, setNewUploads ] = useState([]);
-    console.log(currentChannel);
 
     useFetch({ trigger:triggerVideos, id:uploadsId, setState: setNewUploads, fetchWhat:"channel new uploads" })
 
-    console.log("New uploads", newUploads);
-
     return (
-        <main className="md:max-w-[1300px] md:mx-auto pt-20 md:pt-24 max-md:px-1 flex flex-col gap-8">
+        <main className="md:max-w-[1300px] md:mx-auto pt-20 md:pt-24 max-md:px-1 flex flex-col gap-8 pb-12">
             <section className="relative">
                 <img
                     src={currentChannel?.brandingSettings?.image?.bannerExternalUrl}

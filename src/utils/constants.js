@@ -42,7 +42,7 @@ export const YOUR = [
         Icon: ThumbsUp,
         url: "/account?section=likedVideo"
     },
-    
+
     {
         name: "History",
         Icon: History,
@@ -58,7 +58,8 @@ export const GENERAL_SUB_CATEGORY = [
 
     {
         name: "Music",
-        Icon: Music
+        Icon: Music,
+        categoryId: 10
     },
 
     {
