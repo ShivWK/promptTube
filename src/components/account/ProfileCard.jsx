@@ -1,7 +1,8 @@
 import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
-import { selectSubscriptions } from "../../features/userActivity/userActivitySlice";
+import { selectSubscriptions, setSubscriptionLoading } from "../../features/userActivity/userActivitySlice";
 import { selectSavedDataLoading, selectIsSmall } from "../../features/home/homeSlice";
 import { selectUserDetails, setEmailVerification } from "../../features/auth/authSlice";
+import { manageSubscribedChannelData } from "../../features/userActivity/userActivitySlice";
 import { CircleCheck, CircleUserRound, Info, LogOut } from "lucide-react";
 import { setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +12,7 @@ import { auth } from "../../utils/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import useFetch from "./../../hooks/useFetch";
 import { signOut } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ProfileCard = () => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
@@ -32,6 +33,18 @@ const ProfileCard = () => {
         fetchWhat: "subscribed channels",
         id: subscriptions.join(",")
     })
+
+    useEffect(() => {
+        dispatch(manageSubscribedChannelData(subscribedChannels));
+    }, [subscribedChannels])
+
+    useEffect(() => {
+        if (!isLoading) {
+            dispatch(setSubscriptionLoading(false))
+        } else {
+            dispatch(setSubscriptionLoading(true))
+        }
+    }, [isLoading])
 
     const signoutClickHandler = (e) => {
         e.stopPropagation()
@@ -64,7 +77,7 @@ const ProfileCard = () => {
     }
 
     return (
-        <div className="flex flex-col gap-2 max-md:rounded-2xl items-center text-white p-4 px-6 text-xl max-md:mx-auto self-stretch">
+        <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white py-2 md:py-4 px-4 md:px-6 text-xl max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
             <CircleUserRound strokeWidth={0.5} className="h-26 w-26 rounded-full" />
             <p>{name}</p>
             <div className="flex items-center gap-1">
@@ -89,7 +102,7 @@ const ProfileCard = () => {
                 <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
                 <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
                     {(isLoading || savedDataLoading) ? <p>Loading...</p>
-                        : subscribedChannels.map((channel) => <ChannelCard channel={channel} />)
+                        : subscribedChannels.map((channel) => <ChannelCard key={channel.id} object={channel} />)
                     }
                 </div>
             </div>

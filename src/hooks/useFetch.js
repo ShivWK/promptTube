@@ -23,7 +23,7 @@ const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWo
         }
 
         fetchData();
-    }, [currentPlayingVideo])
+    }, [currentPlayingVideo, id])
 }
 
 export default useFetch;

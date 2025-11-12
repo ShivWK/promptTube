@@ -79,11 +79,11 @@ const HorizontalCarousel = memo(({
     <div className="overflow-auto scrollbar-hide w-full">
       <div className="flex justify-between flex-wrap items-center" style={{ marginBottom: margin_bottom }}>
         {heading && (
-          <h2 className={`text-xl md:text-2xl tracking-wide font-medium ${bothHidden && "mb-3"}`}>
+          <h2 className={`text-xl md:text-2xl tracking-wide font-medium dark:text-white  ${bothHidden && "md:mb-3"}`}>
             {heading}
           </h2>
         )}
-        <div className={`flex justify-between gap-1 ${!heading && "ml-auto"}`}>
+        <div className={`hidden md:flex justify-between gap-1 ${!heading && "ml-auto"}`}>
           <Button
             ref={leftBtnRef}
             clickHandler={debouncedHandleLeftClick.current}

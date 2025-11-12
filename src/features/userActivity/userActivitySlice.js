@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     subscriptions: [],
+    subscribedChannelsData: [],
+    subscriptionLoading: false,
     comments: []
 }
 
@@ -81,6 +83,14 @@ const userActivitySlice = createSlice({
             }
         },
 
+        manageSubscribedChannelData: (state, action) => {
+            state.subscribedChannelsData = action.payload;
+        },
+
+        setSubscriptionLoading: (state, action) => {
+            state.subscriptionLoading = action.payload;
+        },
+
         manageComments: (state, action) => {
             const { mode, comment } = action.payload;
 
@@ -108,5 +118,13 @@ export default userActivitySlice.reducer;
 
 export const selectSubscriptions = state => state.userActivity.subscriptions;
 export const selectComments = state => state.userActivity.comments;
+export const selectChannelsData = state => state.userActivity.subscribedChannelsData;
+export const selectSubscriptionLoading = state => state.userActivity.subscriptionLoading;
 
-export const { manageSubscriptions, manageComments } = userActivitySlice.actions;
+export const {
+    manageSubscriptions,
+    manageComments,
+    manageSubscribedChannelData,
+    setSubscriptionLoading,
+} = userActivitySlice.actions;
+
