@@ -74,7 +74,8 @@ export const GENERAL_SUB_CATEGORY = [
 
     {
         name: "Gaming",
-        Icon: Gamepad2
+        Icon: Gamepad2,
+        categoryId: 20
     },
 
     {

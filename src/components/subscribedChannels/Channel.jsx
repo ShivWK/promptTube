@@ -47,7 +47,7 @@ const Channel = () => {
             <h2 className="text-white text-center font-medium tracking-wide text-xl md:text-2xl">Videos</h2>
             <section className="flex items-center gap-4 flex-wrap">
                 {isLoading ? <p>Loading...</p>
-                : newUploads.map((video) => <VideoCard key={video.id} object={video} />)}
+                : newUploads.map((video) => <VideoCard key={video.id} object={video} mode="channel" />)}
             </section>
         </main>
     )
