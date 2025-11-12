@@ -11,7 +11,7 @@ import useAuthCheck from "../../hooks/useAuthCheck";
 
 const Comments = ({ id }) => {
     const [trigger, { isLoading }] = useLazyGetCommentsQuery();
-    const [ user, checkAuth ] = useAuthCheck();
+    const [ _, checkAuth ] = useAuthCheck();
     const [showCompleteComment, setShowCompleteComment] = useState(false);
     const [comments, setComments] = useState([]);
     const storedComments = useSelector(selectComments)
@@ -23,7 +23,7 @@ const Comments = ({ id }) => {
 
     const hideButtonClickHandler = (e) => {
         e.stopPropagation();
-        setShowCompleteComment(false)
+        setShowCompleteComment(false);
     }
 
     useEffect(() => {
@@ -85,12 +85,6 @@ const Comments = ({ id }) => {
         })
         e.target.comment.value = "";
     }
-
-    useEffect(() => {
-
-    }, [storedComments])
-
-    // console.log(comments)
 
     return (
         isLoading ? <p>Loading...</p>

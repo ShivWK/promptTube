@@ -18,7 +18,7 @@ const Channel = () => {
     useFetch({ trigger:triggerVideos, id:uploadsId, setState: setNewUploads, fetchWhat:"channel new uploads" })
 
     return (
-        <main className="md:max-w-[1300px] md:mx-auto pt-20 md:pt-24 max-md:px-1 flex flex-col gap-8 pb-12">
+        <main className="md:max-w-[1150px] md:mx-auto pt-20 md:pt-24 max-md:px-1 flex flex-col gap-5 md:gap-8 pb-12">
             <section className="relative">
                 <img
                     src={currentChannel?.brandingSettings?.image?.bannerExternalUrl}
@@ -44,7 +44,8 @@ const Channel = () => {
                 <p className={`text-sm md:text-lg tracking-wide ${!readMore && "line-clamp-3 md:line-clamp-4"}`}>{currentChannel?.brandingSettings?.channel?.description}</p>
             </section>
 
-            <section className="flex items-center gap-5 xl:gap-6 flex-wrap">
+            <h2 className="text-white text-center font-medium tracking-wide text-xl md:text-2xl">Videos</h2>
+            <section className="flex items-center gap-4 flex-wrap">
                 {isLoading ? <p>Loading...</p>
                 : newUploads.map((video) => <VideoCard key={video.id} object={video} />)}
             </section>

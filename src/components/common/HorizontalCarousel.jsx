@@ -79,7 +79,7 @@ const HorizontalCarousel = memo(({
     <div className="overflow-auto scrollbar-hide w-full">
       <div className="flex justify-between flex-wrap items-center" style={{ marginBottom: margin_bottom }}>
         {heading && (
-          <h2 className={`text-xl md:text-2xl tracking-wide font-medium dark:text-white  ${bothHidden && "md:mb-3"}`}>
+          <h2 className={`text-xl md:text-2xl tracking-wide font-medium dark:text-white ${bothHidden && "md:mb-3"}`}>
             {heading}
           </h2>
         )}
@@ -102,7 +102,7 @@ const HorizontalCarousel = memo(({
         <div
           onScroll={handleScroll}
           ref={containerRef}
-          className="w-full flex justify-start gap-3 md:gap-7 overflow-x-auto scrollbar-hide py-2"
+          className="w-full flex justify-start gap-3 md:gap-4 overflow-x-auto scrollbar-hide py-2"
         >
           {dataToMap.map((video) => <Card key={video.id} object={video} />)}
         </div>
