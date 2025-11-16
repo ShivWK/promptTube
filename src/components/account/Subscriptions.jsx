@@ -13,9 +13,9 @@ const Subscriptions = () => {
     const shimmerArray = Array.from({ length: 10 })
 
     return (
-        isSmall && (savedDataLoading || subscriptionLoading) ? <div className="my-3 flex flex-col gap-2.5 px-1 overflow-auto scrollbar-hide">
-            <div className="animate-shimmer-bg w-32 h-6 md:h-7"></div>
-            <div className="flex gap-3">
+        isSmall && (savedDataLoading || subscriptionLoading) ? <div className="my-3 flex flex-col gap-2.5 px-1">
+            <div className="animate-shimmer-bg rounded w-32 h-6 md:h-7"></div>
+            <div className="flex gap-3 overflow-auto scrollbar-hide">
                 {shimmerArray.map((_, index) => <ChannelShimmerCard key={index} />)}
             </div>
         </div>
