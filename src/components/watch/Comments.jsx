@@ -8,6 +8,7 @@ import useFetch from "../../hooks/useFetch";
 import { selectComments, setComment } from "../../features/userActivity/userActivitySlice";
 import { selectUserDetails } from "../../features/auth/authSlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
+import CommentShimmer from "../shimmer/CommentShimmer";
 
 const Comments = ({ id }) => {
     const [trigger, { isLoading }] = useLazyGetCommentsQuery();
@@ -87,7 +88,7 @@ const Comments = ({ id }) => {
     }
 
     return (
-        isLoading ? <p>Loading...</p>
+        isLoading ? <CommentShimmer />
             : <div onClick={commentBoxClickHandler} className={`relative w-full rounded-md transition-all duration-150 ease-linear dark:bg-gray-800 p-2 pb-1 dark:text-gray-200 mt-1 pretty-scrollbar ${showCompleteComment ? "overflow-auto" : "overflow-hidden cursor-pointer"}`}>
 
                 {showCompleteComment && <div className="flex items-center gap-2 md:gap-3 mb-2 bg-gray-800 w-full">
