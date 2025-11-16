@@ -12,7 +12,7 @@ const ShimmerUi = () => {
 
     return <div className="flex flex-col gap-4 md:gap-6">
         <div className="w-32 h-6 md:h-7 rounded animate-shimmer-bg" />
-        <div className="flex gap-3 overflow-hidden">
+        <div className="flex gap-3 overflow-auto scrollbar-hide">
             {shimmerArray.map((_, index) => <SavedVideoShimmerCard key={index} />)}
         </div>
     </div>
