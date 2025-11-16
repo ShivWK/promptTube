@@ -10,7 +10,7 @@ const Attribution = () => {
                     }}
 
                     className="h-[14vh] w-[14vh] rounded-[50%] object-cover border-2 border-primary p-1"
-                    src="/images/MY-min.png"
+                    src="/images/MY-min.jpeg"
                     alt="Developer image"
                 />
                 <div className="flex flex-col justify-center italic dark:text-white">
