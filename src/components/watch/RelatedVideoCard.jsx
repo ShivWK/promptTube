@@ -38,7 +38,7 @@ const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
     }
 
     return (
-        <div onClick={handleVideoClick} className={`rounded-2xl overflow-hidden flex flex-col md:flex-row self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear md:h-36 h-auto w-full cursor-pointer`}>
+        <div onClick={handleVideoClick} className="rounded-2xl overflow-hidden flex flex-col md:flex-row self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear md:h-36 h-auto w-full cursor-pointer">
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}

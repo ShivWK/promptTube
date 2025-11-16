@@ -98,11 +98,9 @@ const TabMenu = () => {
         <ChevronLeft size={isSmall ? 30 : 40} className="dark:text-gray-200" />
       </button>}
 
-      <div ref={containerRef} className="flex items-center gap-4 backdrop-blur-md py-1 pb-2 lg:py-2 px-1 overflow-auto scrollbar-hide">
+      <div ref={containerRef} className="flex items-center gap-3 md:gap-4 backdrop-blur-md py-1 pb-2 lg:py-2 px-1 overflow-auto scrollbar-hide">
         {isLoading
-          ? tabsShimmer.map((_, index) => <span key={index} className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap select-none tracking-wide">
-            <DotBounceLoader color1="text-primary" color3="text-primary" nmSize="text-lg" mdSize="text-xl" />
-          </span>)
+          ? tabsShimmer.map((_, index) => <span key={index} className="rounded-lg md:rounded-xl py-1 lg:py-1.5 px-3 h-8 md:h-10 w-36 shrink-0 animate-shimmer-bg"></span>)
           : tags.slice(0, 17).map((item) => {
             if (item.snippet.title === "Short Movies" || item.snippet.title === "Travel & Events" || item.snippet.title === "Videoblogging" || item.snippet.title === "Education") return;
             return <button onClick={() => categoryClickHandler(item.id)} className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap tracking-wide" key={item.id}>

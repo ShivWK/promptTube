@@ -4,6 +4,7 @@ import RelatedVideoCard from "./RelatedVideoCard";
 import {selectCurrentPlaying} from "../../features/watch/watchSlice";
 import { useSelector } from "react-redux";
 import useFetch from "../../hooks/useFetch";
+import RelatedVideoCardShimmer from "../shimmer/RelatedVideoCardShimmer";
 
 const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
   const [trigger, { isLoading }] = useLazyGetCategoryVideosQuery();
@@ -16,7 +17,9 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
     <>
       <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">Related Videos</h2>
       <div className="w-full">
-        {isLoading ? <p className="text-white">Loading...</p>
+        {isLoading ? <div className="flex flex-col gap-5 md:gap-4 w-full">
+          <RelatedVideoCardShimmer />
+        </div>
           : <div className="flex flex-col gap-5 md:gap-4 w-full">
             {relatedVideos.map((video) => {
               if (video.id !== currentVideo.id) {

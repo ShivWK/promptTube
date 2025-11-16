@@ -42,7 +42,7 @@ const Watch = () => {
           <Comments id={id} />
         </div>
       </section>
-      <section className='basis-full md:basis-[37%] max-md:px-2 self-start'>
+      <section className='basis-full w-full md:basis-[37%] max-md:px-2 self-start'>
         <RelatedVideos categoryId={categoryId} setVideoLoader={setShowVideoLoader} />
       </section>
     </main>
