@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "./../../hooks/useFetch";
 import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
+import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
 
 const ProfileCard = () => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
@@ -26,6 +27,8 @@ const ProfileCard = () => {
     const [logoutLoading, setLogoutLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate()
+
+    const shimmerArray = Array.from({ length : 5 })
 
     useFetch({
         trigger,
@@ -102,7 +105,7 @@ const ProfileCard = () => {
             <div id="subscriptions" className="self-start mt-1 hidden md:block w-full">
                 <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
                 <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
-                    {(isLoading || savedDataLoading) ? <p>Loading...</p>
+                    {(isLoading || savedDataLoading) ? shimmerArray.map((_, index) => <ChannelShimmerCard key={index} />)
                         : (subscribedChannels || []).map((channel) => <ChannelCard key={channel.id} object={channel} />)
                     }
                 </div>

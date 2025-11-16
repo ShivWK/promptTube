@@ -29,7 +29,6 @@ const VideoCard = ({ object }) => {
         </h2>
         <p className="text-sm dark:text-gray-300">{object.snippet?.channelTitle}</p>
       </div>
-
     </div>
   )
 }

@@ -5,6 +5,18 @@ import { useState, useEffect, useRef } from "react";
 import VideoCard from "./VideoCard";
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
+import SavedVideoShimmerCard from "../shimmer/SavedVideoShimmerCard";
+
+const ShimmerUi = () => {
+    const shimmerArray = Array.from({ length: 10 });
+
+    return <div className="flex flex-col gap-4 md:gap-6">
+        <div className="w-32 h-6 md:h-7 rounded animate-shimmer-bg" />
+        <div className="flex gap-3">
+            {shimmerArray.map((_, index) => <SavedVideoShimmerCard key={index} />)}
+        </div>
+    </div>
+}
 
 const SavedVideosSection = () => {
     const [triggerVideos] = useLazyGetVideoByIdQuery();
@@ -14,13 +26,10 @@ const SavedVideosSection = () => {
     const savedDataLoading = useSelector(selectSavedDataLoading);
 
     const [videosLoading, setVideosLoading] = useState(true);
-
     const [historyVideos, setHistoryVideos] = useState([]);
     const [watchLaterVideos, setWatchLaterVideos] = useState([]);
     const [likedVideos, setLikedVideos] = useState([]);
-    const [scrollPercentage, setScrollPercentage] = useState(0);
 
-    const containerRef = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,30 +53,30 @@ const SavedVideosSection = () => {
     return (
         <div className="self-start px-1 text-white w-full flex flex-col gap-6">
             <div id="history">
-                {videosLoading ? <p>Loading...</p>
+                {videosLoading ? <ShimmerUi />
                 : <HorizontalCarousel
-                    Card={VideoCard}
-                    heading="History"
-                    dataToMap={[...historyVideos].reverse()}
-                />}
+                        Card={VideoCard}
+                        heading="History"
+                        dataToMap={[...historyVideos].reverse()}
+                    />}
             </div>
 
             <div id="likedVideos">
-                {videosLoading ? <p>Loading...</p>
-                : <HorizontalCarousel
-                    Card={VideoCard}
-                    heading="Liked Videos"
-                    dataToMap={[...likedVideos].reverse()}
-                />}
+                {videosLoading ? <ShimmerUi />
+                    : <HorizontalCarousel
+                        Card={VideoCard}
+                        heading="Liked Videos"
+                        dataToMap={[...likedVideos].reverse()}
+                    />}
             </div>
 
             <div id="watchLater">
-                {videosLoading ? <p>Loading...</p>
-                : <HorizontalCarousel
-                    Card={VideoCard}
-                    heading="Watch Later"
-                    dataToMap={[...watchLaterVideos].reverse()}
-                />}
+                {videosLoading ? <ShimmerUi />
+                    : <HorizontalCarousel
+                        Card={VideoCard}
+                        heading="Watch Later"
+                        dataToMap={[...watchLaterVideos].reverse()}
+                    />}
             </div>
         </div>
     )

@@ -10,6 +10,7 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
   const [trigger, { isLoading }] = useLazyGetCategoryVideosQuery();
   const [relatedVideos, setRelatedVideos] = useState([])
   const currentVideo = useSelector(selectCurrentPlaying);
+  const shimmerArray = Array.from({ length: 10 });
 
   useFetch({ trigger, id, setState: setRelatedVideos, fetchWhat: "related videos" })
 
@@ -18,7 +19,7 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
       <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">Related Videos</h2>
       <div className="w-full">
         {isLoading ? <div className="flex flex-col gap-5 md:gap-4 w-full">
-          <RelatedVideoCardShimmer />
+          {shimmerArray.map((_, index) => <RelatedVideoCardShimmer key={index}/>)}
         </div>
           : <div className="flex flex-col gap-5 md:gap-4 w-full">
             {relatedVideos.map((video) => {

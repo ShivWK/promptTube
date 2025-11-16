@@ -3,15 +3,22 @@ import { selectSavedDataLoading, selectIsSmall } from "../../features/home/homeS
 import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
 import ChannelCard from "../common/ChannelCard";
+import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
 
 const Subscriptions = () => {
     const isSmall = useSelector(selectIsSmall);
     const subscriptionData = useSelector(selectChannelsData);
     const savedDataLoading = useSelector(selectSavedDataLoading);
     const subscriptionLoading = useSelector(selectSubscriptionLoading);
+    const shimmerArray = Array.from({ length: 10 })
 
     return (
-         isSmall && (savedDataLoading || subscriptionLoading) ? <p>Loading...</p>
+        isSmall && (savedDataLoading || subscriptionLoading) ? <div className="my-3 flex flex-col gap-2 px-1">
+            <div className="animate-shimmer-bg h-5 rounded w-30"></div>
+            <div className="flex gap-3">
+                {shimmerArray.map((_, index) => <ChannelShimmerCard key={index} />)}
+            </div>
+        </div>
             : <div id="subscriptions" className="md:hidden px-1 mt-2">
                 <HorizontalCarousel
                     Card={ChannelCard}
