@@ -1,24 +1,19 @@
 import { selectSearchResult, selectSearchLoading } from "../../features/home/homeSlice";
-import { selectSearchResults } from "../../features/search/searchSlice";
 import VideoCard from "../home/VideoCard";
 import { useSelector } from "react-redux";
-import DotBounceLoader from "../common/DotBounceLoader";
+import VideoCardShimmer from "../shimmer/VideoCardShimmer";
 
 const SearchPage = () => {
   const searchResult = useSelector(selectSearchResult);
   const isLoading = useSelector(selectSearchLoading);
+  const shimmerArray = Array.from({ length: 10 });
 
   return (
     <main className="pt-14">
-      {isLoading ? <div className="flex items-center justify-center absolute top-0 left-0 w-full h-[110%]">
-        <DotBounceLoader
-          fourth={true}
-          allColor={"text-primary"}
-          mdSize="md:text-5xl"
-          nmSize="text-3xl"
-        />
-      </div>
-        : searchResult.length !== 0 && <section className="flex flex-col gap-3 px-2 py-4 -z-20 pt-20">
+      {isLoading ? <div className="flex items-center gap-4 flex-wrap pt-22 px-2 py-4">
+            {shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
+          </div>
+        : searchResult.length !== 0 && <section className="flex flex-col gap-4 px-2 py-4 -z-20 pt-22">
           {searchResult.map((video) => <VideoCard object={video} key={video.id.videoId} mode="search" />)}
         </section>}
     </main>
