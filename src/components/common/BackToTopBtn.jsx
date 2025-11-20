@@ -31,7 +31,7 @@ const BackToTopButton = ({}) => {
         return () => window.removeEventListener("scroll", scrollHandler);
     }, [])
 
-    return <button onClick={clickHandler} className={`fixed flex w-fit items-center justify-center gap-1 right-6 ${(mobileMenu && pathName !== "/watch") ? "bottom-16" : "bottom-5"} ${isFooterVisible && "translate-x-full"} md:bottom-6 bg-[#ff004477] border-2 border-primary text-white font-heading py-1 lg:py-1.5 px-2 rounded-md lg:text-sm cursor-pointer transform transition-all duration-200 ease-linear font-semibold tracking-wide ${showBtn ? "translate-y-o" : "translate-y-[400%]"} z-10`}>
+    return <button onClick={clickHandler} className={`fixed flex w-fit items-center justify-center gap-1 right-6 ${(mobileMenu && pathName !== "/watch") ? "bottom-16" : "bottom-5"} ${isFooterVisible && "translate-x-full"} md:bottom-6 bg-[#ff004491] border-2 border-primary text-white font-heading py-1 lg:py-1.5 px-2 rounded-md lg:text-sm cursor-pointer transform transition-all duration-150 ease-linear font-semibold tracking-wide ${showBtn ? "translate-y-o" : "translate-y-[400%]"} z-10`}>
         <i className="ri-arrow-up-circle-line font-extralight text-xl animate-pulse"></i>
         <p className="hidden lg:block">Back to top</p>
         <p className="lg:hidden">Top</p>
