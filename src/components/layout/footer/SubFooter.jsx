@@ -8,7 +8,7 @@ const SubFooter = () => {
                 <LogoAndMenu showMenu={false} showName={true} />
 
                 <p className="text-white">
-                    <span className="whitespace-normal tracking-wide font-medium">© 2025 PromptTube. All rights reserved.</span>
+                    <span className="whitespace-normal tracking-wide font-normal">© 2025 PromptTube. All rights reserved.</span>
                 </p>
 
                 <Attribution />

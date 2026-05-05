@@ -1,6 +1,6 @@
 const Attribution = () => {
     return (
-        <div className="text-gray-800 w-fit max-md:mb-3">
+        <div className="text-gray-800 w-fit max-md:mb-3 mt-4">
             <p className="mb-2 text-lg dark:text-white font-medium tracking-wide">Developed By</p>
             <div className="flex gap-2.5 w-fit">
                 <img
@@ -11,7 +11,7 @@ const Attribution = () => {
                 <div className="flex flex-col justify-center italic dark:text-white">
                     <p className="text-lg tracking-wide">Shivendra Dwivedi</p>
                     <p className="flex items-center gap-2 text-sm">
-                        <span>Web Developer</span>
+                        <span className="font-normal">Web Developer</span>
                         <span className="text-gray-800 lg:hidden dark:text-gray-300">•</span>
                         <a
                             href="https://portfolio.shivendra.site"

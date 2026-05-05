@@ -17,9 +17,9 @@ const Footer = () => {
       <footer ref={footerRef} className="relative left-0 bottom-0 w-full mt-4 md:mt-6 z-20">
         <div className='absolute top-0 left-0 w-full h-52 lg:h-72 bg-gradient-to-tr from-green-400 via-blue-500 to-primary p-6 flex flex-col items-center -z-100 max-md:pb-11' style={{
           clipPath: "ellipse(71% 59% at 50% 40%)"
-        }}></div>
+        }} />
 
-        <div className="w-full f-full py-1 px-2 md:py-4 backdrop-blur-2xl bg-black/40">
+        <div className="w-full f-full py-1 px-2 md:pt-4 pb-10 backdrop-blur-2xl bg-black/40">
           <SubFooter />
         </div>
       </footer>
