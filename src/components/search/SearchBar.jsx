@@ -3,6 +3,7 @@ import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreator from "../../utils/debounceCreator";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+
 import {
   selectSuggestions,
   setSearchSuggestions,
@@ -101,10 +102,11 @@ const SearchBar = () => {
 
       <div className="absolute rounded-b-xl overflow-hidden dark:bg-gray-700 w-[92%] top-full left-1/2 -translate-x-1/2 dark:text-gray-200 z-80 h-fit">
         <ul className="max-h-[22rem] lg:max-h-[29rem] overflow-y-auto pretty-scrollbar">
-          {searchSuggestion.length !== 0 && searchSuggestion.map((text, index) => <li key={index} onClick={() => suggestionClickHandler(text)} className="group flex items-center gap-2 py-2 px-3 hover:cursor-pointer hover:text-gray-800 hover:bg-gray-300 active:bg-primary active:text-white">
-            <Search size={isSmall ? 15 : 20} className="dark:text-white group-hover:text-gray-800" />
-            <span className="md:text-lg">{text}</span>
-          </li>)}
+          {searchSuggestion.length !== 0 && searchSuggestion.map((text, index) =>
+            <li key={index} onClick={() => suggestionClickHandler(text)} className="group flex items-center gap-2 py-2 px-3 hover:cursor-pointer hover:text-gray-800 hover:bg-gray-300 active:bg-primary active:text-white">
+              <Search size={isSmall ? 15 : 20} className="dark:text-white group-hover:text-gray-800" />
+              <span className="md:text-lg">{text}</span>
+            </li>)}
         </ul>
       </div>
     </div>

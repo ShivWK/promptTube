@@ -25,7 +25,7 @@ const EntryDiv = ({
 
     useEffect(() => {
         if (!move && formData?.[name].length !== 0) setMove(true)
-    }, [formData?.[name]])
+    }, [formData ,formData?.[name], move])
 
     useEffect(() => {
         setError("");

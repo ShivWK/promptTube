@@ -4,11 +4,6 @@ const Attribution = () => {
             <p className="mb-2 text-lg dark:text-white font-medium tracking-wide">Developed By</p>
             <div className="flex gap-2.5 w-fit">
                 <img
-                    onClick={() => {
-                        dispatch(setDpModelHide(false))
-                        dispatch(setDpModelOpen(true))
-                    }}
-
                     className="h-[14vh] w-[14vh] rounded-[50%] object-cover border-2 border-primary p-1"
                     src="/images/MY-min.jpeg"
                     alt="Developer image"
@@ -35,7 +30,7 @@ const Attribution = () => {
                     {/* Mobile */}
                     <div className="max-md:flex gap-3 mt-2 hidden">
                         <a
-                            href="https://www.linkedin.com/in/shivendra-dwivedi"
+                            href="www.linkedin.com/in/shivwk"
                             className="hover:scale-[1.3] hover:shadow-lg transition-all duration-100 ease-in"
                             target="__block"
                         >
@@ -85,7 +80,7 @@ const Attribution = () => {
                 <p className="dark:text-white">Social Links</p>
                 <div className="flex gap-3">
                     <a
-                        href="https://www.linkedin.com/in/shivendra-dwivedi"
+                        href="www.linkedin.com/in/shivwk"
                         className="hover:scale-[1.3] hover:shadow-lg transition-all duration-100 ease-in"
                         target="__block"
                     >
