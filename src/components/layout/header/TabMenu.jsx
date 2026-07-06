@@ -81,7 +81,6 @@ const TabMenu = () => {
     try {
       const response = await triggerCategoryVideos({ id }).unwrap();
       value = response.items;
-      console.log(value)
     } catch (err) {
       console.log(err);
     } finally {

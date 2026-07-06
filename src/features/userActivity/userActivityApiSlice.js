@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const userActivityApiSlice = createApi({
     reducerPath: "userActivityApiSlice",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://prompttube.onrender.com/api/v1/user",
+        baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/user`,
         prepareHeaders: (headers) => {
             headers.set("Content-Type", "application/json");
             return headers;

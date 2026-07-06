@@ -1,11 +1,15 @@
 import { X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSidebar, setSidebar } from "../../features/home/homeSlice";
+import { selectSidebar, setSidebar, setSearchLoading, selectIsSmall } from "../../features/home/homeSlice";
+import { setSearchResult } from "../../features/home/homeSlice";
 import { FIRST, GENERAL_SUB_CATEGORY, YOUR } from "../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
 
-const Sidebar = ({ isSmall }) => {
+const Sidebar = () => {
+    const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
     const { slideOpenSidebar } = useSelector(selectSidebar);
+    const isSmall = useSelector(selectIsSmall);
     const pathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -39,38 +43,91 @@ const Sidebar = ({ isSmall }) => {
         }))
     }
 
+    const searchClickHandler = async (text) => {
+        if (isLoading) return;
+        // console.log("Clicked search")
+
+        dispatch(setSearchLoading(true));
+        divClickHandler();
+
+        if (pathname !== "/pc_search" && pathname !== "/search") {
+            if (isSmall) {
+                navigate("/search");
+            } else {
+                navigate("/pc_search");
+            }
+        }
+
+        try {
+            const data = await trigger({ searchedTerm: text }).unwrap();
+            dispatch(setSearchResult(data.items));
+        } catch (err) {
+            console.log("Failed to search", err)
+        } finally {
+            dispatch(setSearchLoading(false))
+        }
+    }
+
+    const categoryClickHandler = (obj) => {
+        // console.log("Clicked")
+
+        const text = obj.searchTerms.join(" ");
+        searchClickHandler(text);
+    }
+
     return (
         <div onClick={divClickHandler} className="fixed top-0 left-0 h-full w-full bg-black/60 flex items-center justify-center z-60">
             <aside onClick={(e) => e.stopPropagation()} onAnimationEnd={animationENdHandler} className={`absolute left-0 h-full overflow-y-auto p-3 pr-5 flex flex-col gap-3 items-center bg-gray-800 pretty-scrollbar ${slideOpenSidebar ? "animate-slideShow" : "animate-slideHide"}`}>
-
                 <button onClick={divClickHandler} className="self-start mt-2.5">
-                    <X size={isSmall ? 30 : 30} className="dark:text-white mr-auto rounded-full hover:bg-white/30 transition-all duration-100 ease-linear cursor-pointer" />
+                    <X className="size-7.5 dark:text-white mr-auto rounded-full hover:bg-white/30 transition-all duration-100 ease-linear cursor-pointer" />
                 </button>
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        FIRST.map((obj, index) => <button onClick={() => optionClickHandler(obj.url)} key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
-                            <obj.Icon />
-                            <span className="">{obj.name}</span>
-                        </button>)
+                        FIRST.map((obj, index) => {
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() => optionClickHandler(obj.url)}
+                                    className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full"
+                                >
+                                    <obj.Icon />
+                                    <span className="">{obj.name}</span>
+                                </button>
+                            )
+                        })
                     }
                 </div>
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
-                        YOUR.map((obj, index) => <button onClick={() => optionClickHandler(obj.url)} key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
-                            <obj.Icon />
-                            <span className="">{obj.name}</span>
-                        </button>)
+                        YOUR.map((obj, index) => {
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() => optionClickHandler(obj.url)}
+                                    className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full"
+                                >
+                                    <obj.Icon />
+                                    <span className="">{obj.name}</span>
+                                </button>
+                            )
+                        })
                     }
                 </div>
 
                 <div className="pb-2 w-full">
                     {
-                        GENERAL_SUB_CATEGORY.map((obj, index) => <button key={index} className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full">
-                            <obj.Icon />
-                            <span className="">{obj.name}</span>
-                        </button>)
+                        GENERAL_SUB_CATEGORY.map((obj, index) => {
+                            return <button
+                                key={index}
+                                onClick={() => categoryClickHandler(obj)}
+                                className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full"
+                            >
+                                <obj.Icon />
+                                <span className="">{obj.name}</span>
+                            </button>
+                        })
                     }
                 </div>
             </aside>

@@ -33,7 +33,7 @@ const SearchBar = () => {
     dispatch(setSearchSuggestionsLoading(true));
 
     try {
-      const response = await fetch(`https://prompttube.onrender.com/api/v1/youtube/searchSuggestion?query=${encodeURIComponent(str)}`);
+      const response = await fetch(`${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/youtube/searchSuggestion?query=${encodeURIComponent(str)}`);
       const data = await response.json();
       dispatch(setSearchSuggestions(data.data));
     } catch (err) {
@@ -54,7 +54,6 @@ const SearchBar = () => {
 
     try {
       const data = await trigger({ searchedTerm: text }).unwrap();
-      console.log(data.items)
       dispatch(setSearchResult(data.items));
     } catch (err) {
       console.log("Failed to search", err)

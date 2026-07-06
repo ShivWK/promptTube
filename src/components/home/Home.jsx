@@ -9,15 +9,15 @@ const Home = () => {
   const shimmerArray = Array.from({ length: 15 });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=UUJxtNdTGIIaHEljCDo27b_w&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`);
-        const data = await response.json();
-        console.log(data);
-      } catch (err) {
-        console.log("failed", err)
-      }
-    }
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=UUJxtNdTGIIaHEljCDo27b_w&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`);
+    //     const data = await response.json();
+    //     console.log(data);
+    //   } catch (err) {
+    //     console.log("failed", err)
+    //   }
+    // }
 
     // fetchData();
   }, [])
