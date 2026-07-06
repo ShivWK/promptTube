@@ -14,6 +14,8 @@ import useFetch from "./../../hooks/useFetch";
 import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
+import userActivityApiSlice from "../../features/userActivity/userActivityApiSlice";
+import watchApiSlice from "../../features/watch/watchApiSlice";
 
 const ProfileCard = () => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
@@ -28,7 +30,7 @@ const ProfileCard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const shimmerArray = Array.from({ length : 5 })
+    const shimmerArray = Array.from({ length: 5 })
 
     useFetch({
         trigger,
@@ -38,8 +40,12 @@ const ProfileCard = () => {
         dependencies: [savedDataLoading]
     })
 
+    console.log("Subs", subscribedChannels)
+
     useEffect(() => {
-        dispatch(manageSubscribedChannelData(subscribedChannels || []));
+        if (subscribedChannels.length) {
+            dispatch(manageSubscribedChannelData(subscribedChannels));
+        }
     }, [subscribedChannels, dispatch])
 
     useEffect(() => {
@@ -59,7 +65,9 @@ const ProfileCard = () => {
             try {
                 await signOut(auth);
                 setLogoutLoading(false);
-                navigate("/", { replace: true })
+                navigate("/", { replace: true });
+                dispatch(userActivityApiSlice.util.resetApiState());
+                dispatch(watchApiSlice.util.resetApiState());
             } catch (err) {
                 console.log("Error in logout", err)
                 setLogoutLoading(false);
@@ -79,6 +87,9 @@ const ProfileCard = () => {
             value: true,
         }))
     }
+
+    const showLoading = isLoading || savedDataLoading;
+    const hasSubscriptions = subscribedChannels.length > 0;
 
     return (
         <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white py-2 md:py-4 px-4 md:px-6 text-xl max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
@@ -102,14 +113,23 @@ const ProfileCard = () => {
                 }
             </button>
 
-            <div id="subscriptions" className="self-start mt-1 hidden md:block w-full">
-                <h2 className="text-lg font-medium tracking-wider my-2">Subscriptions</h2>
-                <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
-                    {(isLoading || savedDataLoading) ? shimmerArray.map((_, index) => <ChannelShimmerCard key={index} />)
-                        : (subscribedChannels || []).map((channel) => <ChannelCard key={channel.id} object={channel} />)
-                    }
+            {(showLoading || hasSubscriptions) && (
+                <div id="subscriptions" className="self-start mt-1 hidden md:block w-full">
+                    <h2 className="text-lg font-medium tracking-wider my-2">
+                        Subscriptions
+                    </h2>
+
+                    <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
+                        {showLoading
+                            ? shimmerArray.map((_, index) => (
+                                <ChannelShimmerCard key={index} />
+                            ))
+                            : subscribedChannels.map((channel) => (
+                                <ChannelCard key={channel.id} object={channel} />
+                            ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

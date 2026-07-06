@@ -12,7 +12,7 @@ const Footer = () => {
 
   useIntersection({ ref: footerRef, setReady: (what) => dispatch(setFooterVisibility(what)) })
 
-  if (pathName === "/" || pathName === "/account") {
+  if (pathName === "/") {
     return (
       <footer ref={footerRef} className="relative left-0 bottom-0 w-full mt-4 md:mt-6 z-20">
         <div className='absolute top-0 left-0 w-full h-52 lg:h-72 bg-gradient-to-tr from-green-400 via-blue-500 to-primary p-6 flex flex-col items-center -z-100 max-md:pb-11' style={{

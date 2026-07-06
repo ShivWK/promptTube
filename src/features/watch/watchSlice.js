@@ -8,7 +8,7 @@ const initialState = {
     liked_videos: []
 }
 
-export const logger = (store) => (next) => (action) => {
+export const logger = () => (next) => (action) => {
     console.log("action", action);
     next(action)
 }

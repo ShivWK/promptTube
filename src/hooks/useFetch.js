@@ -12,7 +12,13 @@ const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWo
                 response = argument ? await trigger({ id }).unwrap()
                     : await trigger({}).unwrap();
 
-                if (setState) setState(response.items);
+                if (setState) {
+                    if (response.items) {
+                        setState(response.items)
+                    } else if (response.data) {
+                        setState(response.data)
+                    }   
+                };
             } catch (err) {
                 console.log(`Error in fetching ${fetchWhat}`, err);
             } finally {

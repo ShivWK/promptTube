@@ -69,7 +69,7 @@ const SavedVideosSection = () => {
 
     if (isEmpty) {
         return (
-            <div className="flex h-[60vh] flex-col items-center justify-center gap-3 px-4 text-center text-gray-400">
+            <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-gray-400">
                 <h2 className="text-xl font-semibold text-white">
                     No saved videos yet
                 </h2>
