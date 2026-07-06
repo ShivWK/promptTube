@@ -28,7 +28,7 @@ const Account = () => {
   }, [section])
 
   return (
-    <main className="pt-20 lg:pt-20 py-2 h-[100vh]">
+    <main className="pt-20 lg:pt-20 pb-12 md:pb-2 min-h-[100vh] md:h-[100vh]">
       <section className="max-w-[1210px] md:rounded-2xl mx-auto flex flex-col md:flex-row max-md:justify-center gap-4 md:gap-1 h-full">
         <div className="basis-full h-full md:basis-[22%] min-w-0 md:bg-primary/40 mx-auto md:rounded-s-2xl w-full">
           <ProfileCard />
