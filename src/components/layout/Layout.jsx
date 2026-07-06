@@ -70,7 +70,7 @@ const Layout = () => {
             }
         }
         popularVideosCall();
-    }, [])
+    }, [trigger, dispatch])
 
     useEffect(() => {
         const currentPlaying = getFromLocalStorage({ get: "currentPlayingVideo" });
@@ -99,7 +99,7 @@ const Layout = () => {
             window.removeEventListener("resize", resizeHandler);
             document.removeEventListener("click", handleDocClick)
         };
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (pathname === "/gptBrowser") setShowHeader(false);
@@ -137,7 +137,7 @@ const Layout = () => {
         })
 
         return () => unsubscribe();
-    }, [])
+    }, [dispatch])
 
     return (<>
         {showHeader && <Header />}

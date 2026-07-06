@@ -27,32 +27,42 @@ const useFetchSavedData = () => {
                     triggerComments({ userId }).unwrap(),
                 ])
 
-                dispatch(manageSubscriptions({
-                    mode: "base",
-                    channelId: subscriptions.data?.[0].channelId,
-                }))
+                console.log("Got Videos", videos);
+                console.log("Got subscription", subscriptions);
+                console.log("Got comments", comments);
 
-                dispatch(manageComments({
-                    mode: "base",
-                    comment: comments.data,
-                }))
+                if (subscriptions.data.length !== 0) {
+                    dispatch(manageSubscriptions({
+                        mode: "base",
+                        channelId: subscriptions.data?.[0].channelId,
+                    }))
+                }
 
-                for (let objs of videos.data) {
-                    if (objs.videoType === "history") {
-                        dispatch(manageHistory({
-                            mode: "base",
-                            videoId: objs.videoId,
-                        }))
-                    } else if (objs.videoType === "liked") {
-                        dispatch(manageLikedVideos({
-                            mode: "base",
-                            videoId: objs.videoId,
-                        }))
-                    } else {
-                        dispatch(manageWatchLater({
-                            mode: "base",
-                            videoId: objs.videoId,
-                        }))
+                if (comments.data.length !== 0) {
+                    dispatch(manageComments({
+                        mode: "base",
+                        comment: comments.data,
+                    }))
+                }
+
+                if (videos.data.length !== 0) {
+                    for (let objs of videos.data) {
+                        if (objs.videoType === "history") {
+                            dispatch(manageHistory({
+                                mode: "base",
+                                videoId: objs.videoId,
+                            }))
+                        } else if (objs.videoType === "liked") {
+                            dispatch(manageLikedVideos({
+                                mode: "base",
+                                videoId: objs.videoId,
+                            }))
+                        } else {
+                            dispatch(manageWatchLater({
+                                mode: "base",
+                                videoId: objs.videoId,
+                            }))
+                        }
                     }
                 }
 
@@ -61,7 +71,7 @@ const useFetchSavedData = () => {
         }
 
         fetchData();
-    }, [userId])
+    }, [userId, triggerComments, triggerSubscriptions, triggerVideos, dispatch])
 }
 
 export default useFetchSavedData;

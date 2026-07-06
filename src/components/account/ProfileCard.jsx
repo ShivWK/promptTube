@@ -40,7 +40,7 @@ const ProfileCard = () => {
 
     useEffect(() => {
         dispatch(manageSubscribedChannelData(subscribedChannels || []));
-    }, [subscribedChannels])
+    }, [subscribedChannels, dispatch])
 
     useEffect(() => {
         if (!isLoading) {
@@ -48,7 +48,7 @@ const ProfileCard = () => {
         } else {
             dispatch(setSubscriptionLoading(true))
         }
-    }, [isLoading])
+    }, [isLoading, dispatch])
 
     const signoutClickHandler = (e) => {
         e.stopPropagation()
@@ -83,7 +83,7 @@ const ProfileCard = () => {
     return (
         <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white py-2 md:py-4 px-4 md:px-6 text-xl max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
             <CircleUserRound strokeWidth={0.5} className="h-26 w-26 rounded-full" />
-            <p>{name}</p>
+            <p className="truncate max-w-60">{name}</p>
             <div className="flex items-center gap-1">
                 {isEmailVerified
                     ? <CircleCheck size={isSmall ? 19 : 20} strokeWidth={2.5} className="text-green-400 justify-self-center" />
