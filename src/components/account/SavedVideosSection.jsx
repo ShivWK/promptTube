@@ -83,7 +83,7 @@ const SavedVideosSection = () => {
     return (
         <div className="self-start flex w-full flex-col gap-6 px-1 text-white">
             {historyVideos.length > 0 && (
-                <div id="history">
+                <div id="history" className="scroll-mt-20">
                     <HorizontalCarousel
                         Card={VideoCard}
                         heading="History"

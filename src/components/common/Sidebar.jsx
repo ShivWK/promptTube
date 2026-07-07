@@ -5,11 +5,14 @@ import { setSearchResult } from "../../features/home/homeSlice";
 import { FIRST, GENERAL_SUB_CATEGORY, YOUR } from "../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
+import { selectLoggedInStatus } from "../../features/auth/authSlice";
 
 const Sidebar = () => {
     const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
     const { slideOpenSidebar } = useSelector(selectSidebar);
+    const isLoggedIn = useSelector(selectLoggedInStatus);
     const isSmall = useSelector(selectIsSmall);
+
     const pathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -85,6 +88,9 @@ const Sidebar = () => {
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">
                     {
                         FIRST.map((obj, index) => {
+                            if (!isLoggedIn) {
+                                if (obj.name === "Subscription") return null;
+                            }
                             return (
                                 <button
                                     key={index}
@@ -99,22 +105,24 @@ const Sidebar = () => {
                     }
                 </div>
 
-                <div className="border-b-[1px] border-gray-400 pb-2 w-full">
-                    {
-                        YOUR.map((obj, index) => {
-                            return (
-                                <button
-                                    key={index}
-                                    onClick={() => optionClickHandler(obj.url)}
-                                    className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full"
-                                >
-                                    <obj.Icon />
-                                    <span className="">{obj.name}</span>
-                                </button>
-                            )
-                        })
-                    }
-                </div>
+                {isLoggedIn && (
+                    <div className="border-b-[1px] border-gray-400 pb-2 w-full">
+                        {
+                            YOUR.map((obj, index) => {
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => optionClickHandler(obj.url)}
+                                        className="flex items-center gap-3 lg:gap-4 dark:text-gray-100 cursor-pointer hover:bg-white/20 active:bg-white/20 rounded-xl p-2 pr-4 w-full"
+                                    >
+                                        <obj.Icon />
+                                        <span className="">{obj.name}</span>
+                                    </button>
+                                )
+                            })
+                        }
+                    </div>
+                )}
 
                 <div className="pb-2 w-full">
                     {
