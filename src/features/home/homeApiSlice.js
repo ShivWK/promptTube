@@ -11,13 +11,32 @@ const homeApiSlice = createApi({
     }),
 
     endpoints: (builder) => ({
-        getPopularVideos: builder.query({
-            query: () => ({
-                url: `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
-                method: "GET"
-            }),
+        getPopularVideos: builder.infiniteQuery({
 
-            keepUnusedDataFor: Number.MAX_VALUE,        
+            query: ({ pageParam }) => {
+                console.log("Called Infinite Query")
+                return {
+                    url:
+                        `/videos?part=snippet%2CcontentDetails%2Cstatistics`
+                        + `&chart=mostPopular`
+                        + `&maxResults=50`
+                        + `${pageParam ? `&pageToken=${pageParam}` : ""}`
+                        + `&regionCode=US`
+                        + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                    method: "GET"
+                }
+            },
+
+            keepUnusedDataFor: 60 * 60,
+
+            infiniteQueryOptions: {
+                initialPageParam: "",
+                getNextPageParam: (lastPage) => {
+                    return lastPage.nextPageToken ?? undefined;
+                },
+                getPreviousPageParam: () => undefined,
+                maxPages: 5,
+            },
         }),
 
         getVideoCategories: builder.query({
@@ -26,7 +45,7 @@ const homeApiSlice = createApi({
                 method: "GET"
             }),
 
-            keepUnusedDataFor: Number.MAX_VALUE,
+            keepUnusedDataFor: 60 * 60,
         }),
 
         getCategoryVideos: builder.query({
@@ -35,7 +54,7 @@ const homeApiSlice = createApi({
                 method: "GET"
             }),
 
-            keepUnusedDataFor: Number.MAX_VALUE,
+            keepUnusedDataFor: 60 * 60,
         }),
 
         getSearchVideos: builder.query({
@@ -50,7 +69,7 @@ const homeApiSlice = createApi({
 export default homeApiSlice;
 
 export const {
-    useGetPopularVideosQuery,
+    useGetPopularVideosInfiniteQuery,
     useLazyGetVideoCategoriesQuery,
     useLazyGetPopularVideosQuery,
     useLazyGetSearchVideosQuery,

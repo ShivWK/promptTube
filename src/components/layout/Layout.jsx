@@ -5,10 +5,7 @@ import {
     selectSidebar,
     setIsSmall,
     setSearchSuggestions,
-    setHomeVideos
 } from "../../features/home/homeSlice";
-
-import { useLazyGetPopularVideosQuery } from "../../features/home/homeApiSlice";
 
 import { setCurrentChannel, setCurrentPlaying } from "../../features/watch/watchSlice";
 
@@ -34,7 +31,6 @@ import BackToTopButton from "../common/BackToTopBtn";
 import useFetchSavedData from "../../hooks/useFetchSavedData";
 
 const Layout = () => {
-    const [trigger] = useLazyGetPopularVideosQuery();
     const [isSmall, setSmall] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
     const [showSideMenu, setShowSideMenu] = useState(true);
@@ -48,29 +44,6 @@ const Layout = () => {
     const pathname = useLocation().pathname;
 
     useFetchSavedData();
-
-    useEffect(() => {
-        let value = [];
-        dispatch(setHomeVideos({
-            value,
-            loading: true
-        }))
-
-        const popularVideosCall = async () => {
-            try {
-                const { items } = await trigger(undefined, { preferCacheVale: true }).unwrap();
-                value = items;
-            } catch (err) {
-                console.log(err);
-            } finally {
-                dispatch(setHomeVideos({
-                    value,
-                    loading: false,
-                }))
-            }
-        }
-        popularVideosCall();
-    }, [trigger, dispatch])
 
     useEffect(() => {
         const currentPlaying = getFromLocalStorage({ get: "currentPlayingVideo" });
