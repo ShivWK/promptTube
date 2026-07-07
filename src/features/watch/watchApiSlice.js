@@ -23,8 +23,6 @@ const watchApiSlice = createApi({
                     { type: "Video", id }
                 ]
             },
-
-            refetchOnMount: true
         }),
 
         getComments: builder.query({

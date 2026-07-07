@@ -4,7 +4,7 @@ import { setToast } from "../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 
 const useAuthCheck = ({ showToast = true } = {}) => {
-    const [user, loading, error] = useAuthState(auth);
+    const [user] = useAuthState(auth);
     const dispatch = useDispatch();
 
     const checkAuth = () => {

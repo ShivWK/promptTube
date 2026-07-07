@@ -17,8 +17,7 @@ const homeApiSlice = createApi({
                 method: "GET"
             }),
 
-            keepUnusedDataFor: Number.MAX_VALUE,
-            refetchOnFocus: false
+            keepUnusedDataFor: Number.MAX_VALUE,        
         }),
 
         getVideoCategories: builder.query({
@@ -28,7 +27,6 @@ const homeApiSlice = createApi({
             }),
 
             keepUnusedDataFor: Number.MAX_VALUE,
-            refetchOnFocus: false,
         }),
 
         getCategoryVideos: builder.query({
@@ -37,8 +35,7 @@ const homeApiSlice = createApi({
                 method: "GET"
             }),
 
-            keepUnusedDataFor: 600,
-            refetchOnFocus: false,
+            keepUnusedDataFor: Number.MAX_VALUE,
         }),
 
         getSearchVideos: builder.query({

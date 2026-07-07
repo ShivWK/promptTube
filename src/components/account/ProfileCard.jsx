@@ -1,8 +1,8 @@
-import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
+import watchApiSlice, { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
 import { selectSubscriptions, setSubscriptionLoading } from "../../features/userActivity/userActivitySlice";
 import { selectSavedDataLoading, selectIsSmall } from "../../features/home/homeSlice";
-import { selectUserDetails, setEmailVerification } from "../../features/auth/authSlice";
-import { manageSubscribedChannelData } from "../../features/userActivity/userActivitySlice";
+import { selectUserDetails, setEmailVerification, resetAuthSlice } from "../../features/auth/authSlice";
+import { manageSubscribedChannelData, resetUserActivitySlice } from "../../features/userActivity/userActivitySlice";
 import { CircleCheck, CircleUserRound, Info, LogOut } from "lucide-react";
 import { setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,7 +15,7 @@ import { signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
 import userActivityApiSlice from "../../features/userActivity/userActivityApiSlice";
-import watchApiSlice from "../../features/watch/watchApiSlice";
+import { resetWatchSlice } from "../../features/watch/watchSlice";
 
 const ProfileCard = () => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
@@ -30,7 +30,7 @@ const ProfileCard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const shimmerArray = Array.from({ length: 5 })
+    const shimmerArray = Array.from({ length: 3 })
 
     useFetch({
         trigger,
@@ -39,8 +39,6 @@ const ProfileCard = () => {
         id: subscriptions.join(","),
         dependencies: [savedDataLoading]
     })
-
-    console.log("Subs", subscribedChannels)
 
     useEffect(() => {
         if (subscribedChannels.length) {
@@ -65,9 +63,14 @@ const ProfileCard = () => {
             try {
                 await signOut(auth);
                 setLogoutLoading(false);
-                navigate("/", { replace: true });
+
+                dispatch(resetAuthSlice());
+                dispatch(resetUserActivitySlice());
+                dispatch(resetWatchSlice());
                 dispatch(userActivityApiSlice.util.resetApiState());
                 dispatch(watchApiSlice.util.resetApiState());
+
+                navigate("/", { replace: true });
             } catch (err) {
                 console.log("Error in logout", err)
                 setLogoutLoading(false);

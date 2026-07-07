@@ -27,9 +27,9 @@ const useFetchSavedData = () => {
                     triggerComments({ userId }).unwrap(),
                 ])
 
-                console.log("Got Videos", videos);
-                console.log("Got subscription", subscriptions);
-                console.log("Got comments", comments);
+                // console.log("Got Videos", videos);
+                // console.log("Got subscription", subscriptions);
+                // console.log("Got comments", comments);
 
                 if (subscriptions.data.length !== 0) {
                     dispatch(manageSubscriptions({

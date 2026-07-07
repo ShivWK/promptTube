@@ -72,7 +72,7 @@ const Channel = ({ channelId: id, videoId }) => {
         }
     }
 
-    const subscribeClickHandler = (mode) => {
+    const subscribeClickHandler = () => {
         const check = checkAuth();
         if (!check) return;
 
@@ -96,17 +96,17 @@ const Channel = ({ channelId: id, videoId }) => {
     useEffect(() => {
         if (likedVideos.includes(videoId)) setLiked(true);
         else setLiked(false);
-    }, [likedVideos])
+    }, [likedVideos, videoId])
 
     useEffect(() => {
         if (watchLaterVideos.includes(videoId)) setWatchLaterSaved(true);
         else setWatchLaterSaved(false);
-    }, [watchLaterVideos]);
+    }, [watchLaterVideos, videoId]);
 
     useEffect(() => {
         if (subscriptions.includes(id)) setSubscribed(true);
         else setSubscribed(false);
-    }, [subscriptions])
+    }, [subscriptions, id])
 
     return (
         <div className="w-full flex items-center justify-between">

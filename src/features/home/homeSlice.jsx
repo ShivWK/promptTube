@@ -11,7 +11,6 @@ const initialState = {
     showMobileMenu: true,
     isFooterVisible: false,
     savedDataLoading: true,
-
     searchSuggestionsLoading: false,
     searchSuggestions: [],
     searchResult: [],

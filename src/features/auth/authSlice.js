@@ -74,8 +74,9 @@ const authSlice = createSlice({
             } else if (mode === "slide") {
                 state.showEmailVerification = value;
             }
-        }
+        },
 
+        resetAuthSlice: () => initialState,
     }
 });
 
@@ -132,4 +133,5 @@ export const {
     setEmailVerification,
     setToast,
     setAuthDetails,
+    resetAuthSlice,
 } = authSlice.actions;

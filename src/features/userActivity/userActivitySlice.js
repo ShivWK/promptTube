@@ -102,7 +102,9 @@ const userActivitySlice = createSlice({
                 const i = state.comments.indexOf(comment);
                 state.comments.splice(i, 1);
             }
-        }
+        },
+
+        resetUserActivitySlice: () => initialState,
     },
 
     extraReducers: (builder) => {
@@ -126,5 +128,6 @@ export const {
     manageComments,
     manageSubscribedChannelData,
     setSubscriptionLoading,
+    resetUserActivitySlice,
 } = userActivitySlice.actions;
 

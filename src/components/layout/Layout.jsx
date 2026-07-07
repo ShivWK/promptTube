@@ -58,7 +58,7 @@ const Layout = () => {
 
         const popularVideosCall = async () => {
             try {
-                const { items } = await trigger().unwrap();
+                const { items } = await trigger(undefined, { preferCacheVale: true }).unwrap();
                 value = items;
             } catch (err) {
                 console.log(err);

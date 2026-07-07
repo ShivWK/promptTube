@@ -97,7 +97,9 @@ const watchSlice = createSlice({
                 const i = state.liked_videos.indexOf(videoId);
                 state.liked_videos.splice(i, 1);
             }
-        }
+        },
+
+        resetWatchSlice: () => initialState,
     },
 
     extraReducers: (builder) => {
@@ -127,4 +129,5 @@ export const {
     manageHistory,
     manageWatchLater,
     manageLikedVideos,
+    resetWatchSlice,
 } = watchSlice.actions;

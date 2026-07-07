@@ -9,8 +9,8 @@ const useFetch = ({ trigger, id, setState, fetchWhat, argument = true, finallyWo
         const fetchData = async () => {
             let response = null;
             try {
-                response = argument ? await trigger({ id }).unwrap()
-                    : await trigger({}).unwrap();
+                response = argument ? await trigger({ id }, true).unwrap()
+                    : await trigger({}, true).unwrap();
 
                 if (setState) {
                     if (response.items) {

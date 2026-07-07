@@ -12,9 +12,9 @@ const ShimmerUi = () => {
 
     return (
         <div className="self-start w-full px-1 text-white flex flex-col gap-6">
-            {[1, 2, 3].map((section) => (
+            {[1,2,3].map((section) => (
                 <div key={section} className="flex flex-col gap-4 md:gap-6">
-                    <div className="h-6 w-32 rounded animate-shimmer-bg md:h-7" />
+                    <div className="h-6 w-30 rounded animate-shimmer-bg md:h-7" />
 
                     <div className="scrollbar-hide flex gap-3 overflow-auto">
                         {shimmerArray.map((_, index) => (
@@ -44,9 +44,9 @@ const SavedVideosSection = () => {
             if (savedDataLoading) return;
 
             let [history, watchLater, liked] = await Promise.all([
-                triggerVideos({ id: historyVideoIds.join(",") }),
-                triggerVideos({ id: watchLaterVideoIds.join(",") }),
-                triggerVideos({ id: likedVideoIds.join(",") }),
+                triggerVideos({ id: historyVideoIds.join(",") }, true),
+                triggerVideos({ id: watchLaterVideoIds.join(",") }, true),
+                triggerVideos({ id: likedVideoIds.join(",") }, true),
             ])
 
             setHistoryVideos(history.data.items);
