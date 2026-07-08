@@ -16,8 +16,7 @@ const homeApiSlice = createApi({
             query: ({ pageParam }) => {
                 console.log("Called Infinite Query")
                 return {
-                    url:
-                        `/videos?part=snippet%2CcontentDetails%2Cstatistics`
+                    url: `/videos?part=snippet%2CcontentDetails%2Cstatistics`
                         + `&chart=mostPopular`
                         + `&maxResults=50`
                         + `${pageParam ? `&pageToken=${pageParam}` : ""}`
@@ -48,20 +47,48 @@ const homeApiSlice = createApi({
             keepUnusedDataFor: 60 * 60,
         }),
 
-        getCategoryVideos: builder.query({
-            query: ({ id }) => ({
-                url: `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&videoCategoryId=${id}&maxResults=50&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+        getCategoryVideos: builder.infiniteQuery({
+            query: ({ queryArg: id, pageParam }) => ({
+                url: `/videos?part=snippet%2CcontentDetails%2Cstatistics`
+                    + `&chart=mostPopular&regionCode=US`
+                    + `&videoCategoryId=${id}`
+                    + `&maxResults=50`
+                    + `${pageParam ? `&pageToken=${pageParam}` : ""}`
+                    + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET"
             }),
 
             keepUnusedDataFor: 60 * 60,
+
+            infiniteQueryOptions: {
+                initialPageParam: "",
+                getNextPageParam: (lastPage) => {
+                    return lastPage.nextPageToken ?? undefined;
+                },
+                getPreviousPageParam: () => undefined,
+                maxPages: 5,
+            },
         }),
 
         getSearchVideos: builder.query({
-            query: ({ searchedTerm }) => ({
-                url: `/search?part=snippet&maxResults=25&type=video&order=rating&q=${searchedTerm}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+            query: ({ queryArg: searchedTerm, pageParam }) => ({
+                url: `/search?part=snippet&maxResults=25`
+                    + `&type=video&order=rating`
+                    + `&q=${searchedTerm}`
+                    + `&maxResults=50`
+                    + `${pageParam ? `&pageToken=${pageParam}` : ""}`
+                    + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET",
-            })
+            }),
+
+            // infiniteQueryOptions: {
+            //     initialPageParam: "",
+            //     getNextPageParam: (lastPage) => {
+            //         return lastPage.nextPageToken ?? undefined;
+            //     },
+            //     getPreviousPageParam: () => undefined,
+            //     maxPages: 5,
+            // },
         })
     })
 });
@@ -70,6 +97,7 @@ export default homeApiSlice;
 
 export const {
     useGetPopularVideosInfiniteQuery,
+    useGetCategoryVideosInfiniteQuery,
     useLazyGetVideoCategoriesQuery,
     useLazyGetPopularVideosQuery,
     useLazyGetSearchVideosQuery,

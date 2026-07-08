@@ -9,7 +9,7 @@ const Home = () => {
     data,
     fetchNextPage,
     hasNextPage,
-    isLoading: loading,
+    isLoading,
     isFetchingNextPage
   } = useGetPopularVideosInfiniteQuery(undefined);
 
@@ -23,7 +23,7 @@ const Home = () => {
   const shimmerArray = Array.from({ length: 15 });
   let videos =  [];
 
-  if (!loading) {
+  if (!isLoading) {
     videos = data.pages.flatMap(page => page.items);
   }
 
@@ -45,7 +45,7 @@ const Home = () => {
   return (
     <main className="pt-28 lg:pt-36 md:pl-32 p-2 md:p-3">
       {
-        loading
+        isLoading
           ? <div className="flex items-center gap-5 xl:gap-6 flex-wrap">
             {shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
           </div>
