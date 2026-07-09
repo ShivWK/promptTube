@@ -37,9 +37,9 @@ const Home = () => {
     >
       {isLoading ? (
         <div
-          className={`flex ${isSmall
-              ? "flex-col gap-4 px-2 py-4 pt-22"
-              : "flex-wrap gap-5 xl:gap-6"
+          className={`flex flex-wrap ${isSmall
+              ? "gap-4 px-2 py-4 pt-14"
+              : "gap-5 xl:gap-6"
             }`}
         >
           {shimmerArray.map((_, index) => (
@@ -48,9 +48,9 @@ const Home = () => {
         </div>
       ) : (
         <section
-          className={`flex ${isSmall
-              ? "flex-col gap-4 px-2 py-4 pt-14"
-              : "flex-wrap gap-5 xl:gap-6"
+          className={`flex flex-wrap ${isSmall
+              ? "gap-4 px-2 py-4 pt-14"
+              : "gap-5 xl:gap-6"
             }`}
         >
           {videos.map((object) => (

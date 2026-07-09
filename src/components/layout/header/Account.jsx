@@ -46,7 +46,7 @@ const Account = () => {
     else setShowShadow(false);
   }, [pathname])
 
-  const handleAccountClick = (e) => {
+  const handleAccountClick = () => {
     setAnimateAccountCard(false);
     navigate("/account");
   }
@@ -91,7 +91,7 @@ const Account = () => {
     )
   } else {
     return (
-      <button onClick={authClickHandler} className="flex gap-1 lg:gap-1 items-center py-1 lg:py-1.5 px-2 lg:px-3 rounded-md bg-primary font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear">
+      <button onClick={authClickHandler} className="flex gap-1 max-md:my-1.5 lg:gap-1 items-center py-1 lg:py-1.5 px-2 lg:px-3 rounded-md bg-primary font-semibold cursor-pointer transform active:scale-[0.95] transition-all duration-75 ease-linear">
         <span className="text-white tracking-wide">Sign In</span>
         <LogIn className="text-white" strokeWidth={isSmall ? 2 : 2} />
       </button>

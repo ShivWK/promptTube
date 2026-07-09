@@ -31,7 +31,7 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
     }
 
     return (
-        <div onClick={handleLinkClick} className={` basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start dark:bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
+        <div onClick={handleLinkClick} className={`basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start bg-gray-900 transform hover:scale-105 transition-all duration-150 ease-linear`}>
             <img
                 alt="thumbnail"
                 src={object.snippet.thumbnails?.high?.url}
