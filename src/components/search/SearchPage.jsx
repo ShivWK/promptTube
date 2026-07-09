@@ -11,10 +11,7 @@ const SearchPage = () => {
     const [searchParam] = useSearchParams();
     const searchTerm = searchParam.get("searchQuery");
 
-    console.log("SearchTERM", searchTerm)
-
     const isSmall = useSelector(selectIsSmall);
-
     const dispatch = useDispatch();
 
     const {
@@ -23,50 +20,55 @@ const SearchPage = () => {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        isLoading
-    } = useGetSearchInfiniteVideosInfiniteQuery(
-        searchTerm,
-        {
-            skip: !searchTerm
-        }
-    );
+        isLoading,
+    } = useGetSearchInfiniteVideosInfiniteQuery(searchTerm, {
+        skip: !searchTerm,
+    });
 
     useEffect(() => {
-        dispatch(setSearchLoading(isLoading || isFetching))
-    }, [isFetching, isLoading, dispatch])
+        dispatch(setSearchLoading(isLoading || isFetching));
+    }, [dispatch, isFetching, isLoading]);
 
     const loaderRef = useIntersectionObserver({
         onIntersect: fetchNextPage,
         enabled: hasNextPage && !isFetchingNextPage,
         threshold: 0.5,
-        rootMargin: "300px"
-    })
+        rootMargin: "300px",
+    });
 
-    let searchResult = [];
-
-    if (!isLoading && data?.pages) {
-        searchResult = data?.pages.flatMap(page => page.items)
-    }
+    const searchResult =
+        data?.pages?.flatMap((page) => page.items) ?? [];
 
     const shimmerArray = Array.from({ length: 15 });
 
     return (
-        <main className={isSmall
-            ? "pt-14"
-            : "pt-32 md:pt-32 lg:pt-40 md:pl-32 p-2 md:p-3"
-        }>
-            {isLoading
-                ? <div className={`flex items-center flex-wrap ${isSmall
-                    ? "gap-4 pt-22 px-2 py-4"
-                    : "gap-5 xl:gap-6"}`
-                }>
-                    {shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
+        <main
+            className={
+                isSmall
+                    ? "pt-14"
+                    : "pt-32 lg:pt-40 md:pl-32 p-3"
+            }
+        >
+            {isLoading ? (
+                <div
+                    className={
+                        isSmall
+                            ? "flex flex-col gap-4 pt-22 px-2 pb-4"
+                            : "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6"
+                    }
+                >
+                    {shimmerArray.map((_, index) => (
+                        <VideoCardShimmer key={index} />
+                    ))}
                 </div>
-                : searchResult.length !== 0 &&
-                <section className={`flex ${isSmall
-                    ? "flex-col gap-4 px-2 py-4 -z-20 pt-22"
-                    : "items-center flex-wrap gap-5 xl:gap-6"}`
-                }>
+            ) : (
+                <section
+                    className={
+                        isSmall
+                            ? "flex flex-col gap-4 pt-22 px-2 pb-4"
+                            : "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6"
+                    }
+                >
                     {searchResult.map((video) => (
                         <VideoCard
                             key={video.id.videoId}
@@ -74,12 +76,17 @@ const SearchPage = () => {
                             mode="search"
                         />
                     ))}
-                    <div ref={loaderRef} className="h-0 w-0" />
-                    {isFetchingNextPage &&
-                        shimmerArray.map((_, index) => <VideoCardShimmer key={index} />)}
-                </section>}
-        </main>
-    )
-}
 
-export default SearchPage
+                    {isFetchingNextPage &&
+                        shimmerArray.map((_, index) => (
+                            <VideoCardShimmer key={`loading-${index}`} />
+                        ))}
+
+                    <div ref={loaderRef} className="h-px col-span-full" />
+                </section>
+            )}
+        </main>
+    );
+};
+
+export default SearchPage;

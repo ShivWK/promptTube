@@ -38,10 +38,10 @@ const VideoCard = ({ object, mode = "search", flexMode="flex-col" }) => {
                 className="w-full object-cover self-start rounded-t-2xl aspect-video"
             ></img>
             <div className="p-2 dark:text-white w-full flex flex-col gap-1">
-                <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5">{mode === "search" ?
+                <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5 break-all">{mode === "search" ?
                     object.snippet?.title
                     : object.snippet?.localized?.title}</h2>
-                <p className="text-sm dark:text-gray-300">{object.snippet?.channelTitle}</p>
+                <p className="text-sm dark:text-gray-300 line-clamp-1">{object.snippet?.channelTitle}</p>
                 <div className="text-sm flex items-center gap-1.5 dark:text-gray-300 -mt-1.5">
                     {mode !== "search" && <>
                         <span>{`${countViews(object.statistics?.viewCount)} views`}</span>
