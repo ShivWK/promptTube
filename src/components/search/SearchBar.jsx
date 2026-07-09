@@ -2,32 +2,29 @@ import { useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreator from "../../utils/debounceCreator";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import {
   selectSuggestions,
   setSearchSuggestions,
   selectSuggestionsLoading,
   setSearchSuggestionsLoading,
-  setSearchResult,
-  setSearchLoading,
   selectIsSmall,
+  selectSearchLoading,
 } from "../../features/home/homeSlice";
 
-import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
-
 const SearchBar = () => {
-  const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
   const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
+
   const [search, setSearch] = useState("");
 
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);
+  const isLoading = useSelector(selectSearchLoading);
   const isSmall = useSelector(selectIsSmall);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const pathname = useLocation().pathname;
 
   async function getSuggestions(str) {
     dispatch(setSearchSuggestionsLoading(true));
@@ -48,20 +45,6 @@ const SearchBar = () => {
     dataFetcher.current(search.trim());
   }
 
-  const searchClickHandler = async (text) => {
-    if (suggestionsLoading || isLoading) return;
-    dispatch(setSearchLoading(true));
-
-    try {
-      const data = await trigger({ searchedTerm: text }).unwrap();
-      dispatch(setSearchResult(data.items));
-    } catch (err) {
-      console.log("Failed to search", err)
-    } finally {
-      dispatch(setSearchLoading(false))
-    }
-  }
-
   const cancelSearchClickHandler = () => {
     if (suggestionsLoading) return;
     setSearch("");
@@ -71,15 +54,13 @@ const SearchBar = () => {
   const suggestionClickHandler = (suggestion) => {
     setSearch(suggestion);
     dispatch(setSearchSuggestions([]));
-    searchClickHandler(suggestion.trim());
-    if (!isSmall && (pathname !== "/pc_search" && pathname !== "/search")) navigate("/pc_search")
+    navigate(`/search?searchQuery=${suggestion.trim()}`)
   }
 
   const submitHandler = (e) => {
-    e.preventDefault();
     if (isLoading) return;
-    if (!isSmall && (pathname !== "/pc_search" && pathname !== "/search")) navigate("/pc_search");
-    searchClickHandler(search.trim());
+    e.preventDefault();
+    navigate(`/search?searchQuery=${search.trim()}`);
   }
 
   return (

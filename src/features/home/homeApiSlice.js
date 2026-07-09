@@ -12,9 +12,7 @@ const homeApiSlice = createApi({
 
     endpoints: (builder) => ({
         getPopularVideos: builder.infiniteQuery({
-
             query: ({ pageParam }) => {
-                console.log("Called Infinite Query")
                 return {
                     url: `/videos?part=snippet%2CcontentDetails%2Cstatistics`
                         + `&chart=mostPopular`
@@ -71,24 +69,37 @@ const homeApiSlice = createApi({
         }),
 
         getSearchVideos: builder.query({
-            query: ({ queryArg: searchedTerm, pageParam }) => ({
+            query: (searchedTerm) => {
+                return {
+                    url: `/search?part=snippet&maxResults=25`
+                        + `&type=video&order=rating`
+                        + `&q=${searchedTerm.searchedTerm}`
+                        + `&maxResults=50`
+                        + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                    method: "GET",
+                }
+            },
+        }),
+
+        getSearchInfiniteVideos: builder.infiniteQuery({
+            query: ({ queryArg, pageParam }) => ({
                 url: `/search?part=snippet&maxResults=25`
                     + `&type=video&order=rating`
-                    + `&q=${searchedTerm}`
+                    + `&q=${queryArg}`
                     + `&maxResults=50`
-                    + `${pageParam ? `&pageToken=${pageParam}` : ""}`
+                    + `${pageParam ? `&pageToken=${pageParam}`: ""}`
                     + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET",
             }),
 
-            // infiniteQueryOptions: {
-            //     initialPageParam: "",
-            //     getNextPageParam: (lastPage) => {
-            //         return lastPage.nextPageToken ?? undefined;
-            //     },
-            //     getPreviousPageParam: () => undefined,
-            //     maxPages: 5,
-            // },
+            infiniteQueryOptions: {
+                initialPageParam: "",
+                getNextPageParam: (lastPage) => {
+                    return lastPage.nextPageToken ?? undefined;
+                },
+                getPreviousPageParam: () => undefined,
+                maxPages: 5,
+            },
         })
     })
 });
@@ -98,8 +109,8 @@ export default homeApiSlice;
 export const {
     useGetPopularVideosInfiniteQuery,
     useGetCategoryVideosInfiniteQuery,
+    useGetSearchInfiniteVideosInfiniteQuery,
+
     useLazyGetVideoCategoriesQuery,
-    useLazyGetPopularVideosQuery,
     useLazyGetSearchVideosQuery,
-    useLazyGetCategoryVideosQuery,
 } = homeApiSlice

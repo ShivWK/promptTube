@@ -18,9 +18,12 @@ const Header = () => {
     const { openEmailVerification } = useSelector(selectEmailVerification);
 
     useEffect(() => {
-        if (pathname === "/" || pathname === "/pc_search" || pathname === "/category_videos") setShowTabs(true);
-        else setShowTabs(false);
-    }, [pathname])
+        if (pathname === "/" ||( pathname === "/search" && !isSmall) || pathname === "/category_videos") {
+            setShowTabs(true);
+        } else {
+            setShowTabs(false);
+        }
+    }, [pathname, isSmall])
 
     useEffect(() => {
         if (openSidebar || openAuthForm || openEmailVerification) {
@@ -37,7 +40,7 @@ const Header = () => {
     }, [openSidebar, openAuthForm, openEmailVerification]);
 
     return (
-        <header id='header' className={`backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 z-50 ${pathname === "/search" && "rounded-b-3xl"}`}>
+        <header id='header' className={`backdrop-blur-2xl fixed left-0 top-0 w-full bg-black/40 z-50 ${isSmall && "rounded-b-3xl"}`}>
             <div className='p-1.5 pt-3 lg:p-4 flex items-center justify-between bg-black/40'>
                 <LogoAndMenu />
                 <div className='flex items-center gap-3 md:gap-7'>
@@ -51,7 +54,7 @@ const Header = () => {
                 </div>
             </div>
             {showTabs && <TabMenu />}
-            {pathname === "/search" && <div className='w-full backdrop-blur-md flex items-center justify-center py-4 rounded-b-3xl'>
+            {(isSmall && pathname === "/search") && <div className='w-full backdrop-blur-md flex items-center justify-center py-4 rounded-b-3xl'>
                 <div className='w-[95%]'>
                     <SearchBar />
                 </div>

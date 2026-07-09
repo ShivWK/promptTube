@@ -4,8 +4,6 @@ import Home from "../components/home/Home";
 import Watch from "../components/watch/Watch";
 import GptBrowser from "../components/gpt/GptBrowser";
 import SearchPage from "../components/search/SearchPage";
-import searchLoader from "../components/search/searchLoader";
-import PcSearchPage from "../components/search/PcSearchPage";
 import VideoByCategory from "../components/home/VideoByCategory";
 import Account from "../components/account/Account";
 import authCheckLoader from "../components/account/authCheckLoader";
@@ -17,8 +15,7 @@ const AppRouter = () => {
             <Route index element={<Home />} />
             <Route path="watch" element={<Watch />} />
             <Route path="gptBrowser" element={<GptBrowser />} />
-            <Route path="search" loader={searchLoader} element={<SearchPage />} />
-            <Route path="pc_search" element={<PcSearchPage />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path="category_videos" element={<VideoByCategory />} />
             <Route path="account" loader={authCheckLoader} element={<Account />} />
             <Route path="channel" loader={authCheckLoader} element={<Channel />} />

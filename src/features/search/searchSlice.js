@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    searchTerm: "",
     searchSuggestionsCache: {},
     searchSuggestionLoading: false,
     searchSuggestions: [],
@@ -13,6 +14,10 @@ const searchSlice = createSlice({
     initialState,
 
     reducers: {
+        setSearchTerm: (state, action) => {
+            state.searchTerm = action.payload;
+        },
+
         setSearchSuggestionsCache: (state, action) => {
             const { term, result } = action.payload;
             state.searchSuggestionsCache[term] = result;
@@ -40,8 +45,8 @@ const searchSlice = createSlice({
 
 export default searchSlice.reducer;
 
+export const selectSearchTerm = (state) => state.search.searchTerm;
 export const selectSearchSuggestionsCache = (state) => state.search.searchSuggestionsCache;
-
 export const selectSearchSuggestions = createSelector(
     [
         state => state.search.searchSuggestionLoading,
@@ -49,7 +54,6 @@ export const selectSearchSuggestions = createSelector(
     ],
     (loading, value) => ({ loading, value })
 )
-
 export const selectSearchResults = createSelector(
     [
         state => state.search.searchResultLoading,
@@ -59,6 +63,7 @@ export const selectSearchResults = createSelector(
 )
 
 export const {
+    setSearchTerm,
     setSearchSuggestionsCache,
     setSearchSuggestions,
     setSearchResult
