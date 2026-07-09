@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search, X, LoaderCircle } from "lucide-react";
 import debounceCreator from "../../utils/debounceCreator";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   selectSuggestions,
@@ -14,9 +14,12 @@ import {
 } from "../../features/home/homeSlice";
 
 const SearchBar = () => {
+  const [searchParam] = useSearchParams();
+  const searchQuery = searchParam.get("searchQuery");
+
   const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchQuery);
 
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);
@@ -25,6 +28,10 @@ const SearchBar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSearch(searchQuery);
+  }, [searchQuery])
 
   async function getSuggestions(str) {
     dispatch(setSearchSuggestionsLoading(true));
@@ -52,15 +59,22 @@ const SearchBar = () => {
   }
 
   const suggestionClickHandler = (suggestion) => {
-    setSearch(suggestion);
+    // setSearch(suggestion);
     dispatch(setSearchSuggestions([]));
+
+    if(suggestion === searchQuery) return;
     navigate(`/search?searchQuery=${suggestion.trim()}`)
   }
 
   const submitHandler = (e) => {
     if (isLoading) return;
     e.preventDefault();
-    navigate(`/search?searchQuery=${search.trim()}`);
+
+    const value = search.trim();
+
+    if (!value || value === searchQuery) return;
+
+    navigate(`/search?searchQuery=${value}`);
   }
 
   return (
