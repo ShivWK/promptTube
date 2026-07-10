@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, ScrollRestoration } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import {
@@ -29,6 +29,7 @@ import Sidebar from "../common/Sidebar";
 import { getFromLocalStorage } from "../../utils/handleLocalStorage";
 import BackToTopButton from "../common/BackToTopBtn";
 import useFetchSavedData from "../../hooks/useFetchSavedData";
+import { ScrollToTop } from "../common/ScrollToTop";
 
 const Layout = () => {
     const [isSmall, setSmall] = useState(false);
@@ -117,6 +118,7 @@ const Layout = () => {
         <Outlet context={isSmall} />
         <Footer />
         <Toast />
+        <ScrollRestoration />
 
         {openAuthForm && <Form />}
         {showSideMenu && <SecondarySideMenu />}
