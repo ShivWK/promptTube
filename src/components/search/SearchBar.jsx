@@ -19,7 +19,7 @@ const SearchBar = () => {
 
   const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
 
-  const [search, setSearch] = useState(searchQuery);
+  const [search, setSearch] = useState(searchQuery || "");
 
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);

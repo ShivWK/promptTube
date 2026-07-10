@@ -68,19 +68,6 @@ const homeApiSlice = createApi({
             },
         }),
 
-        getSearchVideos: builder.query({
-            query: (searchedTerm) => {
-                return {
-                    url: `/search?part=snippet&maxResults=25`
-                        + `&type=video&order=rating`
-                        + `&q=${searchedTerm.searchedTerm}`
-                        + `&maxResults=50`
-                        + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
-                    method: "GET",
-                }
-            },
-        }),
-
         getSearchInfiniteVideos: builder.infiniteQuery({
             query: ({ queryArg, pageParam }) => ({
                 url: `/search?part=snippet&maxResults=25`
@@ -112,5 +99,4 @@ export const {
     useGetSearchInfiniteVideosInfiniteQuery,
 
     useLazyGetVideoCategoriesQuery,
-    useLazyGetSearchVideosQuery,
 } = homeApiSlice

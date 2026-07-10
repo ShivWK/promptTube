@@ -2,25 +2,36 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { selectIsSmall } from "../../../features/home/homeSlice";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLazyGetVideoCategoriesQuery } from "../../../features/home/homeApiSlice";
-import DotBounceLoader from "../../common/DotBounceLoader";
 import useFetch from "../../../hooks/useFetch";
 
 const TabMenu = () => {
   const [triggerCategories, { isLoading }] = useLazyGetVideoCategoriesQuery();
+
   const containerRef = useRef(null);
+
   const [showLeft, setShowLeft] = useState(true);
-  const [showRight, setShowRight] = useState(true)
+  const [showRight, setShowRight] = useState(true);
   const [tags, setTags] = useState([]);
+
   const isSmall = useSelector(selectIsSmall);
   const navigate = useNavigate();
-  const tabsShimmer = Array.from({ length: 20 })
 
-  useFetch({ trigger: triggerCategories, setState: setTags, fetchWhat: "categories", argument: false })
+  const [searchParams] = useSearchParams();
+  const selectedCategoryId = searchParams.get("categoryId");
+
+  const tabsShimmer = Array.from({ length: 20 });
+
+  useFetch({
+    trigger: triggerCategories,
+    setState: setTags,
+    fetchWhat: "categories",
+    argument: false,
+  });
 
   useEffect(() => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
 
     const handleScroll = () => {
       const ele = containerRef.current;
@@ -29,87 +40,107 @@ const TabMenu = () => {
       const clientW = ele.clientWidth;
       const scrollL = ele.scrollLeft;
 
-      if (scrollL !== 0) setShowLeft(true);
-      else setShowLeft(false);
+      setShowLeft(scrollL > 0);
+      setShowRight(scrollL + clientW + 10 < scrollW);
+    };
 
-      if (scrollL + clientW + 10 >= scrollW) {
-        setShowRight(false);
-      } else {
-        setShowRight(true);
-      }
-    }
     handleScroll();
 
     const ele = containerRef.current;
     ele.addEventListener("scroll", handleScroll);
 
     return () => {
-      if (ele) ele.removeEventListener("scroll", handleScroll);
+      ele.removeEventListener("scroll", handleScroll);
     };
-  }, [tags])
+  }, [tags]);
 
   const arrowClickHandler = (dir) => {
     if (!containerRef.current) return;
-    const scrollAmount = 150;
 
     containerRef.current.scrollBy({
-      left: dir * scrollAmount,
-      behavior: "smooth"
-    })
-  }
+      left: dir * 150,
+      behavior: "smooth",
+    });
+  };
 
-  const categoryClickHandler = async (id) => {
+  const categoryClickHandler = (id) => {
     navigate(`/category_videos?categoryId=${id}`);
 
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    })
-  }
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div className="relative w-full flex items-center justify-between">
-      {showLeft && <button
-        onClick={() => arrowClickHandler(-1)}
-        className="absolute -left-0.5 top-1/2 -translate-y-1/2 bg-gray-800 rounded-e-full p-1.5 cursor-pointer transform active:scale-95 transition-all duration-75 ease-linear max-md:hidden z-20"
-      >
-        <ChevronLeft size={isSmall ? 30 : 40} className="dark:text-gray-200" />
-      </button>}
+    <div className="relative flex w-full items-center justify-between">
+      {showLeft && (
+        <button
+          onClick={() => arrowClickHandler(-1)}
+          className="absolute -left-0.5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer rounded-e-full bg-gray-800 p-1.5 transition-all duration-75 ease-linear active:scale-95 md:block"
+        >
+          <ChevronLeft
+            size={isSmall ? 30 : 40}
+            className="text-gray-200"
+          />
+        </button>
+      )}
 
-      <div ref={containerRef} className="flex items-center gap-3 md:gap-4 backdrop-blur-md py-1 pb-2 lg:py-2 px-1 overflow-auto scrollbar-hide">
+      <div
+        ref={containerRef}
+        className="scrollbar-hide flex items-center gap-3 overflow-auto px-1 py-1 pb-2 backdrop-blur-md md:gap-4 lg:py-2"
+      >
         {isLoading
           ? tabsShimmer.map((_, index) => (
-            <span
-              key={index}
-              className="rounded-lg md:rounded-xl py-1 lg:py-1.5 px-3 h-8 md:h-10 w-36 shrink-0 animate-shimmer-bg"
-            />
-          ))
-          : tags.slice(0, 17).map((item) => {
-            if (item.snippet.title === "Short Movies"
-              || item.snippet.title === "Travel & Events"
-              || item.snippet.title === "Videoblogging"
-              || item.snippet.title === "Education") {
-              return;
-            }
-            return <button
-              key={item.id}
-              onClick={() => categoryClickHandler(item.id)}
-              className="rounded-md lg:rounded-xl py-1 lg:py-1.5 px-3 dark:bg-gray-400/30 dark:text-white lg:text-lg font-medium cursor-pointer whitespace-nowrap tracking-wide"
-            >
-              {item.snippet.title}
-            </button>
-          })
-        }
+              <span
+                key={index}
+                className="h-8 w-36 shrink-0 animate-shimmer-bg rounded-lg py-1 px-3 md:h-10 md:rounded-xl"
+              />
+            ))
+          : tags
+              .slice(0, 17)
+              .map((item) => {
+                if (
+                  item.snippet.title === "Short Movies" ||
+                  item.snippet.title === "Travel & Events" ||
+                  item.snippet.title === "Videoblogging" ||
+                  item.snippet.title === "Education"
+                ) {
+                  return null;
+                }
+
+                const isActive =
+                  selectedCategoryId === String(item.id);
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => categoryClickHandler(item.id)}
+                    className={`rounded-md px-3 py-1 font-medium whitespace-nowrap tracking-wide transition-all duration-150 lg:rounded-xl lg:py-1.5 lg:text-lg ${
+                      isActive
+                        ? "bg-[#ff0044] text-white"
+                        : "bg-gray-400/30 text-white hover:bg-gray-400/50"
+                    }`}
+                  >
+                    {item.snippet.title}
+                  </button>
+                );
+              })}
       </div>
 
-      {showRight && <button
-        onClick={() => arrowClickHandler(1)}
-        className="absolute -right-0.5 top-1/2 -translate-y-1/2 bg-gray-900 rounded-s-full p-1.5 cursor-pointer transform active:scale-95 transition-all duration-75 ease-linear max-md:hidden z-20"
-      >
-        <ChevronRight size={isSmall ? 30 : 40} className="dark:text-gray-200" />
-      </button>}
+      {showRight && (
+        <button
+          onClick={() => arrowClickHandler(1)}
+          className="absolute -right-0.5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer rounded-s-full bg-gray-900 p-1.5 transition-all duration-75 ease-linear active:scale-95 md:block"
+        >
+          <ChevronRight
+            size={isSmall ? 30 : 40}
+            className="text-gray-200"
+          />
+        </button>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default TabMenu
+export default TabMenu;

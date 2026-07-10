@@ -17,8 +17,6 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
     hasNextPage
   } = useGetCategoryVideosInfiniteQuery(id);
 
-  console.log("IsSmall", isSmall, hasNextPage)
-
   const loaderRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: hasNextPage && !isFetchingNextPage && isSmall,

@@ -1,17 +1,14 @@
 import { X } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSidebar, setSidebar, setSearchLoading, selectIsSmall } from "../../features/home/homeSlice";
-import { setSearchResult } from "../../features/home/homeSlice";
+import { selectSidebar, setSidebar, selectSearchLoading } from "../../features/home/homeSlice";
 import { FIRST, GENERAL_SUB_CATEGORY, YOUR } from "../../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useLazyGetSearchVideosQuery } from "../../features/home/homeApiSlice";
 import { selectLoggedInStatus } from "../../features/auth/authSlice";
 
 const Sidebar = () => {
-    const [trigger, { isLoading }] = useLazyGetSearchVideosQuery();
+    const isLoading = useSelector(selectSearchLoading);
     const { slideOpenSidebar } = useSelector(selectSidebar);
     const isLoggedIn = useSelector(selectLoggedInStatus);
-    const isSmall = useSelector(selectIsSmall);
 
     const pathname = useLocation().pathname;
     const navigate = useNavigate();
@@ -46,36 +43,12 @@ const Sidebar = () => {
         }))
     }
 
-    const searchClickHandler = async (text) => {
-        if (isLoading) return;
-        // console.log("Clicked search")
-
-        dispatch(setSearchLoading(true));
-        divClickHandler();
-
-        if (pathname !== "/pc_search" && pathname !== "/search") {
-            if (isSmall) {
-                navigate("/search");
-            } else {
-                navigate("/pc_search");
-            }
-        }
-
-        try {
-            const data = await trigger({ searchedTerm: text }).unwrap();
-            dispatch(setSearchResult(data.items));
-        } catch (err) {
-            console.log("Failed to search", err)
-        } finally {
-            dispatch(setSearchLoading(false))
-        }
-    }
-
     const categoryClickHandler = (obj) => {
-        // console.log("Clicked")
-
+        if (isLoading) return;
         const text = obj.searchTerms.join(" ");
-        searchClickHandler(text);
+
+        divClickHandler();
+        navigate(`/search?searchQuery=${text}`);
     }
 
     return (

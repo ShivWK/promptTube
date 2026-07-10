@@ -4,11 +4,13 @@ import { selectUserDetails } from "../../features/auth/authSlice";
 import { useEffect, useState } from "react";
 import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
-import { manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater } from "../../features/watch/watchSlice";
-import { addVideo } from "../../features/watch/watchSlice";
+import { addVideo, manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater, setCurrentChannel } from "../../features/watch/watchSlice";
+import {  } from "../../features/watch/watchSlice";
 import { manageSubscriptions, selectSubscriptions, setSubscription } from "../../features/userActivity/userActivitySlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import AccountShimmer from "../shimmer/AccountShimmer";
+import { useNavigate } from "react-router-dom";
+import { addToLocalStorage } from "../../utils/handleLocalStorage";
 
 const Channel = ({ channelId: id, videoId }) => {
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
@@ -22,6 +24,7 @@ const Channel = ({ channelId: id, videoId }) => {
     const likedVideos = useSelector(selectLikedVideos);
     const watchLaterVideos = useSelector(selectWatchLater);
     const subscriptions = useSelector(selectSubscriptions);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
@@ -108,19 +111,32 @@ const Channel = ({ channelId: id, videoId }) => {
         else setSubscribed(false);
     }, [subscriptions, id])
 
+    const cardClickHandler = (object) => {
+        console.log("Got Channel", object)
+        const uploadsPlayListId = object?.contentDetails?.relatedPlaylists?.uploads;
+        console.log("Uploads id", uploadsPlayListId, object.id)
+        navigate(`/channel?channelId=${object.id}&uploadsId=${uploadsPlayListId}`);
+
+        dispatch(setCurrentChannel(object));
+        addToLocalStorage({ add: object, name: "currentChannel" })
+    }
+
     return (
         <div className="w-full flex items-center justify-between">
             {isLoading
                 ? <div className="w-[30%] md:w-[25%]">
                     <AccountShimmer />
                 </div>
-                : <div className="flex items-center gap-2 md:gap-3 dark:text-gray-100">
+                : <button
+                    onClick={() => cardClickHandler(channel[0])}
+                    className="flex items-center gap-2 md:gap-3 dark:text-gray-100"
+                >
                     <img src={channel[0]?.snippet?.thumbnails?.default?.url} alt="channel_logo" className="rounded-full h-11 md:h-14 w-11 md:w-14 border border-gray-400" />
                     <div className="h-fit">
                         <h2 className="text-sm md:text-lg leading-5 font-medium tracking-wider max-w-40 md:max-w-[26rem] truncate">{channel[0]?.snippet?.title}</h2>
                         <p className="max-md:text-xs dark:text-gray-300">{countViews(channel[0]?.statistics?.subscriberCount)}</p>
                     </div>
-                </div>}
+                </button>}
 
             <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
                 <div className="">

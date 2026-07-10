@@ -119,9 +119,9 @@ const SearchPage = () => {
                             : "gap-5 xl:gap-6"
                             }`}
                     >
-                        {searchResult.map((video) => (
+                        {searchResult.map((video, index) => (
                             <VideoCard
-                                key={video.id.videoId}
+                                key={video.id.videoId + index}
                                 object={video}
                                 mode="search"
                             />

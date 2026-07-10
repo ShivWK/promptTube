@@ -29,7 +29,6 @@ import Sidebar from "../common/Sidebar";
 import { getFromLocalStorage } from "../../utils/handleLocalStorage";
 import BackToTopButton from "../common/BackToTopBtn";
 import useFetchSavedData from "../../hooks/useFetchSavedData";
-import { ScrollToTop } from "../common/ScrollToTop";
 
 const Layout = () => {
     const [isSmall, setSmall] = useState(false);
