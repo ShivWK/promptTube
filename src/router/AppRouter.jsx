@@ -18,7 +18,7 @@ const AppRouter = () => {
             <Route path="search" element={<SearchPage />} />
             <Route path="category_videos" element={<VideoByCategory />} />
             <Route path="account" loader={authCheckLoader} element={<Account />} />
-            <Route path="channel" loader={authCheckLoader} element={<Channel />} />
+            <Route path="channel" element={<Channel />} />
         </Route>
     ))
 
