@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
 import { addVideo, manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater, setCurrentChannel } from "../../features/watch/watchSlice";
-import {  } from "../../features/watch/watchSlice";
+import { } from "../../features/watch/watchSlice";
 import { manageSubscriptions, selectSubscriptions, setSubscription } from "../../features/userActivity/userActivitySlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import AccountShimmer from "../shimmer/AccountShimmer";
@@ -129,16 +129,25 @@ const Channel = ({ channelId: id, videoId }) => {
                 </div>
                 : <button
                     onClick={() => cardClickHandler(channel[0])}
-                    className="flex items-center gap-2 md:gap-3 dark:text-gray-100"
+                    className="flex items-center gap-2 md:gap-3 dark:text-gray-100 cursor-pointer"
                 >
-                    <img src={channel[0]?.snippet?.thumbnails?.default?.url} alt="channel_logo" className="rounded-full h-11 md:h-14 w-11 md:w-14 border border-gray-400" />
+                    <img
+                        src={channel[0]?.snippet?.thumbnails?.default?.url}
+                        alt="channel_logo"
+                        className="rounded-full h-11 md:h-14 w-11 md:w-14 border border-gray-400"
+                    />
                     <div className="h-fit">
-                        <h2 className="text-sm md:text-lg leading-5 font-medium tracking-wider max-w-40 md:max-w-[26rem] truncate">{channel[0]?.snippet?.title}</h2>
-                        <p className="max-md:text-xs dark:text-gray-300">{countViews(channel[0]?.statistics?.subscriberCount)}</p>
+                        <h2 className="text-sm md:text-lg leading-5 font-medium tracking-wider max-w-40 md:max-w-[26rem] truncate text-start" >
+                            {channel[0]?.snippet?.title}
+                        </h2>
+                        <p className="max-md:text-xs dark:text-gray-300 text-start">
+                            {countViews(channel[0]?.statistics?.subscriberCount)} Subscribers
+                        </p>
                     </div>
                 </button>}
 
-            <div className="flex items-center gap-2 md:gap-4 lg:gap-5">
+            <div className="flex items-center gap-2
+             md:gap-4 lg:gap-5">
                 <div className="">
                     {!liked ? <i onClick={() => likeClickHandler("add")} className="ri-thumb-up-line text-xl md:text-2xl dark:text-white cursor-pointer"></i>
                         : <i onClick={() => likeClickHandler("remove")} className="ri-thumb-up-fill text-xl md:text-2xl dark:text-primary cursor-pointer"></i>}

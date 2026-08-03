@@ -15,7 +15,7 @@ const Comments = ({ id }) => {
     const [ _, checkAuth ] = useAuthCheck();
     const [showCompleteComment, setShowCompleteComment] = useState(false);
     const [comments, setComments] = useState([]);
-    const storedComments = useSelector(selectComments)
+    // const storedComments = useSelector(selectComments)
     const isSmall = useSelector(selectIsSmall);
     const { name, id: userId } = useSelector(selectUserDetails);
     const dispatch = useDispatch();

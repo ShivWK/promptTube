@@ -6,16 +6,17 @@ import { useState } from "react";
 import RelatedVideos from "./RelatedVideos";
 import Channel from "./Channel";
 import Comments from "./Comments";
-import SummaryAndQA from "./SummaryAndQA";
+import AIAssistant from "../ai/AiAssistant";
+import { Brain } from "lucide-react";
 
 const Watch = () => {
   const currentVideo = useSelector(selectCurrentPlaying);
+  const [showVideoLoader, setShowVideoLoader] = useState(true);
 
   const [searchParam] = useSearchParams();
   const id = searchParam.get("id");
   const channelId = searchParam.get("channelid");
   const categoryId = searchParam.get("categoryid");
-  const [showVideoLoader, setShowVideoLoader] = useState(true);
 
   return (
     <main className='pt-16 pb-20 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
@@ -33,11 +34,12 @@ const Watch = () => {
           <h1 className="dark:text-gray-200 md:text-xl font-medium line-clamp-2">{currentVideo?.snippet?.title}</h1>
 
           {/* Channel */}
-          <Channel channelId={channelId} videoId={id}/>
+          <Channel channelId={channelId} videoId={id} />
 
           {/* Ai section */}
-          <SummaryAndQA />
 
+            ? <AIAssistant />
+            
           {/* Comments */}
           <Comments id={id} />
         </div>

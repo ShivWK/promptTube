@@ -81,7 +81,13 @@ const Layout = () => {
         if (pathname === "/watch") setShowSideMenu(false);
         else setShowSideMenu(true);
 
-        if (pathname === "/watch" || pathname === "/" || pathname === "/memory") setShowTopBtn(true);
+        if (
+            pathname === "/"
+            || pathname === "/watch"
+            || pathname === "/memory"
+            || pathname === "/search"
+            || pathname === "/category_videos"
+        ) setShowTopBtn(true);
         else setShowTopBtn(false);
     }, [pathname])
 
