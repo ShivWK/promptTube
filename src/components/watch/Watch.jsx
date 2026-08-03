@@ -37,8 +37,7 @@ const Watch = () => {
           <Channel channelId={channelId} videoId={id} />
 
           {/* Ai section */}
-
-            ? <AIAssistant />
+          <AIAssistant />
             
           {/* Comments */}
           <Comments id={id} />

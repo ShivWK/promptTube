@@ -5,7 +5,7 @@ const AIMessage = ({ role, children }) => {
 
     return (
         <div
-            className={`flex gap-3 ${
+            className={`flex gap-3 text-sm ${
                 isUser ? "justify-end" : "justify-start"
             }`}
         >
