@@ -5,7 +5,11 @@ import {
     Send,
     Sparkles,
 } from "lucide-react";
+
 import AiMessage from "./AiMessage";
+import DotBounceLoader from "../common/DotBounceLoader";
+import { useSearchParams } from "react-router-dom";
+import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery } from "../../features/ai/aiApiSlice";
 
 const predefinedQuestions = [
     "Explain in simple words",
@@ -15,9 +19,16 @@ const predefinedQuestions = [
 ];
 
 const AIAssistant = () => {
+    const [getTranscription, { data: transcription, isLoading, isFetching }] = useLazyGetTranscriptionQuery();
+    const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
+
+    const [searchParam] = useSearchParams();
+    const videoId = searchParam.get("id");
+
     const [open, setOpen] = useState(false);
     const [askOpen, setAskOpen] = useState(false);
     const [question, setQuestion] = useState("");
+    const [transcript, setTranscript] = useState("");
 
     const [messages, setMessages] = useState([
         {
@@ -31,7 +42,12 @@ const AIAssistant = () => {
     const [summaryGenerated, setSummaryGenerated] = useState(false);
     const [keyPointsGenerated, setKeyPointsGenerated] = useState(false);
 
-    const generateSummary = () => {
+    const generateSummary = async () => {
+        if (summary) return;
+
+        const summaryData = await getSummary({ videoId, transcript }).unwrap();
+        console.log("Summary ", summaryData);
+
         setSummaryGenerated(true);
 
         setMessages((prev) => [
@@ -39,8 +55,8 @@ const AIAssistant = () => {
             {
                 role: "assistant",
                 type: "summary",
-                text:
-                    "React Query (TanStack Query) is a powerful data-fetching library that simplifies server state management. It provides caching, background refetching, automatic retries, pagination support, optimistic updates, and excellent developer experience. The video explains why React Query is preferred over manually handling loading and error states with useEffect.",
+                title: summaryData.data.title,
+                text: summaryData.data.summary,
             },
         ]);
     };
@@ -64,28 +80,27 @@ const AIAssistant = () => {
         ]);
     };
 
+    const handleDropdownClick = async () => {
+        if (!open && !transcription) {
+            try {
+                const result = await getTranscription({ videoId }).unwrap();
+                setTranscript(result.transcript);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        setOpen(prev => !prev);
+    };
+
     return (
         <aside
-            className={`
-        w-full
-        md:flex-1
-        rounded-xl
-        overflow-hidden
-        bg-gray-800
-        border
-        border-gray-700
-        flex
-        flex-col
-        ${open
-                    ? "h-[32rem] md:h-[42rem]"
-                    : "h-auto md:h-[3.6rem]"
-                }
-    `}
+            className={`w-full md:flex-1 rounded-xl overflow-hidden bg-gray-800 border border-gray-700 flex flex-col ${open ? "h-[32rem] md:h-[42rem]" : "h-auto md:h-[3.6rem]"}`}
         >
             {/* Header */}
 
             <button
-                onClick={() => setOpen(!open)}
+                onClick={handleDropdownClick}
                 className="flex items-center justify-between bg-gray-900 px-4 py-3 border-b border-gray-700 cursor-pointer"
             >
                 <div className="flex items-center gap-2">
@@ -94,9 +109,16 @@ const AIAssistant = () => {
                         className="text-primary"
                     />
 
-                    <h2 className="font-semibold text-white">
-                        AI Assistant
-                    </h2>
+                    <h2 className="font-semibold text-white">AI Assistant</h2>
+                    {(isLoading || isFetching) && (
+                        <span className="ml-1 -mb-1">
+                            <DotBounceLoader
+                                nmSize="md:text-xl"
+                                mdSize="text-2xl"
+                                allColor="text-primary"
+                            />
+                        </span>
+                    )}
                 </div>
 
                 {open ? (
@@ -118,15 +140,21 @@ const AIAssistant = () => {
                             >
                                 {msg.type === "keypoints" ? (
                                     <div>
-                                        <h3 className="font-semibold mb-2">
-                                            Key Takeaways
-                                        </h3>
+                                        <h3 className="font-semibold mb-2">Key Takeaways</h3>
 
                                         <ul className="list-disc ml-5 space-y-2">
                                             {msg.points.map((point, i) => (
                                                 <li key={i}>{point}</li>
                                             ))}
                                         </ul>
+                                    </div>
+                                ) : msg.type === "summary" ? (
+                                    <div>
+                                        <h3 className="font-semibold mb-2">{msg.title}</h3>
+
+                                        <p>
+                                            {msg.text}
+                                        </p>
                                     </div>
                                 ) : (
                                     msg.text
@@ -137,13 +165,15 @@ const AIAssistant = () => {
 
                     {/* Summary */}
 
-                    {!summaryGenerated && (
+                    {(!summaryGenerated || !summary) && (
                         <div className="border-t border-gray-700 p-4">
                             <button
                                 onClick={generateSummary}
-                                className="w-full rounded-lg bg-primary py-2 text-white font-medium hover:opacity-90 transition cursor-pointer"
+                                disabled={loadingSummary || fetchingSummary}
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary py-2 text-white font-medium hover:opacity-90 transition cursor-pointer"
                             >
-                                Generate AI Summary
+                                <span>Generate AI Summary</span>
+                                {(loadingSummary || fetchingSummary) && <span className="h-5 w-5 border-3 border-b-transparent border-r-white border-l-white border-t-white rounded-full animate-spin" />}
                             </button>
                         </div>
                     )}
@@ -172,18 +202,7 @@ const AIAssistant = () => {
                             {predefinedQuestions.map((item) => (
                                 <button
                                     key={item}
-                                    className="
-                                        rounded-full
-                                        border
-                                        border-gray-600
-                                        px-3
-                                        py-1.5
-                                        text-sm
-                                        text-gray-200
-                                        hover:bg-primary
-                                        hover:border-primary
-                                        transition
-                                    "
+                                    className="rounded-full border border-gray-600 px-3 py-1.5 text-sm text-gray-200 hover:bg-primary hover:border-primary transition"
                                 >
                                     {item}
                                 </button>
@@ -209,29 +228,10 @@ const AIAssistant = () => {
                                         setQuestion(e.target.value)
                                     }
                                     placeholder="Ask about this video..."
-                                    className="
-                                        flex-1
-                                        rounded-full
-                                        bg-gray-900
-                                        px-4
-                                        py-2
-                                        text-white
-                                        outline-none
-                                        border
-                                        border-gray-700
-                                        focus:border-primary
-                                    "
+                                    className="flex-1 rounded-full bg-gray-900 px-4 py-2 text-white outline-none border border-gray-700 focus:border-primary"
                                 />
 
-                                <button
-                                    className="
-                                        rounded-full
-                                        bg-primary
-                                        p-3
-                                        text-white
-                                        hover:opacity-90
-                                    "
-                                >
+                                <button className="rounded-full bg-primary p-3 text-white hover:opacity-90">
                                     <Send size={18} />
                                 </button>
                             </form>
