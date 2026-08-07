@@ -9,7 +9,7 @@ import {
 import AiMessage from "./AiMessage";
 import DotBounceLoader from "../common/DotBounceLoader";
 import { useSearchParams } from "react-router-dom";
-import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery } from "../../features/ai/aiApiSlice";
+import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTakeawaysQuery } from "../../features/ai/aiApiSlice";
 
 const predefinedQuestions = [
     "Explain in simple words",
@@ -21,6 +21,7 @@ const predefinedQuestions = [
 const AIAssistant = () => {
     const [getTranscription, { data: transcription, isLoading, isFetching }] = useLazyGetTranscriptionQuery();
     const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
+    const [getKeyTakeaways, { data: keyTakeaways, isLoading: loadingKeyTakeaways, isFetching: fetchingKeyTakeaways }] = useLazyGetKeyTakeawaysQuery()
 
     const [searchParam] = useSearchParams();
     const videoId = searchParam.get("id");
@@ -43,10 +44,10 @@ const AIAssistant = () => {
     const [keyPointsGenerated, setKeyPointsGenerated] = useState(false);
 
     const generateSummary = async () => {
-        if (summary) return;
+        if (summary || loadingSummary || fetchingSummary) return;
 
         const summaryData = await getSummary({ videoId, transcript }).unwrap();
-        console.log("Summary ", summaryData);
+        // console.log("Summary ", summaryData);
 
         setSummaryGenerated(true);
 
@@ -61,7 +62,12 @@ const AIAssistant = () => {
         ]);
     };
 
-    const generateKeyTakeaways = () => {
+    const generateKeyTakeaways = async () => {
+        if (keyTakeaways || loadingKeyTakeaways || fetchingKeyTakeaways) return;
+
+        const keyTakeawaysData = await getKeyTakeaways({videoId, transcript}).unwrap();
+        console.log("KeyTakeaways" ,keyTakeawaysData)
+
         setKeyPointsGenerated(true);
 
         setMessages((prev) => [
@@ -69,13 +75,7 @@ const AIAssistant = () => {
             {
                 role: "assistant",
                 type: "keypoints",
-                points: [
-                    "Server state is different from client state.",
-                    "Automatic caching improves performance.",
-                    "Background refetch keeps data fresh.",
-                    "Supports infinite scrolling and pagination.",
-                    "Mutations make updating server data easier.",
-                ],
+                points: keyTakeawaysData.data,
             },
         ]);
     };
@@ -184,9 +184,11 @@ const AIAssistant = () => {
                         <div className="px-4 pb-4">
                             <button
                                 onClick={generateKeyTakeaways}
-                                className="w-full rounded-lg bg-gray-900 py-2 text-gray-200 font-medium hover:bg-gray-700 transition cursor-pointer"
+                                disabled={loadingKeyTakeaways || fetchingKeyTakeaways}
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-900 py-2 text-gray-200 font-medium hover:bg-gray-700 transition cursor-pointer"
                             >
-                                Generate Key Takeaways
+                                <span>Generate Key Takeaways</span>
+                                {(loadingKeyTakeaways || fetchingKeyTakeaways) && <span className="h-5 w-5 border-3 border-b-transparent border-r-white border-l-white border-t-white rounded-full animate-spin" />}
                             </button>
                         </div>
                     )}

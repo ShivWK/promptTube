@@ -42,9 +42,10 @@ const aiApiSlice = createApi({
 
         getKeyTakeaways: builder.query({
             query: ({ videoId, transcript }) => ({
-                url: "/key-takeaways",
+                url: "/query",
                 method: "POST",
                 body: {
+                    mode: "keyPoints",
                     videoId,
                     transcript,
                 },
@@ -60,9 +61,10 @@ const aiApiSlice = createApi({
 
         askQuestion: builder.mutation({
             query: ({ transcript, question }) => ({
-                url: "/question",
+                url: "/query",
                 method: "POST",
                 body: {
+                    mode: "question",
                     transcript,
                     question,
                 },
@@ -76,5 +78,6 @@ export default aiApiSlice;
 export const {
     useLazyGetTranscriptionQuery,
     useLazyGetSummaryQuery,
+    useLazyGetKeyTakeawaysQuery,
     useAskQuestionMutation
 } = aiApiSlice;
