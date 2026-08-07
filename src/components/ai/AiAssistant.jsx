@@ -9,19 +9,15 @@ import {
 import AiMessage from "./AiMessage";
 import DotBounceLoader from "../common/DotBounceLoader";
 import { useSearchParams } from "react-router-dom";
-import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTakeawaysQuery } from "../../features/ai/aiApiSlice";
-
-const predefinedQuestions = [
-    "Explain in simple words",
-    "Give key takeaways",
-    "Quiz me",
-    "Important interview questions",
-];
+import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTakeawaysQuery, useLazyAskQuestionQuery } from "../../features/ai/aiApiSlice";
+import AIMessage from "./AiMessage";
 
 const AIAssistant = () => {
     const [getTranscription, { data: transcription, isLoading, isFetching }] = useLazyGetTranscriptionQuery();
     const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
     const [getKeyTakeaways, { data: keyTakeaways, isLoading: loadingKeyTakeaways, isFetching: fetchingKeyTakeaways }] = useLazyGetKeyTakeawaysQuery()
+
+    const [getAnswer, { isLoading: loadingAnswer, isFetching: fetchingAnswer }] = useLazyAskQuestionQuery();
 
     const [searchParam] = useSearchParams();
     const videoId = searchParam.get("id");
@@ -47,7 +43,6 @@ const AIAssistant = () => {
         if (summary || loadingSummary || fetchingSummary) return;
 
         const summaryData = await getSummary({ videoId, transcript }).unwrap();
-        // console.log("Summary ", summaryData);
 
         setSummaryGenerated(true);
 
@@ -65,8 +60,7 @@ const AIAssistant = () => {
     const generateKeyTakeaways = async () => {
         if (keyTakeaways || loadingKeyTakeaways || fetchingKeyTakeaways) return;
 
-        const keyTakeawaysData = await getKeyTakeaways({videoId, transcript}).unwrap();
-        console.log("KeyTakeaways" ,keyTakeawaysData)
+        const keyTakeawaysData = await getKeyTakeaways({ videoId, transcript }).unwrap();
 
         setKeyPointsGenerated(true);
 
@@ -93,9 +87,38 @@ const AIAssistant = () => {
         setOpen(prev => !prev);
     };
 
+    const submitHandler = async (e) => {
+        e.preventDefault();
+
+        if (!question.trim()) return;
+
+        setMessages((prev) => [
+            ...prev,
+            {
+                role: "user",
+                text: question,
+            },
+        ]);
+
+        setQuestion("");
+
+        const aiAnswer = await getAnswer({
+            transcript,
+            question
+        })
+
+        setMessages((prev) => [
+            ...prev,
+            {
+                role: "assistant",
+                text: aiAnswer.data.data.answer,
+            },
+        ]);
+    }
+
     return (
         <aside
-            className={`w-full md:flex-1 rounded-xl overflow-hidden bg-gray-800 border border-gray-700 flex flex-col ${open ? "h-[32rem] md:h-[42rem]" : "h-auto md:h-[3.6rem]"}`}
+            className={`w-full md:flex-1 rounded-xl overflow-hidden bg-gray-800 border border-gray-700 flex flex-col ${open ? "h-[36rem] md:h-[42rem]" : "h-auto md:h-[3.6rem]"}`}
         >
             {/* Header */}
 
@@ -161,6 +184,16 @@ const AIAssistant = () => {
                                 )}
                             </AiMessage>
                         ))}
+                        {(loadingAnswer || fetchingAnswer)
+                            && <AIMessage key="loader" role="assistant">
+                                <span>
+                                    <DotBounceLoader
+                                        nmSize="md:text-xl"
+                                        mdSize="text-2xl"
+                                        allColor="text-primary"
+                                    />
+                                </span>
+                            </AIMessage>}
                     </div>
 
                     {/* Summary */}
@@ -193,25 +226,6 @@ const AIAssistant = () => {
                         </div>
                     )}
 
-                    {/* Suggested Questions */}
-
-                    <div className="px-4 py-4">
-                        <h3 className="text-sm text-gray-400 mb-2">
-                            Suggested Questions
-                        </h3>
-
-                        <div className="flex flex-wrap gap-2">
-                            {predefinedQuestions.map((item) => (
-                                <button
-                                    key={item}
-                                    className="rounded-full border border-gray-600 px-3 py-1.5 text-sm text-gray-200 hover:bg-primary hover:border-primary transition"
-                                >
-                                    {item}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
                     {/* Ask */}
 
                     <div className="border-t border-gray-700 p-4">
@@ -223,7 +237,7 @@ const AIAssistant = () => {
                                 Ask AI
                             </button>
                         ) : (
-                            <form className="flex gap-2">
+                            <form className="flex gap-2" onSubmit={submitHandler}>
                                 <input
                                     value={question}
                                     onChange={(e) =>
@@ -233,7 +247,9 @@ const AIAssistant = () => {
                                     className="flex-1 rounded-full bg-gray-900 px-4 py-2 text-white outline-none border border-gray-700 focus:border-primary"
                                 />
 
-                                <button className="rounded-full bg-primary p-3 text-white hover:opacity-90">
+                                <button
+                                    disabled={loadingAnswer || fetchingAnswer}
+                                    className="rounded-full bg-primary p-3 text-white hover:opacity-90">
                                     <Send size={18} />
                                 </button>
                             </form>

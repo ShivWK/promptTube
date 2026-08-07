@@ -59,7 +59,7 @@ const aiApiSlice = createApi({
             ],
         }),
 
-        askQuestion: builder.mutation({
+        askQuestion: builder.query({
             query: ({ transcript, question }) => ({
                 url: "/query",
                 method: "POST",
@@ -79,5 +79,5 @@ export const {
     useLazyGetTranscriptionQuery,
     useLazyGetSummaryQuery,
     useLazyGetKeyTakeawaysQuery,
-    useAskQuestionMutation
+    useLazyAskQuestionQuery
 } = aiApiSlice;
