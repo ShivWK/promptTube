@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     ChevronDown,
     ChevronUp,
@@ -38,6 +38,26 @@ const AIAssistant = () => {
 
     const [summaryGenerated, setSummaryGenerated] = useState(false);
     const [keyPointsGenerated, setKeyPointsGenerated] = useState(false);
+
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const container = containerRef.current;
+
+        if (!container) return;
+
+        const distanceFromBottom =
+            container.scrollHeight -
+            container.scrollTop -
+            container.clientHeight
+
+        if (distanceFromBottom < 150) {
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    }, [messages])
 
     const generateSummary = async () => {
         if (summary || loadingSummary || fetchingSummary) return;
@@ -155,7 +175,9 @@ const AIAssistant = () => {
                 <>
                     {/* Messages */}
 
-                    <div className="flex-1 overflow-y-auto pretty-scrollbar p-4 space-y-4">
+                    <div
+                        ref={containerRef}
+                        className="flex-1 overflow-y-auto pretty-scrollbar p-4 space-y-4">
                         {messages.map((msg, index) => (
                             <AiMessage
                                 key={index}
