@@ -181,8 +181,6 @@ const AIAssistant = () => {
                 question: userQuestion,
             }).unwrap();
 
-            console.log("Answer", aiAnswer)
-
             setMessages((prev) => [
                 ...prev,
                 {
