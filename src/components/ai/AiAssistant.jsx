@@ -13,11 +13,33 @@ import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTake
 import AIMessage from "./AiMessage";
 
 const AIAssistant = () => {
-    const [getTranscription, { data: transcription, isLoading, isFetching }] = useLazyGetTranscriptionQuery();
-    const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
-    const [getKeyTakeaways, { data: keyTakeaways, isLoading: loadingKeyTakeaways, isFetching: fetchingKeyTakeaways }] = useLazyGetKeyTakeawaysQuery()
+    const [getTranscription, {
+        data: transcription,
+        isLoading,
+        isFetching
+    }] = useLazyGetTranscriptionQuery();
 
-    const [getAnswer, { isLoading: loadingAnswer, isFetching: fetchingAnswer }] = useLazyAskQuestionQuery();
+    const transcriptionLoading = isLoading || isFetching;
+
+    const [getSummary, {
+        data: summary,
+        isLoading: loadingSummary,
+        isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
+
+    const summaryLoading = loadingSummary || fetchingSummary;
+
+    const [getKeyTakeaways, {
+        data: keyTakeaways,
+        isLoading: loadingKeyTakeaways,
+        isFetching: fetchingKeyTakeaways }] = useLazyGetKeyTakeawaysQuery()
+
+    const keyTakeawaysLoading = loadingKeyTakeaways || fetchingKeyTakeaways;
+
+    const [getAnswer, {
+        isLoading: loadingAnswer,
+        isFetching: fetchingAnswer }] = useLazyAskQuestionQuery();
+
+    const answerLoading = loadingAnswer || fetchingAnswer;
 
     const [searchParam] = useSearchParams();
     const videoId = searchParam.get("id");
@@ -60,38 +82,68 @@ const AIAssistant = () => {
     }, [messages])
 
     const generateSummary = async () => {
-        if (summary || loadingSummary || fetchingSummary) return;
+        if (summary || summaryLoading) return;
 
-        const summaryData = await getSummary({ videoId, transcript }).unwrap();
+        try {
+            const summaryData = await getSummary({ videoId, transcript }).unwrap();
 
-        setSummaryGenerated(true);
+            setSummaryGenerated(true);
 
-        setMessages((prev) => [
-            ...prev,
-            {
-                role: "assistant",
-                type: "summary",
-                title: summaryData.data.title,
-                text: summaryData.data.summary,
-            },
-        ]);
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "summary",
+                    title: summaryData.data.title,
+                    text: summaryData.data.summary,
+                },
+            ]);
+        } catch (err) {
+            console.log("summary generation failed", err);
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "error",
+                    text: "Sorry, I couldn't generate the summary right now. Please try again.",
+                },
+            ]);
+        }
     };
 
     const generateKeyTakeaways = async () => {
-        if (keyTakeaways || loadingKeyTakeaways || fetchingKeyTakeaways) return;
+        if (keyTakeaways || keyTakeawaysLoading) return;
 
-        const keyTakeawaysData = await getKeyTakeaways({ videoId, transcript }).unwrap();
+        try {
+            const keyTakeawaysData = await getKeyTakeaways({
+                videoId,
+                transcript
+            }).unwrap();
 
-        setKeyPointsGenerated(true);
+            setKeyPointsGenerated(true);
 
-        setMessages((prev) => [
-            ...prev,
-            {
-                role: "assistant",
-                type: "keypoints",
-                points: keyTakeawaysData.data,
-            },
-        ]);
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "keypoints",
+                    points: keyTakeawaysData.data,
+                },
+            ]);
+
+        } catch (error) {
+            console.error("Key takeaways generation failed:", error);
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "error",
+                    text: "Sorry, I couldn't generate the key takeaways right now. Please try again.",
+                },
+            ]);
+        }
     };
 
     const handleDropdownClick = async () => {
@@ -110,30 +162,45 @@ const AIAssistant = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        if (!question.trim()) return;
+        const userQuestion = question.trim()
+        if (!userQuestion || answerLoading) return;
 
         setMessages((prev) => [
             ...prev,
             {
                 role: "user",
-                text: question,
+                text: userQuestion,
             },
         ]);
 
         setQuestion("");
 
-        const aiAnswer = await getAnswer({
-            transcript,
-            question
-        })
+        try {
+            const aiAnswer = await getAnswer({
+                transcript,
+                question: userQuestion,
+            }).unwrap();
 
-        setMessages((prev) => [
-            ...prev,
-            {
-                role: "assistant",
-                text: aiAnswer.data.data.answer,
-            },
-        ]);
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    text: aiAnswer?.data?.data?.answer,
+                },
+            ]);
+
+        } catch (error) {
+            console.error("AI question failed:", error);
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "error",
+                    text: "Sorry, I couldn't answer that question right now. Please try again.",
+                },
+            ]);
+        }
     }
 
     return (
@@ -153,7 +220,7 @@ const AIAssistant = () => {
                     />
 
                     <h2 className="font-semibold text-white">AI Assistant</h2>
-                    {(isLoading || isFetching) && (
+                    {transcriptionLoading && (
                         <span className="ml-1 -mb-1">
                             <DotBounceLoader
                                 nmSize="md:text-xl"
@@ -201,6 +268,10 @@ const AIAssistant = () => {
                                             {msg.text}
                                         </p>
                                     </div>
+                                ) : msg.type === "error" ? (
+                                    <p className="text-red-400">
+                                        {msg.text}
+                                    </p>
                                 ) : (
                                     msg.text
                                 )}
