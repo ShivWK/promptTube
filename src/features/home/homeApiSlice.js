@@ -97,6 +97,5 @@ export const {
     useGetPopularVideosInfiniteQuery,
     useGetCategoryVideosInfiniteQuery,
     useGetSearchInfiniteVideosInfiniteQuery,
-
     useLazyGetVideoCategoriesQuery,
 } = homeApiSlice

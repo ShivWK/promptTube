@@ -36,7 +36,7 @@ const userActivityApiSlice = createApi({
             }),
 
             providesTags: (result, error, { userId }) => {
-                if (!result.success) return [];
+                if (!result?.success) return [];
 
                 return [
                     { type: "UserData", id: "LIST" },
@@ -52,7 +52,7 @@ const userActivityApiSlice = createApi({
             }),
 
             providesTags: (result, error, { userId }) => {
-                if (!result.success) return [];
+                if (!result?.success) return [];
 
                 return [
                     { type: "UserData", id: "LIST" },

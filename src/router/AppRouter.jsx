@@ -2,7 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Layout from "../components/layout/Layout";
 import Home from "../components/home/Home";
 import Watch from "../components/watch/Watch";
-import GptBrowser from "../components/gpt/GptBrowser";
+import GptBrowser from "../components/ai/GptBrowser";
 import SearchPage from "../components/search/SearchPage";
 import VideoByCategory from "../components/home/VideoByCategory";
 import Account from "../components/account/Account";

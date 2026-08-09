@@ -32,7 +32,7 @@ const Home = () => {
       className={
         isSmall
           ? "pt-14"
-          : "pt-28 lg:pt-36 md:pl-32 p-2 md:p-3"
+          : "pt-28 lg:pt-36 md:pl-28 p-2 md:p-3"
       }
     >
       {isLoading ? (

@@ -9,13 +9,15 @@ import searchSliceReducer from "../features/search/searchSlice";
 import userActivityReducer from "../features/userActivity/userActivitySlice";
 import userActivityApiSlice from "../features/userActivity/userActivityApiSlice";
 import aiApiSlice from "../features/ai/aiApiSlice";
+import searchApiSlice from "../features/search/searchApiSlice";
 
 const store = configureStore({
     reducer: {
-        [homeApiSlice.reducerPath] : homeApiSlice.reducer,
-        [watchApiSlice.reducerPath] : watchApiSlice.reducer,
-        [userActivityApiSlice.reducerPath] : userActivityApiSlice.reducer,
+        [homeApiSlice.reducerPath]: homeApiSlice.reducer,
+        [watchApiSlice.reducerPath]: watchApiSlice.reducer,
+        [userActivityApiSlice.reducerPath]: userActivityApiSlice.reducer,
         [aiApiSlice.reducerPath]: aiApiSlice.reducer,
+        [searchApiSlice.reducerPath]: searchApiSlice.reducer,
         auth: AuthSliceReducer,
         home: homeSliceReducer,
         watch: watchSliceReducer,
@@ -26,10 +28,11 @@ const store = configureStore({
     middleware: (defaultMiddlewares) => [
         ...defaultMiddlewares(),
         homeApiSlice.middleware,
+        searchApiSlice.middleware,
         watchApiSlice.middleware,
         userActivityApiSlice.middleware,
         aiApiSlice.middleware,
-    ] 
+    ]
 });
 
 setupListeners(store.dispatch)

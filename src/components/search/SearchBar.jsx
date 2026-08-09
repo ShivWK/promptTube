@@ -12,11 +12,13 @@ import {
   selectIsSmall,
   selectSearchLoading,
 } from "../../features/home/homeSlice";
+import { useLazyGetSearchSuggestionsQuery } from "../../features/search/searchApiSlice";
 
 const SearchBar = () => {
   const [searchParam] = useSearchParams();
   const searchQuery = searchParam.get("searchQuery");
 
+  const [getSearchSuggestions] = useLazyGetSearchSuggestionsQuery();
   const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
 
   const [search, setSearch] = useState(searchQuery || "");
@@ -37,9 +39,9 @@ const SearchBar = () => {
     dispatch(setSearchSuggestionsLoading(true));
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/youtube/searchSuggestion?query=${encodeURIComponent(str)}`);
-      const data = await response.json();
-      dispatch(setSearchSuggestions(data.data));
+      const result = await getSearchSuggestions({ searchQuery: encodeURIComponent(str) }).unwrap();
+      console.log("Search result", result);
+      dispatch(setSearchSuggestions(result.data));
     } catch (err) {
       console.log("failed", err)
     } finally {
@@ -59,10 +61,9 @@ const SearchBar = () => {
   }
 
   const suggestionClickHandler = (suggestion) => {
-    // setSearch(suggestion);
     dispatch(setSearchSuggestions([]));
 
-    if(suggestion === searchQuery) return;
+    if (suggestion === searchQuery) return;
     navigate(`/search?searchQuery=${suggestion.trim()}`)
   }
 

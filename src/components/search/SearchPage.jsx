@@ -15,6 +15,12 @@ const SearchPage = () => {
     const isSmall = useSelector(selectIsSmall);
     const dispatch = useDispatch();
 
+    const result = useGetSearchInfiniteVideosInfiniteQuery(searchTerm, {
+        skip: !searchTerm,
+    });
+
+    // console.log("search Result", result);
+
     const {
         data,
         isFetching,
@@ -22,9 +28,7 @@ const SearchPage = () => {
         hasNextPage,
         isFetchingNextPage,
         isLoading,
-    } = useGetSearchInfiniteVideosInfiniteQuery(searchTerm, {
-        skip: !searchTerm,
-    });
+    } = result;
 
     useEffect(() => {
         dispatch(setSearchLoading(isLoading || isFetching));
