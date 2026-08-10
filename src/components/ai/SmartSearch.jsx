@@ -77,7 +77,7 @@ const SmartSearch = () => {
 
                 {/* Example searches */}
 
-                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <div className="flex flex-col items-center justify-center gap-2 mt-18 md:mt-10">
                     {[
                         "Best React authentication tutorial",
                         "DSA interview preparation",
@@ -88,7 +88,7 @@ const SmartSearch = () => {
                             key={suggestion}
                             type="button"
                             onClick={() => setQuery(suggestion)}
-                            className=" rounded-full border border-gray-700 bg-gray-800 px-3 py-1.5 text-xs md:text-sm text-gray-300 hover:border-primary hover:text-white transition cursor-pointer"
+                            className=" rounded-full border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-gray-300 hover:border-primary hover:text-white transition cursor-pointer"
                         >
                             {suggestion}
                         </button>
