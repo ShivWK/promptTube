@@ -30,7 +30,6 @@
 }
 
 @theme {
-
     --color-primary: #ff0044;
     --color-shimmerBorder: #990029;
     --animate-dotBounce: animateDot 0.3s infinite alternate;
@@ -81,6 +80,18 @@
 
         100% {
             top: 0%;
+        }
+    }
+
+    --animate-smoothShow : smoothShow 1s ease forwards;
+
+    @keyframes smoothShow {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
         }
     }
 

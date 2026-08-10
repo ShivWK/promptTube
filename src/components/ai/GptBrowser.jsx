@@ -28,7 +28,7 @@ const GptBrowser = () => {
                     />
                 </div>
             </header>
-            <main className={"pt-38 lg:pt-54 flex flex-col justify-center gap-8"}>
+            <main className={"animate-smoothShow pt-38 lg:pt-54 flex flex-col justify-center gap-8"}>
                 <SmartSearch />
                 {/* <section className="content border-red-400 border-2 md:pl-28 p-3"></section> */}
             </main>
