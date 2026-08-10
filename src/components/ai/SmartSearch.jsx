@@ -29,8 +29,6 @@ const SmartSearch = () => {
         <section className="w-full px-3 md:px-6 ">
             <div className="w-full max-w-5xl mx-auto">
 
-                {/* Heading */}
-
                 <div className="text-center mb-6">
                     <p className="text-sm md:text-base text-gray-400">
                         Find the best videos for what you're actually looking for with Promptly Smart Search.
@@ -41,7 +39,7 @@ const SmartSearch = () => {
 
                 <form
                     onSubmit={submitHandler}
-                    className="flex items-center w-full bg-gray-900 border border-gray-700 rounded-full p-1.5 focus-within:border-primary transition-colors"
+                    className="flex items-center w-full bg-gray-900 border border-gray-500 rounded-full p-1.5 focus-within:border-primary transition-colors"
                 >
                     <Search
                         size={21}
