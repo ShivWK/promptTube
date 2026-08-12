@@ -1,12 +1,8 @@
 import LogoAndMenu from "../layout/header/LogoAndMenu";
 import { LoaderPinwheel, Sparkles } from "lucide-react";
-import { useSelector } from "react-redux";
-import { selectIsSmall } from "../../features/home/homeSlice";
 import SmartSearch from "./SmartSearch";
 
 const GptBrowser = () => {
-    const isSmall = useSelector(selectIsSmall)
-
     return (
         <>
             <header className="absolute left-0 w-full h-30 lg:h-45">
@@ -25,21 +21,11 @@ const GptBrowser = () => {
                     </div>
 
                     <div className="flex gap-2 items-center justify-self-center text-white text-2xl lg:text-4xl font-bold tracking-wide mt-4 lg:mt-12">
-                        <Sparkles
-                            size={isSmall ? 20 : 30}
-                            strokeWidth={1.5}
-                            className="text-primary"
-                        />
                         <span className="select-none">Promptly</span>
-                        <Sparkles
-                            size={isSmall ? 20 : 30}
-                            strokeWidth={1.5}
-                            className="text-primary"
-                        />
                     </div>
                 </div>
             </header>
-            <main className={"animate-smoothShow pt-38 lg:pt-54 flex flex-col justify-center gap-8"}>
+            <main className={"animate-smoothShow pt-34 lg:pt-50 flex flex-col justify-center gap-8"}>
                 <SmartSearch />
                 {/* <section className="content border-red-400 border-2 md:pl-28 p-3"></section> */}
             </main>

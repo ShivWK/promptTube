@@ -1,22 +1,26 @@
 import { Search, Sparkles, X } from "lucide-react";
 import { useState } from "react";
+import { useLazySmartSearchQuery } from "../../features/ai/aiApiSlice";
 
 const SmartSearch = () => {
+    const [smartSearch, { isLoading, isFetching, isError }] = useLazySmartSearchQuery()
     const [query, setQuery] = useState("");
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         const trimmedQuery = query.trim();
 
         if (!trimmedQuery) return;
 
-        // TODO:
-        // 1. Call YouTube search API
-        // 2. Rank results locally
-        // 3. Enrich top candidates
-        // 4. Send candidates to AI
-        // 5. Display final recommendations
+        console.log("Smart loading", isLoading)
+        try {
+            const result = await smartSearch({ smartQuery: trimmedQuery}).unwrap();
+            console.log("Smart search result", result);
+        } catch (err) {
+            console.log(err);
+        }
+
 
         console.log("Smart search:", trimmedQuery);
     };

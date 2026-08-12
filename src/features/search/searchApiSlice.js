@@ -4,16 +4,16 @@ const searchApiSlice = createApi({
     reducerPath: "searchApiSlice",
 
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/youtube`,
+        baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1`,
     }),
     
     keepUnusedDataFor: 60 * 10, // 10 mins
-    tagTypes: ["Suggestions"],
+    tagTypes: ["Suggestions", "Smart_Search"],
 
     endpoints: (builder) => ({
         getSearchSuggestions: builder.query({
             query: ({ searchQuery }) => ({
-                url: `/searchSuggestion?query=${searchQuery}`,
+                url: `/youtube/searchSuggestion?query=${searchQuery}`,
                 method: "GET",
             }),
 

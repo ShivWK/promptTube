@@ -69,6 +69,14 @@ const aiApiSlice = createApi({
                     question,
                 },
             }),
+        }),
+
+        smartSearch: builder.query({
+            query: ({ smartQuery }) => ({
+                url: "/smartQuery",
+                method: "POST",
+                body: { smartQuery }
+            })
         })
     })
 });
@@ -79,5 +87,6 @@ export const {
     useLazyGetTranscriptionQuery,
     useLazyGetSummaryQuery,
     useLazyGetKeyTakeawaysQuery,
-    useLazyAskQuestionQuery
+    useLazyAskQuestionQuery,
+    useLazySmartSearchQuery,
 } = aiApiSlice;
