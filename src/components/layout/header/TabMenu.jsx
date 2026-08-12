@@ -116,7 +116,7 @@ const TabMenu = () => {
                   <button
                     key={item.id}
                     onClick={() => categoryClickHandler(item.id)}
-                    className={`rounded-md px-3 py-1 font-medium whitespace-nowrap tracking-wide transition-all duration-150 lg:rounded-xl lg:py-1.5 lg:text-lg ${
+                    className={`rounded-md px-3 py-1 whitespace-nowrap tracking-wide transition-all duration-150 lg:rounded-xl lg:py-1.5 lg:text-lg ${
                       isActive
                         ? "bg-[#ff0044] text-white"
                         : "bg-gray-400/30 text-white hover:bg-gray-400/50"

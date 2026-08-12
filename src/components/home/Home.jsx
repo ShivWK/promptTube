@@ -74,18 +74,3 @@ const Home = () => {
 };
 
 export default Home;
-
-//  useEffect(() => {
-// const fetchData = async () => {
-//   try {
-//     const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`);
-
-//     const data = await response.json();
-//     console.log(data);
-//   } catch (err) {
-//     console.log("failed", err)
-//   }
-// }
-
-// fetchData();
-// }, [])
