@@ -17,20 +17,6 @@ const VideoCard = ({
     mode = "search",
     flexMode = "flex-col",
 }) => {
-    /*
-     * Smart Search recommendation data
-     *
-     * Example:
-     * {
-     *   videoId,
-     *   rank,
-     *   score,
-     *   reason,
-     *   strengths,
-     *   weaknesses
-     * }
-     */
-
     const isSmartSearch = mode === "smartSearch";
 
     const videoId = isSmartSearch
@@ -215,10 +201,6 @@ const VideoCard = ({
                         )}
                     </span>
                 </div>
-
-                {/* =========================================
-                    SMART SEARCH AI INSIGHTS
-                ========================================== */}
 
                 {isSmartSearch && (
                     <div
