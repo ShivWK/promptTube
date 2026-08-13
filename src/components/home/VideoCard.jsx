@@ -10,7 +10,13 @@ import {
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import { selectUserDetails } from "../../features/auth/authSlice";
-import { Star, Trophy, Check, AlertTriangle } from "lucide-react";
+import {
+    Star,
+    Trophy,
+    Check,
+    AlertTriangle,
+} from "lucide-react";
+import { useState } from "react";
 
 const VideoCard = ({
     object,
@@ -20,21 +26,83 @@ const VideoCard = ({
     const isSmartSearch = mode === "smartSearch";
 
     const videoId = isSmartSearch
-        ? object.videoId
+        ? object?.videoId
         : mode === "search"
-            ? object.id.videoId
-            : object.id;
+            ? object?.id?.videoId
+            : object?.id;
 
     const [_, checkAuth] = useAuthCheck({ showToast: false });
-
     const { id } = useSelector(selectUserDetails);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    /*
+     * --------------------------------------------------
+     * Thumbnail fallback
+     * --------------------------------------------------
+     */
+
+    const thumbnails = object?.snippet?.thumbnails;
+
+    const thumbnailUrls = [
+        thumbnails?.maxres?.url,
+        thumbnails?.standard?.url,
+        thumbnails?.high?.url,
+        thumbnails?.medium?.url,
+        thumbnails?.default?.url,
+    ].filter(Boolean);
+
+    const [thumbnailIndex, setThumbnailIndex] = useState(0);
+
+    const thumbnailUrl = thumbnailUrls[thumbnailIndex];
+
+    const handleThumbnailError = () => {
+        if (thumbnailIndex < thumbnailUrls.length - 1) {
+            setThumbnailIndex((prev) => prev + 1);
+        }
+    };
+
+    /*
+     * --------------------------------------------------
+     * Basic data
+     * --------------------------------------------------
+     */
+
+    const title =
+        object?.snippet?.localized?.title ||
+        object?.snippet?.title;
+
+    const channelTitle =
+        object?.snippet?.channelTitle;
+
+    const publishedAt =
+        object?.snippet?.publishedAt;
+
+    const viewCount =
+        object?.statistics?.viewCount;
+
+    const hasViews =
+        viewCount !== undefined &&
+        viewCount !== null &&
+        viewCount !== "" &&
+        Number.isFinite(Number(viewCount));
+
+    const hasPublishedAt =
+        publishedAt &&
+        !Number.isNaN(new Date(publishedAt).getTime());
+
+    /*
+     * --------------------------------------------------
+     * Navigation
+     * --------------------------------------------------
+     */
+
     const handleLinkClick = () => {
+        if (!videoId) return;
+
         navigate(
-            `/watch?id=${videoId}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId || 1}`
+            `/watch?id=${videoId}&channelid=${object?.snippet?.channelId || ""}&categoryid=${object?.snippet?.categoryId || 1}`
         );
 
         window.scrollTo({
@@ -68,6 +136,16 @@ const VideoCard = ({
         });
     };
 
+    /*
+     * --------------------------------------------------
+     * Don't render a broken card
+     * --------------------------------------------------
+     */
+
+    if (!object || !videoId) {
+        return null;
+    }
+
     return (
         <div
             onClick={handleLinkClick}
@@ -86,121 +164,132 @@ const VideoCard = ({
         >
             {/* Thumbnail */}
 
-            <div className="relative w-full">
-                <img
-                    alt="thumbnail"
-                    src={object.snippet?.thumbnails?.high?.url}
-                    className="w-full object-cover self-start rounded-t-2xl aspect-video"
-                />
+            {thumbnailUrl && (
+                <div className="relative w-full">
+                    <img
+                        src={thumbnailUrl}
+                        alt={title || "Video thumbnail"}
+                        onError={handleThumbnailError}
+                        className="w-full object-cover self-start rounded-t-2xl aspect-video"
+                    />
 
-                {/* AI Rank */}
+                    {/* AI Rank */}
 
-                {isSmartSearch && object.rank && (
-                    <div
-                        className="
-                            absolute top-3 left-3
-                            flex items-center gap-1.5
-                            rounded-full
-                            bg-gray-950/90
-                            backdrop-blur-sm
-                            px-3 py-1.5
-                            text-sm font-semibold
-                            text-white
-                        "
-                    >
-                        <Trophy
-                            size={15}
-                            className="text-yellow-400"
-                        />
+                    {isSmartSearch &&
+                        Number.isFinite(Number(object?.rank)) && (
+                            <div
+                                className="
+                                    absolute top-3 left-3
+                                    flex items-center gap-1.5
+                                    rounded-full
+                                    bg-gray-950/90
+                                    backdrop-blur-sm
+                                    px-3 py-1.5
+                                    text-sm font-semibold
+                                    text-white
+                                "
+                            >
+                                <Trophy
+                                    size={15}
+                                    className="text-yellow-400"
+                                />
 
-                        <span>
-                            #{object.rank}
-                        </span>
-                    </div>
-                )}
+                                <span>
+                                    #{object.rank}
+                                </span>
+                            </div>
+                        )}
 
-                {/* AI Score */}
+                    {/* AI Score */}
 
-                {isSmartSearch && object.score != null && (
-                    <div
-                        className="
-                            absolute top-3 right-3
-                            flex items-center gap-1
-                            rounded-full
-                            bg-gray-950/90
-                            backdrop-blur-sm
-                            px-2.5 py-1.5
-                            text-sm font-semibold
-                            text-white
-                        "
-                    >
-                        <Star
-                            size={15}
-                            fill="currentColor"
-                            className="text-yellow-400"
-                        />
+                    {isSmartSearch &&
+                        Number.isFinite(Number(object?.score)) && (
+                            <div
+                                className="
+                                    absolute top-3 right-3
+                                    flex items-center gap-1
+                                    rounded-full
+                                    bg-gray-950/90
+                                    backdrop-blur-sm
+                                    px-2.5 py-1.5
+                                    text-sm font-semibold
+                                    text-white
+                                "
+                            >
+                                <Star
+                                    size={15}
+                                    fill="currentColor"
+                                    className="text-yellow-400"
+                                />
 
-                        <span>{object.score}</span>
-                    </div>
-                )}
-            </div>
+                                <span>{object.score}</span>
+                            </div>
+                        )}
+                </div>
+            )}
 
             {/* Content */}
 
             <div className="p-3 dark:text-white w-full flex flex-col gap-1">
+
                 {/* Title */}
 
-                <h2
-                    className="
-                        text-start
-                        font-medium
-                        tracking-wide
-                        line-clamp-2
-                        leading-5
-                        break-all
-                    "
-                >
-                    {mode === "search"
-                        ? object.snippet?.title
-                        : object.snippet?.localized?.title ||
-                        object.snippet?.title}
-                </h2>
+                {title && (
+                    <h2
+                        className="
+                            text-start
+                            font-medium
+                            tracking-wide
+                            line-clamp-2
+                            leading-5
+                            break-all
+                        "
+                    >
+                        {title}
+                    </h2>
+                )}
 
                 {/* Channel */}
 
-                <p className="text-sm dark:text-gray-300 line-clamp-1">
-                    {object.snippet?.channelTitle}
-                </p>
+                {channelTitle && (
+                    <p className="text-sm dark:text-gray-300 line-clamp-1">
+                        {channelTitle}
+                    </p>
+                )}
 
-                {/* Views / date */}
+                {/* Views / Date */}
 
-                <div
-                    className="
-                        text-sm flex items-center gap-1.5
-                        dark:text-gray-300
-                        -mt-1.5
-                    "
-                >
-                    {mode !== "search" && (
-                        <>
-                            <span>
-                                {`${countViews(
-                                    object.statistics?.viewCount
-                                )} views`}
-                            </span>
+                {(hasViews || hasPublishedAt) && (
+                    <div
+                        className="
+                            text-sm flex items-center gap-1.5
+                            dark:text-gray-300
+                            -mt-1.5
+                        "
+                    >
+                        {mode !== "search" && hasViews && (
+                            <>
+                                <span>
+                                    {`${countViews(viewCount)} views`}
+                                </span>
 
-                            <span className="text-xl font-bold">
-                                ·
-                            </span>
-                        </>
-                    )}
-
-                    <span>
-                        {calUploadTime(
-                            object.snippet?.publishedAt
+                                {hasPublishedAt && (
+                                    <span className="text-xl font-bold">
+                                        ·
+                                    </span>
+                                )}
+                            </>
                         )}
-                    </span>
-                </div>
+
+                        {hasPublishedAt && (
+                            <span>
+                                {calUploadTime(publishedAt)}
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                {/* AI Information */}
 
                 {isSmartSearch && (
                     <div
@@ -213,7 +302,7 @@ const VideoCard = ({
                     >
                         {/* Why this video */}
 
-                        {object.reason && (
+                        {object?.reason && (
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-primary font-semibold mb-1">
                                     Why this is recommended
@@ -227,63 +316,67 @@ const VideoCard = ({
 
                         {/* Strengths */}
 
-                        {object.strengths?.length > 0 && (
-                            <div>
-                                <p className="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1.5">
-                                    Strengths
-                                </p>
+                        {Array.isArray(object?.strengths) &&
+                            object.strengths.length > 0 && (
+                                <div>
+                                    <p className="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1.5">
+                                        Strengths
+                                    </p>
 
-                                <div className="space-y-1">
-                                    {object.strengths
-                                        .slice(0, 3)
-                                        .map((strength, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-start gap-2"
-                                            >
-                                                <Check
-                                                    size={15}
-                                                    className="text-green-400 mt-0.5 shrink-0"
-                                                />
+                                    <div className="space-y-1">
+                                        {object.strengths
+                                            .filter(Boolean)
+                                            .slice(0, 3)
+                                            .map((strength, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-start gap-2"
+                                                >
+                                                    <Check
+                                                        size={15}
+                                                        className="text-green-400 mt-0.5 shrink-0"
+                                                    />
 
-                                                <span className="text-sm text-gray-300">
-                                                    {strength}
-                                                </span>
-                                            </div>
-                                        ))}
+                                                    <span className="text-sm text-gray-300">
+                                                        {strength}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
                         {/* Weaknesses */}
 
-                        {object.weaknesses?.length > 0 && (
-                            <div>
-                                <p className="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1.5">
-                                    Things to consider
-                                </p>
+                        {Array.isArray(object?.weaknesses) &&
+                            object.weaknesses.length > 0 && (
+                                <div>
+                                    <p className="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1.5">
+                                        Things to consider
+                                    </p>
 
-                                <div className="space-y-1">
-                                    {object.weaknesses
-                                        .slice(0, 2)
-                                        .map((weakness, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-start gap-2"
-                                            >
-                                                <AlertTriangle
-                                                    size={15}
-                                                    className="text-yellow-400 mt-0.5 shrink-0"
-                                                />
+                                    <div className="space-y-1">
+                                        {object.weaknesses
+                                            .filter(Boolean)
+                                            .slice(0, 2)
+                                            .map((weakness, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-start gap-2"
+                                                >
+                                                    <AlertTriangle
+                                                        size={15}
+                                                        className="text-yellow-400 mt-0.5 shrink-0"
+                                                    />
 
-                                                <span className="text-sm text-gray-400">
-                                                    {weakness}
-                                                </span>
-                                            </div>
-                                        ))}
+                                                    <span className="text-sm text-gray-400">
+                                                        {weakness}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
                     </div>
                 )}
             </div>
