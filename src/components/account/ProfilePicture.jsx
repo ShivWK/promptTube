@@ -35,22 +35,26 @@ const ProfilePicture = () => {
         if (!file) return;
 
         if (!file.type.startsWith("image/")) {
-            dispatch(setToast({
-                message: "Please select an image.",
-                error: true,
-                show: true,
-                warning: false
-            }))
+            dispatch(
+                setToast({
+                    message: "Please select an image.",
+                    error: true,
+                    show: true,
+                    warning: false,
+                })
+            );
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            dispatch(setToast({
-                message: "Image must be smaller than 5 MB.",
-                error: false,
-                show: true,
-                warning: true
-            }))
+            dispatch(
+                setToast({
+                    message: "Image must be smaller than 5 MB.",
+                    error: false,
+                    show: true,
+                    warning: true,
+                })
+            );
             return;
         }
 
@@ -75,26 +79,19 @@ const ProfilePicture = () => {
         setSelectedFile(null);
     };
 
-    const handleUpload = async () => {
-        if (!selectedFile) return;
+    const submitHandler = async (e) => {
+        e.preventDefault();
+
+        if (!selectedFile || isLoading) return;
 
         try {
             const formData = new FormData();
 
             formData.append("profilePic", selectedFile);
 
-            const response = await updateProfilePicture(formData).unwrap();
+            const data = await updateProfilePicture(formData).unwrap();
 
-            /*
-             * Backend should return something like:
-             *
-             * {
-             *     success: true,
-             *     photoURL: "https://res.cloudinary.com/..."
-             * }
-             */
-
-            const photoURL = response.photoURL;
+            const photoURL = data?.photoURL;
 
             if (auth.currentUser && photoURL) {
                 await updateProfile(auth.currentUser, {
@@ -102,7 +99,6 @@ const ProfilePicture = () => {
                 });
             }
 
-            // Remove local preview after successful upload
             if (preview) {
                 URL.revokeObjectURL(preview);
             }
@@ -112,19 +108,26 @@ const ProfilePicture = () => {
 
         } catch (error) {
             console.error("Profile picture upload failed:", error);
-            dispatch(setToast({
-                message: "Something went wrong. Please try again later",
-                error: true,
-                show: true,
-                warning: false
-            }))
+
+            dispatch(
+                setToast({
+                    message:
+                        "Something went wrong. Please try again later",
+                    error: true,
+                    show: true,
+                    warning: false,
+                })
+            );
         }
     };
 
     const imageSrc = preview || currentPhotoURL;
 
     return (
-        <div className="relative flex flex-col items-center">
+        <form
+            onSubmit={submitHandler}
+            className="relative flex flex-col items-center"
+        >
             <div className="relative w-32 h-32">
 
                 {imageSrc ? (
@@ -142,7 +145,11 @@ const ProfilePicture = () => {
 
                 <button
                     type="button"
-                    onClick={preview ? handleCancel : handlePencilClick}
+                    onClick={
+                        preview
+                            ? handleCancel
+                            : handlePencilClick
+                    }
                     className="
                         absolute
                         bottom-1
@@ -162,11 +169,17 @@ const ProfilePicture = () => {
                     "
                     aria-label="Change profile picture"
                 >
-                    {preview ? <X size={17} /> : <Pencil size={17} />}
+                    {preview ? (
+                        <X size={17} />
+                    ) : (
+                        <Pencil size={17} />
+                    )}
                 </button>
+
                 <input
                     ref={fileInputRef}
                     type="file"
+                    name="profilePic"
                     accept="image/*"
                     onChange={handleFileChange}
                     className="hidden"
@@ -176,8 +189,7 @@ const ProfilePicture = () => {
             {selectedFile && (
                 <div className="flex items-center gap-3 mt-4">
                     <button
-                        type="button"
-                        onClick={handleUpload}
+                        type="submit"
                         disabled={isLoading}
                         className="
                             flex
@@ -191,14 +203,18 @@ const ProfilePicture = () => {
                             text-sm
                             cursor-pointer
                             disabled:opacity-50
+                            disabled:cursor-not-allowed
                         "
                     >
                         <Upload size={16} />
-                        {isLoading ? "Uploading..." : "Upload"}
+
+                        {isLoading
+                            ? "Uploading..."
+                            : "Upload"}
                     </button>
                 </div>
             )}
-        </div>
+        </form>
     );
 };
 

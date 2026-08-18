@@ -4,10 +4,7 @@ import { auth } from "../../utils/firebaseConfig";
 const rawBaseQuery = fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/user`,
 
-    prepareHeaders: (headers) => {
-        headers.set("Content-Type", "application/json");
-        return headers;
-    },
+    prepareHeaders: (headers) => headers,
 });
 
 const baseQueryWithAuth = async (args, api, extraOptions) => {
@@ -104,7 +101,7 @@ const userActivityApiSlice = createApi({
 
         uploadProfilePicture: builder.mutation({
             query: (formdata) => ({
-                url: "/profile/picture",
+                url: "/profilePicture",
                 method: "PATCH",
                 body: formdata
             })
