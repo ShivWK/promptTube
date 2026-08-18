@@ -112,9 +112,7 @@ const Channel = ({ channelId: id, videoId }) => {
     }, [subscriptions, id])
 
     const cardClickHandler = (object) => {
-        console.log("Got Channel", object)
         const uploadsPlayListId = object?.contentDetails?.relatedPlaylists?.uploads;
-        console.log("Uploads id", uploadsPlayListId, object.id)
         navigate(`/channel?channelId=${object.id}&uploadsId=${uploadsPlayListId}`);
 
         dispatch(setCurrentChannel(object));

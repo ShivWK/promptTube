@@ -23,6 +23,7 @@ const AccountCard = ({ isSmall, setShowAccountCard, animate, timeoutTimer, disab
                 setAnimateAccountCard(false)
                 setLoading(false)
             } catch (err) {
+                console.log("Something went wrong while signing out", err)
                 setLoading(false);
                 dispatch(setToast({
                     message: "Unable to sign out. Please ty again!",

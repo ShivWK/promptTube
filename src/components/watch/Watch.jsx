@@ -32,14 +32,8 @@ const Watch = () => {
 
         <div className="mt-2 md:mt-5 max-md:px-2 flex flex-col gap-2 md:gap-2.5 justify-center">
           <h1 className="dark:text-gray-200 md:text-xl font-medium line-clamp-2">{currentVideo?.snippet?.title}</h1>
-
-          {/* Channel */}
           <Channel channelId={channelId} videoId={id} />
-
-          {/* Ai section */}
           <AIAssistant />
-            
-          {/* Comments */}
           <Comments id={id} />
         </div>
       </section>

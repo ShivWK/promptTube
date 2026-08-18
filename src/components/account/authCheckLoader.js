@@ -3,9 +3,11 @@ import { redirect } from "react-router-dom";
 
 const authCheckLoader = async () => {
     await auth.authStateReady();
-    const check = auth.currentUser;
+    const user = auth.currentUser;
 
-    if (!check) return redirect("/") 
+    if (!user) {
+        return redirect("/")
+    } 
 }
 
 export default authCheckLoader;

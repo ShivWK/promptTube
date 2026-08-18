@@ -13,18 +13,10 @@ import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTake
 import AIMessage from "./AiMessage";
 
 const AIAssistant = () => {
-    const [getTranscription, {
-        data: transcription,
-        isLoading,
-        isFetching
-    }] = useLazyGetTranscriptionQuery();
-
+    const [getTranscription, { isLoading, isFetching }] = useLazyGetTranscriptionQuery();
     const transcriptionLoading = isLoading || isFetching;
 
-    const [getSummary, {
-        data: summary,
-        isLoading: loadingSummary,
-        isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
+    const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
 
     const summaryLoading = loadingSummary || fetchingSummary;
 
@@ -47,6 +39,7 @@ const AIAssistant = () => {
     const [open, setOpen] = useState(false);
     const [question, setQuestion] = useState("");
     const [transcript, setTranscript] = useState("");
+    const [disableAllAiFeatures, setDisableAllAIFeatures] = useState(false);
 
     const [messages, setMessages] = useState([
         {
@@ -146,23 +139,46 @@ const AIAssistant = () => {
     };
 
     const handleDropdownClick = async () => {
-        if (!open && !transcription) {
-            try {
-                const result = await getTranscription({ videoId }).unwrap();
-                setTranscript(result.transcript);
-            } catch (err) {
-                console.error(err);
-            }
+        if (open) {
+            setOpen(false);
+            return;
         }
 
-        setOpen(prev => !prev);
+        if (transcript) {
+            setOpen(true);
+            return;
+        }
+
+        try {
+            const result = await getTranscription({ videoId }).unwrap();
+
+            setTranscript(result.transcript);
+            setDisableAllAIFeatures(false);
+            setOpen(true);
+
+        } catch (err) {
+            console.error("Transcription failed:", err);
+
+            setDisableAllAIFeatures(true);
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    type: "error",
+                    text: "Sorry, I couldn't process this video. AI features like Summary, Key Takeaways, and Q&A aren't available right now.",
+                },
+            ]);
+
+            setOpen(true);
+        }
     };
 
     const submitHandler = async (e) => {
         e.preventDefault();
 
         const userQuestion = question.trim()
-        if (!userQuestion || answerLoading) return;
+        if (!userQuestion || answerLoading || disableAllAiFeatures) return;
 
         setMessages((prev) => [
             ...prev,
@@ -294,8 +310,8 @@ const AIAssistant = () => {
                         <div className="border-t border-gray-700 p-4">
                             <button
                                 onClick={generateSummary}
-                                disabled={loadingSummary || fetchingSummary}
-                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary py-2 text-white font-medium hover:opacity-90 transition cursor-pointer"
+                                disabled={loadingSummary || fetchingSummary || disableAllAiFeatures}
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary py-2 text-white font-medium hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:opacity-50"
                             >
                                 <span>Generate AI Summary</span>
                                 {(loadingSummary || fetchingSummary) && <span className="h-5 w-5 border-3 border-b-transparent border-r-white border-l-white border-t-white rounded-full animate-spin" />}
@@ -309,8 +325,8 @@ const AIAssistant = () => {
                         <div className="px-4 pb-4">
                             <button
                                 onClick={generateKeyTakeaways}
-                                disabled={loadingKeyTakeaways || fetchingKeyTakeaways}
-                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-900 py-2 text-gray-200 font-medium hover:bg-gray-700 transition cursor-pointer"
+                                disabled={loadingKeyTakeaways || fetchingKeyTakeaways || disableAllAiFeatures}
+                                className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-900 py-2 text-gray-200 font-medium hover:bg-gray-700 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900"
                             >
                                 <span>Generate Key Takeaways</span>
                                 {(loadingKeyTakeaways || fetchingKeyTakeaways) && <span className="h-5 w-5 border-3 border-b-transparent border-r-white border-l-white border-t-white rounded-full animate-spin" />}
@@ -321,22 +337,21 @@ const AIAssistant = () => {
                     {/* Ask */}
 
                     <div className="border-t border-gray-700 p-4">
-                            <form className="flex gap-2" onSubmit={submitHandler}>
-                                <input
-                                    value={question}
-                                    onChange={(e) =>
-                                        setQuestion(e.target.value)
-                                    }
-                                    placeholder="Ask about this video..."
-                                    className="flex-1 rounded-full bg-gray-900 px-4 py-2 text-white outline-none border border-gray-700 focus:border-primary"
-                                />
+                        <form className="flex gap-2" onSubmit={submitHandler}>
+                            <input
+                                value={question}
+                                onChange={(e) => setQuestion(e.target.value)}
+                                disabled={disableAllAiFeatures}
+                                placeholder="Ask about this video..."
+                                className="flex-1 rounded-full bg-gray-900 px-4 py-2 text-white outline-none border border-gray-700 focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-800"
+                            />
 
-                                <button
-                                    disabled={loadingAnswer || fetchingAnswer}
-                                    className="rounded-full bg-primary p-3 text-white hover:opacity-90">
-                                    <Send size={18} />
-                                </button>
-                            </form>
+                            <button
+                                disabled={loadingAnswer || fetchingAnswer || disableAllAiFeatures}
+                                className="rounded-full bg-primary p-3 text-white hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:opacity-50">
+                                <Send size={18} />
+                            </button>
+                        </form>
                     </div>
                 </>
             )}

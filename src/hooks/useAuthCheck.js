@@ -13,7 +13,8 @@ const useAuthCheck = ({ showToast = true } = {}) => {
                 dispatch(setToast({
                     message: "You need to log in to use this feature.",
                     error: true,
-                    show: true
+                    show: true,
+                    warning: false,
                 }))
             }
             return false;

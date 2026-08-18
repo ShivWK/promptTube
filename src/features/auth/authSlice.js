@@ -7,7 +7,9 @@ const initialState = {
     showToast: false,
     toastMessage: "",
     toastError: false,
+    toastWarning: false,
     userName: "",
+    profilePicture: "",
     userEmail: "",
     isEmailVerified: false,
     userId: null,
@@ -45,16 +47,18 @@ const authSlice = createSlice({
         },
 
         setToast: (state, action) => {
-            const { message, error, show } = action.payload;
+            const { message, error, show, warning } = action.payload;
 
             state.showToast = show;
             state.toastMessage = message;
             state.toastError = error;
+            state.toastWarning = warning;
         },
 
         setAuthDetails: (state, action) => {
-            const { name, email, emailVerification, userId, accessT, refreshT, } = action.payload;
+            const { name, email, profilePic, emailVerification, userId, accessT, refreshT } = action.payload;
 
+            state.profilePicture = profilePic;
             state.userName = name;
             state.userEmail = email;
             state.isEmailVerified = emailVerification;
@@ -66,7 +70,7 @@ const authSlice = createSlice({
         setEmailVerification: (state, action) => {
             const { mode, value } = action.payload;
 
-            if ( mode === "All") {
+            if (mode === "All") {
                 state.openEmailVerification = value;
                 state.showEmailVerification = value;
             } else if (mode === "open") {
@@ -112,8 +116,9 @@ export const selectToast = createSelector(
         state => state.auth.showToast,
         state => state.auth.toastMessage,
         state => state.auth.toastError,
+        state => state.auth.toastWarning,
     ],
-    (show, message, error) => ({ show, message, error })
+    (show, message, error, warning) => ({ show, message, error, warning })
 )
 
 export const selectEmailVerification = createSelector(
@@ -121,7 +126,7 @@ export const selectEmailVerification = createSelector(
         state => state.auth.openEmailVerification,
         state => state.auth.showEmailVerification,
     ],
-    ( openEmailVerification, showEmailVerification) => ({
+    (openEmailVerification, showEmailVerification) => ({
         openEmailVerification,
         showEmailVerification
     })

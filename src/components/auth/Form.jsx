@@ -24,7 +24,7 @@ const Form = () => {
     const [passwordReset, setPasswordReset] = useState(false);
 
     const [resetPasswordMailSend, setResetPasswordMailSend] = useState(false);
-    const [ resetPasswordLoading, setResetPasswordLoading ] = useState(false);
+    const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -118,7 +118,7 @@ const Form = () => {
         if (isSignUP) {
             signUpHandler({ email: formData.email, password: formData.password, name: formData.name, dispatch, setAuthLoading, navigate })
         } else if (passwordReset) {
-            resetPasswordHandler({ setResetPasswordLoading, setResetPasswordMailSend, email:formData.email, dispatch, resetPasswordMailSend })
+            resetPasswordHandler({ setResetPasswordLoading, setResetPasswordMailSend, email: formData.email, dispatch, resetPasswordMailSend })
         } else {
             signInHandler({ email: formData.email, password: formData.password, dispatch, setAuthLoading, navigate })
         }

@@ -3,7 +3,7 @@ import { selectToast, setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Toast = () => {
-    const { show, message, error } = useSelector(selectToast);
+    const { show, message, error, warning } = useSelector(selectToast);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -12,13 +12,20 @@ const Toast = () => {
                 message: "",
                 error: false,
                 show: false,
+                warning: false,
             }))
         }, 4000);
 
         return () => clearTimeout(timer);
     }, [show, dispatch])
 
-    return <div className={`fixed ${show ? "bottom-8 lg:bottom-10" : "-bottom-30"} left-1/2 -translate-x-1/2 lg:max-w-[30%] w-[80%] py-2 px-3 rounded-lg font-medium tracking-wide font-heading border-2 text-gray-100 text-center ${error ? "border-red-500 bg-red-500/80 shadow-[0_0_15px_2px_rgba(0,153,255,0.5)]" : "border-green-600 bg-green-500/60 shadow-[0_0_8px_4px_rgba(0,153,255,0.5)]"} transition-all duration-200 ease-in-out break-words whitespace-normal z-50`}>
+    const toastThemeClasses = error
+        ? "border-red-500 bg-red-500/80 shadow-[0_0_15px_2px_rgba(0,153,255,0.5)]"
+        : warning
+            ? "border-yellow-500 bg-yellow-500/80 shadow-[0_0_12px_3px_rgba(0,153,255,0.5)]"
+            : "border-green-600 bg-green-500/60 shadow-[0_0_8px_4px_rgba(0,153,255,0.5)]"
+
+    return <div className={`fixed ${show ? "bottom-8 lg:bottom-10" : "-bottom-30"} left-1/2 -translate-x-1/2 lg:max-w-[30%] w-[80%] py-2 px-3 rounded-lg font-medium tracking-wide font-heading border-2 text-gray-100 text-center ${toastThemeClasses} transition-all duration-200 ease-in-out break-words whitespace-normal z-50`}>
         {message}
     </div>
 }

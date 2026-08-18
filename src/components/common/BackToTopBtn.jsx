@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-const BackToTopButton = ({}) => {
+const BackToTopButton = () => {
     const [showBtn, setShowBtn] = useState(false);
     const mobileMenu = useSelector(selectMobileMenu);
     const isFooterVisible = useSelector(selectFooterVisibility);
