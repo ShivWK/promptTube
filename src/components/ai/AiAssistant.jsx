@@ -9,12 +9,20 @@ import {
 import AiMessage from "./AiMessage";
 import DotBounceLoader from "../common/DotBounceLoader";
 import { useSearchParams } from "react-router-dom";
-import { useLazyGetSummaryQuery, useLazyGetTranscriptionQuery, useLazyGetKeyTakeawaysQuery, useLazyAskQuestionQuery } from "../../features/ai/aiApiSlice";
+import {
+    useLazyGetSummaryQuery,
+    useLazyGetTranscriptionQuery,
+    useLazyGetKeyTakeawaysQuery,
+    useLazyAskQuestionQuery,
+    useLazyGetVideoMetaDataQuery,
+} from "../../features/ai/aiApiSlice";
+
 import AIMessage from "./AiMessage";
+import { conciseYoutubeMetadata } from "../../utils/conciseYoutubeMetadata";
 
 const AIAssistant = () => {
-    const [getTranscription, { isLoading, isFetching }] = useLazyGetTranscriptionQuery();
-    const transcriptionLoading = isLoading || isFetching;
+    const [getTranscription] = useLazyGetTranscriptionQuery();
+    const [getMetadata] = useLazyGetVideoMetaDataQuery();
 
     const [getSummary, { data: summary, isLoading: loadingSummary, isFetching: fetchingSummary }] = useLazyGetSummaryQuery();
 
@@ -39,7 +47,9 @@ const AIAssistant = () => {
     const [open, setOpen] = useState(false);
     const [question, setQuestion] = useState("");
     const [transcript, setTranscript] = useState("");
+    const [videoMetadata, setVideoMetadata] = useState("");
     const [disableAllAiFeatures, setDisableAllAIFeatures] = useState(false);
+    const [aiLoading, setAiLoading] = useState(false);
 
     const [messages, setMessages] = useState([
         {
@@ -77,7 +87,7 @@ const AIAssistant = () => {
         if (summary || summaryLoading) return;
 
         try {
-            const summaryData = await getSummary({ videoId, transcript }).unwrap();
+            const summaryData = await getSummary({ videoId, transcript, videoMetadata }).unwrap();
 
             setSummaryGenerated(true);
 
@@ -110,7 +120,8 @@ const AIAssistant = () => {
         try {
             const keyTakeawaysData = await getKeyTakeaways({
                 videoId,
-                transcript
+                transcript,
+                videoMetadata,
             }).unwrap();
 
             setKeyPointsGenerated(true);
@@ -150,9 +161,16 @@ const AIAssistant = () => {
         }
 
         try {
-            const result = await getTranscription({ videoId }).unwrap();
+            setAiLoading(true);
+            const [result1, result2] = await Promise.all([
+                getTranscription({ videoId }).unwrap(),
+                getMetadata({ videoId }).unwrap(),
+            ]);
 
-            setTranscript(result.transcript);
+            setTranscript(result1.transcript);
+            const metadata = conciseYoutubeMetadata(result2.metadata[0])
+            setVideoMetadata(metadata);
+
             setDisableAllAIFeatures(false);
             setOpen(true);
 
@@ -171,6 +189,8 @@ const AIAssistant = () => {
             ]);
 
             setOpen(true);
+        } finally {
+            setAiLoading(false);
         }
     };
 
@@ -193,6 +213,7 @@ const AIAssistant = () => {
         try {
             const aiAnswer = await getAnswer({
                 transcript,
+                videoMetadata,
                 question: userQuestion,
             }).unwrap();
 
@@ -235,7 +256,7 @@ const AIAssistant = () => {
                     />
 
                     <h2 className="font-semibold text-white">AI Assistant</h2>
-                    {transcriptionLoading && (
+                    {aiLoading && (
                         <span className="ml-1 -mb-1">
                             <DotBounceLoader
                                 nmSize="md:text-xl"

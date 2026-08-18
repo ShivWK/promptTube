@@ -5,7 +5,7 @@ const aiApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/ai`,
     }),
-    tagTypes: ["Transcript", "KeyTakeaways", "Summary", "Question"],
+    tagTypes: ["Transcript", "KeyTakeaways", "Summary", "Question", "MetaData"],
     keepUnusedDataFor: 60 * 60 * 24,
 
     endpoints: (builder) => ({
@@ -20,14 +20,26 @@ const aiApiSlice = createApi({
                 result ? [{ type: "Transcript", id: videoId }] : [],
         }),
 
+        getVideoMetaData: builder.query({
+            query: ({ videoId }) => ({
+                url: "/metadata",
+                method: "POST",
+                body: { videoId }
+            }),
+
+            providesTags: (result, error, { videoId }) =>
+                result ? [{ type: "MetaData", id: videoId }] : [],
+        }),
+
         getSummary: builder.query({
-            query: ({ videoId, transcript }) => ({
+            query: ({ videoId, transcript, videoMetadata }) => ({
                 url: "/query",
                 method: "POST",
                 body: {
                     mode: "summary",
                     videoId,
                     transcript,
+                    videoMetadata
                 },
             }),
 
@@ -41,13 +53,14 @@ const aiApiSlice = createApi({
         }),
 
         getKeyTakeaways: builder.query({
-            query: ({ videoId, transcript }) => ({
+            query: ({ videoId, transcript, videoMetadata }) => ({
                 url: "/query",
                 method: "POST",
                 body: {
                     mode: "keyPoints",
                     videoId,
                     transcript,
+                    videoMetadata
                 },
             }),
 
@@ -60,13 +73,14 @@ const aiApiSlice = createApi({
         }),
 
         askQuestion: builder.query({
-            query: ({ transcript, question }) => ({
+            query: ({ transcript, question, videoMetadata }) => ({
                 url: "/query",
                 method: "POST",
                 body: {
                     mode: "question",
                     transcript,
                     question,
+                    videoMetadata
                 },
             }),
         }),
@@ -89,4 +103,5 @@ export const {
     useLazyGetKeyTakeawaysQuery,
     useLazyAskQuestionQuery,
     useLazySmartSearchQuery,
+    useLazyGetVideoMetaDataQuery,
 } = aiApiSlice;
