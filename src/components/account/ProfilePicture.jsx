@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pencil, Upload, X } from "lucide-react";
+import { CircleUserRound, Pencil, Upload, X } from "lucide-react";
 import { updateProfile } from "firebase/auth";
 import { useUploadProfilePictureMutation } from "../../features/userActivity/userActivityApiSlice";
 import { auth } from "../../utils/firebaseConfig";
@@ -138,9 +138,9 @@ const ProfilePicture = () => {
                         className="w-full h-full rounded-full object-cover"
                     />
                 ) : (
-                    <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                        No Image
-                    </div>
+                    // <
+                    
+                    <CircleUserRound className="w-full h-full" strokeWidth={0.5} />
                 )}
 
                 <button

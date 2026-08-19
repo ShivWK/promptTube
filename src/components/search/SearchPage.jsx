@@ -19,8 +19,6 @@ const SearchPage = () => {
         skip: !searchTerm,
     });
 
-    // console.log("search Result", result);
-
     const {
         data,
         isFetching,
@@ -56,7 +54,7 @@ const SearchPage = () => {
         >
             {/* Initial State */}
             {!searchTerm && (
-                <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center text-white max-md:mt-20 md:-ml-32">
+                <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center text-white max-md:mt-18 md:-ml-32">
                     <Search size={70} className="text-primary mb-5" />
 
                     <h2 className="text-3xl font-semibold">

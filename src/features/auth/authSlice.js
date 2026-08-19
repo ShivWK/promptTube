@@ -96,8 +96,9 @@ export const selectUserDetails = createSelector(
         state => state.auth.userEmail,
         state => state.auth.isEmailVerified,
         state => state.auth.userId,
+        state => state.auth.profilePicture
     ],
-    (name, email, isEmailVerified, id) => ({ name, email, isEmailVerified, id })
+    (name, email, isEmailVerified, id, profilePic ) => ({ name, email, isEmailVerified, id, profilePic })
 )
 
 export const selectSessionTokens = createSelector(

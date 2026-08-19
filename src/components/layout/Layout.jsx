@@ -94,7 +94,6 @@ const Layout = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log("User", user)
                 dispatch(setAuthDetails({
                     name: user.displayName,
                     profilePic: user.photoURL,

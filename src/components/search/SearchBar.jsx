@@ -16,12 +16,12 @@ import { useLazyGetSearchSuggestionsQuery } from "../../features/search/searchAp
 
 const SearchBar = () => {
   const [searchParam] = useSearchParams();
-  const searchQuery = searchParam.get("searchQuery");
+  const searchQuery = searchParam.get("searchQuery") || "";
 
   const [getSearchSuggestions] = useLazyGetSearchSuggestionsQuery();
   const dataFetcher = useRef(debounceCreator(getSuggestions, 100));
 
-  const [search, setSearch] = useState(searchQuery || "");
+  const [search, setSearch] = useState(searchQuery);
 
   const searchSuggestion = useSelector(selectSuggestions);
   const suggestionsLoading = useSelector(selectSuggestionsLoading);

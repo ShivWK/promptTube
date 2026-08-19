@@ -3,7 +3,6 @@ import { auth } from "../../utils/firebaseConfig";
 
 const rawBaseQuery = fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/user`,
-
     prepareHeaders: (headers) => headers,
 });
 

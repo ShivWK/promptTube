@@ -1,8 +1,8 @@
 import { CircleUserRound, LogIn } from "lucide-react";
-import { 
-  selectLoggedInStatus, 
-  setOpenAuthForm, 
-  selectUserDetails 
+import {
+  selectLoggedInStatus,
+  setOpenAuthForm,
+  selectUserDetails
 } from "../../../features/auth/authSlice";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -10,19 +10,20 @@ import { useEffect, useState, useRef } from "react";
 import AccountCard from "../../common/AccountCard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { selectIsSmall } from "../../../features/home/homeSlice";
+import { auth } from "../../../utils/firebaseConfig";
 
 const Account = () => {
   const isLoggedIn = useSelector(selectLoggedInStatus);
   const { name } = useSelector(selectUserDetails);
   const [showAccountCard, setShowAccountCard] = useState(false);
   const [animateAccountCard, setAnimateAccountCard] = useState(false);
-  const [ showShadow, setShowShadow ] = useState(false);
-  const accountRef = useRef(null);
+  const [showShadow, setShowShadow] = useState(false);
   const timer = useRef(null);
   const dispatch = useDispatch()
   const isSmall = useSelector(selectIsSmall);
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
+  const currentPhotoURL = auth.currentUser?.photoURL;
 
   const authClickHandler = () => {
     dispatch(setOpenAuthForm({
@@ -72,11 +73,19 @@ const Account = () => {
       <div className="relative flex items-center gap-2.5">
         <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
         <div onClick={handleAccountClick} onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} >
-          <CircleUserRound
-            ref={accountRef}
-            size={isSmall ? 44 : 40} strokeWidth={1}
-            className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${(showShadow) && "shadow-[0_0_5px_2px_#ff0033]"} ${showAccountCard && "md:shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
-          />
+          {currentPhotoURL ? (
+            <img
+              src={currentPhotoURL}
+              alt="Profile"
+              referrerPolicy="no-referrer"
+              className="w-11 md:w-10 h-11 md:h-10 rounded-full object-cover border-2 border-primary"
+            />
+          ) : (
+            <CircleUserRound
+              size={isSmall ? 44 : 42} strokeWidth={1}
+              className={`dark:text-primary cursor-pointer hover:shadow-[0_0_5px_2px_#ff0033] ${(showShadow) && "shadow-[0_0_5px_2px_#ff0033]"} ${showAccountCard && "md:shadow-[0_0_5px_2px_#ff0033]"} rounded-full`}
+            />
+          )}
         </div>
 
         {(showAccountCard && pathname !== "/account" && !isSmall) && <AccountCard
