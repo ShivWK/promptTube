@@ -9,16 +9,18 @@ import { selectComments, setComment } from "../../features/userActivity/userActi
 import { selectUserDetails } from "../../features/auth/authSlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import CommentShimmer from "../shimmer/CommentShimmer";
+import { auth } from "../../utils/firebaseConfig";
 
 const Comments = ({ id }) => {
     const [trigger, { isLoading }] = useLazyGetCommentsQuery();
-    const [ _, checkAuth ] = useAuthCheck();
+    const [_, checkAuth] = useAuthCheck();
     const [showCompleteComment, setShowCompleteComment] = useState(false);
     const [comments, setComments] = useState([]);
     // const storedComments = useSelector(selectComments)
     const isSmall = useSelector(selectIsSmall);
     const { name, id: userId } = useSelector(selectUserDetails);
     const dispatch = useDispatch();
+    const currentPhotoURL = auth.currentUser?.photoURL;
 
     useFetch({ trigger, setState: setComments, fetchWhat: "Comments", id })
 
@@ -92,7 +94,20 @@ const Comments = ({ id }) => {
             : <div onClick={commentBoxClickHandler} className={`relative w-full rounded-md transition-all duration-150 ease-linear dark:bg-gray-800 p-2 pb-1 dark:text-gray-200 mt-1 pretty-scrollbar ${showCompleteComment ? "overflow-auto" : "overflow-hidden cursor-pointer"}`}>
 
                 {showCompleteComment && <div className="flex items-center gap-2 md:gap-3 mb-2 bg-gray-800 w-full">
-                    <CircleUserRound size={isSmall ? 55 : 55} strokeWidth={1} className="dark:text-primary" />
+                    {currentPhotoURL ? (
+                        <img
+                            src={currentPhotoURL}
+                            alt="Profile"
+                            referrerPolicy="no-referrer"
+                            className="w-12 h-12 rounded-full object-cover border-2 border-primary"
+                        />
+                    ) : (
+                        <CircleUserRound
+                            size={55}
+                            strokeWidth={1}
+                            className="dark:text-primary"
+                        />
+                    )}
                     <form onSubmit={submitHandler} className="bg-gray-900 w-full mx-auto flex items-center justify-between rounded-4xl overflow-hidden border border-primary">
                         <input name="comment" autoComplete="off" className="outline-none border-none w-full py-1 md:py-1.5 pl-3 pr-1.5" placeholder="type your comment..."></input>
                         <button className="bg-primary self-stretch flex items-center justify-center cursor-pointer active:scale-95 transform transition-all duration-150 ease-linear">
