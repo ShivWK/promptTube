@@ -88,14 +88,15 @@ const Account = () => {
           )}
         </div>
 
-        {(showAccountCard && pathname !== "/account" && !isSmall) && <AccountCard
-          isSmall={isSmall}
-          setShowAccountCard={setShowAccountCard}
-          animate={animateAccountCard}
-          timeoutTimer={timer}
-          disableAccountCard={disableAccountCard}
-          setAnimateAccountCard={setAnimateAccountCard}
-        />}
+        {(showAccountCard && pathname !== "/account" && !isSmall)
+          && <AccountCard
+            isSmall={isSmall}
+            setShowAccountCard={setShowAccountCard}
+            animate={animateAccountCard}
+            timeoutTimer={timer}
+            disableAccountCard={disableAccountCard}
+            setAnimateAccountCard={setAnimateAccountCard}
+          />}
       </div>
     )
   } else {

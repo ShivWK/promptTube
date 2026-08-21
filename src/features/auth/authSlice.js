@@ -1,6 +1,7 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
+    authLoading: true,
     isLoggedIn: false,
     openAuthForm: false,
     slideOpenAuthForm: false,
@@ -24,6 +25,10 @@ const authSlice = createSlice({
     initialState,
 
     reducers: {
+        setAuthLoading: (state, action) => {
+            state.authLoading = action.payload;
+        },
+
         setLoginStatus: (state, action) => {
             state.isLoggedIn = action.payload;
         },
@@ -86,6 +91,7 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
+export const selectAuthLoading = (state) => state.auth.authLoading;
 export const selectLoggedInStatus = (state) => state.auth.isLoggedIn;
 export const selectOpenAuthFrom = (state) => state.auth.openAuthForm;
 export const selectSlideAuthForm = (state) => state.auth.slideOpenAuthForm;
@@ -134,6 +140,7 @@ export const selectEmailVerification = createSelector(
 )
 
 export const {
+    setAuthLoading,
     setLoginStatus,
     setOpenAuthForm,
     setEmailVerification,

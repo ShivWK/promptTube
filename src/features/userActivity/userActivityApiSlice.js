@@ -72,12 +72,81 @@ const userActivityApiSlice = createApi({
             }),
 
             providesTags: (result, error, { userId }) => {
-                if (!result?.success) return [];
+                if (!result?.success !== "success") return [];
 
                 return [
                     { type: "UserData", id: "LIST" },
                     { type: "Subscriptions", id: userId },
                 ];
+            }
+        }),
+
+        subscription: builder.mutation({
+            query: ({ userId, channelId }) => ({
+                url: `/subscription`,
+                method: "PATCH",
+                body: { userId, channelId },
+            }),
+
+            async onQueryStarted({ userId, channelId, }, { dispatch, queryFulfilled }) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getSubscriptions",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data?.length) return;
+
+                            const subscription = draft.data[0];
+
+                            if (!subscription.channelId.includes(channelId)) {
+                                subscription.channelId.push(channelId);
+                                console.log("Added Optimistically")
+                            }
+                        }
+                    )
+                )
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo()
+                }
+            },
+        }),
+
+        unsubscribe: builder.mutation({
+            query: ({ userId, channelId }) => ({
+                url: "/subscription",
+                method: "DELETE",
+                body: { userId, channelId }
+            }),
+
+            async onQueryStarted(
+                { userId, channelId },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getSubscriptions",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data?.length) return;
+
+                            const subscription = draft.data[0];
+
+                            subscription.channelId =
+                                subscription.channelId.filter(
+                                    id => id !== channelId
+                                );
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
             }
         }),
 
@@ -112,7 +181,10 @@ export default userActivityApiSlice;
 
 export const {
     useLazyGetSavedVideosQuery,
+    useGetSubscriptionsQuery,
     useLazyGetSubscriptionsQuery,
+    useUnsubscribeMutation,
     useLazyGetCommentsQuery,
     useUploadProfilePictureMutation,
+    useSubscriptionMutation,
 } = userActivityApiSlice;

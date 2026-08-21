@@ -135,11 +135,9 @@ const ProfilePicture = () => {
                         src={imageSrc}
                         alt="Profile"
                         referrerPolicy="no-referrer"
-                        className="w-full h-full rounded-full object-cover"
+                        className="w-full h-full rounded-full object-cover border-2 border-primary"
                     />
                 ) : (
-                    // <
-                    
                     <CircleUserRound className="w-full h-full" strokeWidth={0.5} />
                 )}
 

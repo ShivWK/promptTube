@@ -20,6 +20,7 @@ import {
     setAuthDetails,
     setLoginStatus,
     selectEmailVerification,
+    setAuthLoading,
 } from "../../features/auth/authSlice";
 
 import Form from "../auth/Form";
@@ -115,6 +116,8 @@ const Layout = () => {
                 }))
                 dispatch(setLoginStatus(false));
             }
+
+            dispatch(setAuthLoading(false));
         })
 
         return () => unsubscribe();

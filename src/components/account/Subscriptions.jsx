@@ -4,12 +4,23 @@ import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
 import ChannelCard from "../common/ChannelCard";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
+import { auth } from "../../utils/firebaseConfig";
+// import { useGetSubscriptionsQuery } from "../../features/userActivity/userActivityApiSlice";
 
 const Subscriptions = () => {
+    const userId = auth.currentUser?.uid;
+    // const result = useGetSubscriptionsQuery(userId);
+
+    // console.log("Subs", result)
+
     const isSmall = useSelector(selectIsSmall);
     const subscriptionData = useSelector(selectChannelsData);
     const savedDataLoading = useSelector(selectSavedDataLoading);
     const subscriptionLoading = useSelector(selectSubscriptionLoading);
+
+    console.log("USer", userId);
+
+    console.log("Subscriptions", subscriptionData);
 
     const shimmerArray = Array.from({ length: 10 });
 

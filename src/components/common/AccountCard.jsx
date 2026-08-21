@@ -7,10 +7,18 @@ import { useState } from "react";
 import DotBounceLoader from "./DotBounceLoader";
 import { setToast } from "../../features/auth/authSlice";
 
-const AccountCard = ({ isSmall, setShowAccountCard, animate, timeoutTimer, disableAccountCard, setAnimateAccountCard }) => {
+const AccountCard = ({
+    isSmall,
+    setShowAccountCard,
+    animate,
+    timeoutTimer,
+    disableAccountCard,
+    setAnimateAccountCard
+}) => {
     const { name, email, isEmailVerified } = useSelector(selectUserDetails);
     const [isLoading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const currentPhotoURL = auth.currentUser?.photoURL;
 
     const signoutClickHandler = (e) => {
         e.stopPropagation()
@@ -55,11 +63,31 @@ const AccountCard = ({ isSmall, setShowAccountCard, animate, timeoutTimer, disab
     }
 
     return (
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} onAnimationEnd={animationEndHandler} onClick={(e) => e.stopPropagation()} className={`absolute top-14.5 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70 ${animate ? "animate-showAuthModal" : "animate-hideAuthModal"}`}>
+        <div
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={disableAccountCard}
+            onAnimationEnd={animationEndHandler}
+            onClick={(e) => e.stopPropagation()}
+            className={`absolute top-14.5 -left-60 lg:-left-36 p-3 rounded-md bg-gray-700 z-70 ${animate ? "animate-showAuthModal" : "animate-hideAuthModal"}`}
+        >
             <div className="flex items-center gap-2">
-                <CircleUserRound size={isSmall ? 50 : 55} strokeWidth={1.5} className="dark:text-primary" />
+                {currentPhotoURL ? (
+                    <img
+                        src={currentPhotoURL}
+                        alt="Profile"
+                        referrerPolicy="no-referrer"
+                        className="w-13 h-13 mt-1 rounded-full object-cover border-2 border-primary"
+                    />
+                ) : (
+                    <CircleUserRound
+                        size={55}
+                        strokeWidth={1}
+                        className="dark:text-primary mt-1"
+                    />
+                )}
+
                 <div className="flex flex-col dark:text-white w-48 lg:w-52">
-                    <p className="truncate leading-6 font-medium">{name}</p>
+                    <p className="truncate leading-6 font-medium text-lg">{name}</p>
                     <div className="flex items-center gap-1">
                         {isEmailVerified
                             ? <CircleCheck size={isSmall ? 19 : 20} strokeWidth={2.5} className="text-green-400" />
