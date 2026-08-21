@@ -64,6 +64,49 @@ const userActivityApiSlice = createApi({
             }
         }),
 
+        addSavedVideo: builder.mutation({
+            query: ({ userId, videoId, videoType }) => ({
+                url: "/memoryVideos",
+                method: "PATCH",
+                body: {
+                    userId,
+                    videoId,
+                    videoType,
+                },
+            }),
+
+            async onQueryStarted(
+                { userId, videoId, videoType },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getSavedVideos",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data) return;
+
+                            const savedVideo = draft.data.find(
+                                item => item.videoType === videoType
+                            );
+
+                            if (!savedVideo) return;
+
+                            if (!savedVideo.videoId.includes(videoId)) {
+                                savedVideo.videoId.push(videoId);
+                            }
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
+
         getSubscriptions: builder.query({
             query: ({ userId }) => ({
                 url: `/subscription`,
@@ -181,6 +224,8 @@ export default userActivityApiSlice;
 
 export const {
     useLazyGetSavedVideosQuery,
+    useGetSavedVideosQuery,
+    useAddSavedVideoMutation,
     useGetSubscriptionsQuery,
     useLazyGetSubscriptionsQuery,
     useUnsubscribeMutation,

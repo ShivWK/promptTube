@@ -7,34 +7,6 @@ const initialState = {
     comments: []
 }
 
-export const setSubscription = createAsyncThunk("userActivity/setSubscription", async (payload, { rejectWithValue }) => {
-    const { method, userId, channelId } = payload
-    try {
-        const response = await fetch(import.meta.env.VITE_ADD_SUBSCRIPTION_URL, {
-            method,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                userId,
-                channelId
-            })
-        })
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            return rejectWithValue(errorData);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (err) {
-        return rejectWithValue({
-            message: err.message || "Something went wrong"
-        })
-    }
-});
-
 export const setComment = createAsyncThunk("userActivity/setComments", async (payload, { rejectWithValue }) => {
     const { method, userId, videoId, comment, setCommentState, commentArray } = payload
     try {
@@ -106,14 +78,6 @@ const userActivitySlice = createSlice({
 
         resetUserActivitySlice: () => initialState,
     },
-
-    extraReducers: (builder) => {
-        builder
-            .addCase(setSubscription.rejected, (state) => {
-                console.log("Subscription not added");
-                state.subscriptions.pop();
-            })
-    }
 });
 
 export default userActivitySlice.reducer;

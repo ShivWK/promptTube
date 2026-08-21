@@ -96,7 +96,7 @@ const ProfileCard = () => {
     const hasSubscriptions = subscribedChannels.length > 0;
 
     return (
-        <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white py-2 md:py-4 px-4 md:px-6 text-xl max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
+        <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white p-4 md:px-6 text-lg max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
             <ProfilePicture />
             <p className="truncate max-w-60">{name}</p>
             <div className="flex items-center gap-1">
