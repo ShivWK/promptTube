@@ -107,6 +107,49 @@ const userActivityApiSlice = createApi({
             },
         }),
 
+        removeSavedVideo: builder.mutation({
+            query: ({ userId, videoId, videoType }) => ({
+                url: "/memoryVideos",
+                method: "DELETE",
+                body: {
+                    userId,
+                    videoId,
+                    videoType,
+                },
+            }),
+
+            async onQueryStarted(
+                { userId, videoId, videoType },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getSavedVideos",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data) return;
+
+                            const savedVideo = draft.data.find(
+                                item => item.videoType === videoType
+                            );
+
+                            if (!savedVideo) return;
+
+                            savedVideo.videoId = savedVideo.videoId.filter(
+                                id => id !== videoId
+                            );
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
+
         getSubscriptions: builder.query({
             query: ({ userId }) => ({
                 url: `/subscription`,
@@ -210,6 +253,90 @@ const userActivityApiSlice = createApi({
             }
         }),
 
+        addComment: builder.mutation({
+            query: ({ userId, videoId, comment }) => ({
+                url: "/comments",
+                method: "PATCH",
+                body: {
+                    userId,
+                    videoId,
+                    comment,
+                },
+            }),
+
+            async onQueryStarted(
+                { userId, videoId, comment },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getComments",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data) return;
+
+                            draft.data.push({
+                                // temporary ID for optimistic UI
+                                _id: `temp-${Date.now()}`,
+                                userId,
+                                videoId,
+                                comment,
+                            });
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
+
+        removeComment: builder.mutation({
+            query: ({ userId, videoId, comment }) => ({
+                url: "/comments",
+                method: "DELETE",
+                body: {
+                    userId,
+                    videoId,
+                    comment,
+                },
+            }),
+
+            async onQueryStarted(
+                { userId, videoId, comment },
+                { dispatch, queryFulfilled }
+            ) {
+                const patchResult = dispatch(
+                    userActivityApiSlice.util.updateQueryData(
+                        "getComments",
+                        { userId },
+                        (draft) => {
+                            if (!draft?.data) return;
+
+                            const index = draft.data.findIndex(
+                                item =>
+                                    item.videoId === videoId &&
+                                    item.comment === comment
+                            );
+
+                            if (index !== -1) {
+                                draft.data.splice(index, 1);
+                            }
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+        }),
+
         uploadProfilePicture: builder.mutation({
             query: (formdata) => ({
                 url: "/profilePicture",
@@ -226,10 +353,17 @@ export const {
     useLazyGetSavedVideosQuery,
     useGetSavedVideosQuery,
     useAddSavedVideoMutation,
+    useRemoveSavedVideoMutation,
+
     useGetSubscriptionsQuery,
+    useSubscriptionMutation,
     useLazyGetSubscriptionsQuery,
     useUnsubscribeMutation,
+
     useLazyGetCommentsQuery,
+    useGetCommentsQuery,
+    useAddCommentMutation,
+    useRemoveCommentMutation,
+
     useUploadProfilePictureMutation,
-    useSubscriptionMutation,
 } = userActivityApiSlice;
