@@ -2,27 +2,20 @@ import { useNavigate } from "react-router-dom";
 import calUploadTime from "../../utils/calUploadTime";
 import countViews from "../../utils/countViews";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    manageHistory,
-    setCurrentPlaying,
-    addVideo,
-} from "../../features/watch/watchSlice";
+import { setCurrentPlaying } from "../../features/watch/watchSlice";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import { selectUserDetails } from "../../features/auth/authSlice";
-import {
-    Star,
-    Trophy,
-    Check,
-    AlertTriangle,
-} from "lucide-react";
+import { Star, Trophy, Check, AlertTriangle } from "lucide-react";
 import { useState } from "react";
+import { useAddSavedVideoMutation } from "../../features/userActivity/userActivityApiSlice";
 
 const VideoCard = ({
     object,
     mode = "search",
     flexMode = "flex-col",
 }) => {
+    const [addVideo] = useAddSavedVideoMutation();
     const isSmartSearch = mode === "smartSearch";
 
     const videoId = isSmartSearch
@@ -69,18 +62,10 @@ const VideoCard = ({
      * --------------------------------------------------
      */
 
-    const title =
-        object?.snippet?.localized?.title ||
-        object?.snippet?.title;
-
-    const channelTitle =
-        object?.snippet?.channelTitle;
-
-    const publishedAt =
-        object?.snippet?.publishedAt;
-
-    const viewCount =
-        object?.statistics?.viewCount;
+    const title = object?.snippet?.localized?.title || object?.snippet?.title;
+    const channelTitle = object?.snippet?.channelTitle;
+    const publishedAt = object?.snippet?.publishedAt;
+    const viewCount = object?.statistics?.viewCount;
 
     const hasViews =
         viewCount !== undefined &&
@@ -88,9 +73,7 @@ const VideoCard = ({
         viewCount !== "" &&
         Number.isFinite(Number(viewCount));
 
-    const hasPublishedAt =
-        publishedAt &&
-        !Number.isNaN(new Date(publishedAt).getTime());
+    const hasPublishedAt = publishedAt && !Number.isNaN(new Date(publishedAt).getTime());
 
     /*
      * --------------------------------------------------
@@ -101,9 +84,7 @@ const VideoCard = ({
     const handleLinkClick = () => {
         if (!videoId) return;
 
-        navigate(
-            `/watch?id=${videoId}&channelid=${object?.snippet?.channelId || ""}&categoryid=${object?.snippet?.categoryId || 1}`
-        );
+        navigate(`/watch?id=${videoId}&channelid=${object?.snippet?.channelId || ""}&categoryid=${object?.snippet?.categoryId || 1}`);
 
         window.scrollTo({
             top: 0,
@@ -112,22 +93,13 @@ const VideoCard = ({
 
         dispatch(setCurrentPlaying(object));
 
-        dispatch(
-            manageHistory({
-                mode: "add",
+        // Add video to the DB if Authenticated
+        if (checkAuth) {
+            dispatch(addVideo({
                 videoId,
-            })
-        );
-
-        if (checkAuth()) {
-            dispatch(
-                addVideo({
-                    method: "PATCH",
-                    userId: id,
-                    videoType: "history",
-                    videoId,
-                })
-            );
+                userId: id,
+                videoType: "history"
+            }))
         }
 
         addToLocalStorage({
@@ -149,18 +121,7 @@ const VideoCard = ({
     return (
         <div
             onClick={handleLinkClick}
-            className={`
-                basis-full sm:basis-[48%] md:basis-[30%]
-                lg:basis-[31%] xl:basis-[32%]
-                rounded-2xl overflow-hidden flex
-                ${flexMode}
-                items-center self-start
-                bg-gray-900
-                transform hover:scale-[1.02]
-                transition-all duration-150
-                ease-linear cursor-pointer
-                ${isSmartSearch ? "border border-gray-700" : ""}
-            `}
+            className={`basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start bg-gray-900 transform hover:scale-[1.02]transition-all duration-150 ease-linear cursor-pointer ${isSmartSearch && "border border-gray-700"}`}
         >
             {/* Thumbnail */}
 

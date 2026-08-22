@@ -1,13 +1,9 @@
-// import { selectLikedVideos, selectHistory, selectWatchLater } from "../../features/watch/watchSlice";
 import { useLazyGetVideoByIdQuery } from "../../features/watch/watchApiSlice";
-// import { selectSavedDataLoading } from "../../features/home/homeSlice";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import VideoCard from "./VideoCard";
-import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
 import SavedVideoShimmerCard from "../shimmer/SavedVideoShimmerCard";
-import { useGetSavedVideosQuery } from "../../features/userActivity/userActivityApiSlice";
-import { selectAuthLoading, selectUserDetails } from "../../features/auth/authSlice";
+import useSavedVideosData from "../../hooks/useSavedVideoData";
 
 const ShimmerUi = () => {
     const shimmerArray = Array.from({ length: 3 });
@@ -30,41 +26,22 @@ const ShimmerUi = () => {
 }
 
 const SavedVideosSection = () => {
-    const authLoading = useSelector(selectAuthLoading);
-    const { id: userId } = useSelector(selectUserDetails);
-
-    const {
-        data: savedVideos,
-        isLoading: savedDataLoading
-    } = useGetSavedVideosQuery(
-        { userId },
-        {
-            skip: !userId
-        }
-    );
-
-    console.log("Saved Videos", savedVideos);
-
     const [triggerVideos] = useLazyGetVideoByIdQuery()
-
-    const savedVideoData = useMemo(() => savedVideos?.data ?? [], [savedVideos]);
-
-    const { historyVideoIds, watchLaterVideoIds, likedVideoIds } = useMemo(() => {
-        return {
-            historyVideoIds: savedVideoData.find(obj => obj.videoType === "history")?.videoId || [],
-            watchLaterVideoIds: savedVideoData.find(obj => obj.videoType === "watch-later")?.videoId || [],
-            likedVideoIds: savedVideoData.find(obj => obj.videoType === "liked")?.videoId || [],
-        }
-    }, [savedVideoData])
-
     const [videosLoading, setVideosLoading] = useState(true);
     const [historyVideos, setHistoryVideos] = useState([]);
     const [watchLaterVideos, setWatchLaterVideos] = useState([]);
     const [likedVideos, setLikedVideos] = useState([]);
 
+    const {
+        historyVideoIds,
+        watchLaterVideoIds,
+        likedVideoIds,
+        isLoading,
+    } = useSavedVideosData();
+
     useEffect(() => {
         const fetchData = async () => {
-            if (savedDataLoading || authLoading) return;
+            if (isLoading) return;
 
             let [history, watchLater, liked] = await Promise.all([
                 triggerVideos({ id: historyVideoIds.join(",") }, true),
@@ -79,9 +56,9 @@ const SavedVideosSection = () => {
         }
 
         fetchData()
-    }, [likedVideoIds, historyVideoIds, watchLaterVideoIds, savedDataLoading, triggerVideos, authLoading])
+    }, [likedVideoIds, historyVideoIds, watchLaterVideoIds, isLoading, triggerVideos])
 
-    if (videosLoading || authLoading) {
+    if (videosLoading || isLoading) {
         return <ShimmerUi />;
     }
 

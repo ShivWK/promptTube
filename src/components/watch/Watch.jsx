@@ -7,7 +7,6 @@ import RelatedVideos from "./RelatedVideos";
 import Channel from "./Channel";
 import Comments from "./Comments";
 import AIAssistant from "../ai/AiAssistant";
-import { Brain } from "lucide-react";
 
 const Watch = () => {
   const currentVideo = useSelector(selectCurrentPlaying);

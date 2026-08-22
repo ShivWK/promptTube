@@ -1,29 +1,34 @@
 import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuthLoading, selectUserDetails } from "../../features/auth/authSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import countViews from "../../utils/countViews";
 import useFetch from "../../hooks/useFetch";
-import { addVideo, manageLikedVideos, manageWatchLater, selectLikedVideos, selectWatchLater, setCurrentChannel } from "../../features/watch/watchSlice";
-import { } from "../../features/watch/watchSlice";
+import { setCurrentChannel } from "../../features/watch/watchSlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import AccountShimmer from "../shimmer/AccountShimmer";
 import { useNavigate } from "react-router-dom";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
-import { useGetSubscriptionsQuery, useSubscriptionMutation, useUnsubscribeMutation } from "../../features/userActivity/userActivityApiSlice";
+import {
+    useAddSavedVideoMutation,
+    useGetSubscriptionsQuery,
+    useRemoveSavedVideoMutation,
+    useSubscriptionMutation,
+    useUnsubscribeMutation
+} from "../../features/userActivity/userActivityApiSlice";
+import useSavedVideosData from "../../hooks/useSavedVideoData";
 
 const Channel = ({ channelId: id, videoId }) => {
     const { id: userId } = useSelector(selectUserDetails);
+    const { data, isLoading: subsLoading } = useGetSubscriptionsQuery({ userId });
+    const { likedVideoIds, watchLaterVideoIds, isLoading: savedVideosLoading } = useSavedVideosData();
 
-    const { data, isLoading: subsLoading, isFetching: subsFetching }
-        = useGetSubscriptionsQuery({ userId });
-
-      console.log("Subssss", data, userId)  
-    const subscriptions = data?.data?.[0]?.channelId;
-    const subscriptionLoading = subsFetching || subsLoading;
+    const subscriptions = useMemo(() => data?.data?.[0]?.channelId || [], [data]);
 
     const [subscribe, { isLoading: subscribeLoading }] = useSubscriptionMutation();
     const [unSubscribe, { isLoading: unSubscribeLoading }] = useUnsubscribeMutation();
+    const [addVideo] = useAddSavedVideoMutation();
+    const [removeVideo] = useRemoveSavedVideoMutation();
 
     const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
     const [_, checkAuth] = useAuthCheck()
@@ -32,8 +37,6 @@ const Channel = ({ channelId: id, videoId }) => {
     const [watchLaterSaved, setWatchLaterSaved] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
 
-    const likedVideos = useSelector(selectLikedVideos);
-    const watchLaterVideos = useSelector(selectWatchLater);
     const authLoading = useSelector(selectAuthLoading);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -45,20 +48,16 @@ const Channel = ({ channelId: id, videoId }) => {
         if (!check) return;
 
         if (mode === "add") {
-            dispatch(manageLikedVideos({ mode: "add", videoId }));
             dispatch(addVideo({
-                method: "PATCH",
                 userId,
                 videoType: "liked",
                 videoId
             }))
         } else {
-            dispatch(manageLikedVideos({ mode: "remove", videoId }));
-            dispatch(addVideo({
-                method: "DELETE",
+            dispatch(removeVideo({
                 userId,
+                videoId,
                 videoType: "liked",
-                videoId
             }))
         }
     }
@@ -68,20 +67,16 @@ const Channel = ({ channelId: id, videoId }) => {
         if (!check) return;
 
         if (mode === "add") {
-            dispatch(manageWatchLater({ mode: "add", videoId }));
             dispatch(addVideo({
-                method: "PATCH",
                 userId,
                 videoType: "watch-later",
                 videoId
             }))
         } else {
-            dispatch(manageWatchLater({ mode: "remove", videoId }));
-            dispatch(addVideo({
-                method: "DELETE",
+            dispatch(removeVideo({
                 userId,
+                videoId,
                 videoType: "watch-later",
-                videoId
             }))
         }
     }
@@ -95,29 +90,39 @@ const Channel = ({ channelId: id, videoId }) => {
             try {
                 await subscribe({ channelId: id, userId }).unwrap();
             } catch (err) {
-                console.log("Cant subscribe", err)
+                console.log("Can't subscribe", err)
             }
         } else {
             try {
                 await unSubscribe({ channelId: id, userId }).unwrap();
             } catch (err) {
-                console.log("Cant subscribe", err)
+                console.log("Can't unsubscribe", err)
             }
         }
     }
 
     useEffect(() => {
-        if (likedVideos.includes(videoId)) setLiked(true);
-        else setLiked(false);
-    }, [likedVideos, videoId])
+        if (savedVideosLoading) return;
+
+        if (likedVideoIds.includes(videoId)) {
+            setLiked(true);
+        } else {
+            setLiked(false);
+        }
+    }, [likedVideoIds, videoId, savedVideosLoading])
 
     useEffect(() => {
-        if (watchLaterVideos.includes(videoId)) setWatchLaterSaved(true);
-        else setWatchLaterSaved(false);
-    }, [watchLaterVideos, videoId]);
+        if (savedVideosLoading) return;
+
+        if (watchLaterVideoIds.includes(videoId)) {
+            setWatchLaterSaved(true);
+        } else {
+            setWatchLaterSaved(false);
+        }
+    }, [watchLaterVideoIds, videoId, savedVideosLoading]);
 
     useEffect(() => {
-        if (!subscriptionLoading && !authLoading) {
+        if (!subsLoading && !authLoading) {
             if (subscriptions.includes(id)) {
                 setSubscribed(true);
             } else {
@@ -125,7 +130,7 @@ const Channel = ({ channelId: id, videoId }) => {
             }
         }
 
-    }, [subscriptions, id, subscriptionLoading, authLoading])
+    }, [subscriptions, id, authLoading, subsLoading])
 
     const cardClickHandler = (object) => {
         const uploadsPlayListId = object?.contentDetails?.relatedPlaylists?.uploads;
@@ -179,4 +184,4 @@ const Channel = ({ channelId: id, videoId }) => {
     )
 }
 
-export default Channel
+export default Channel;
