@@ -1,32 +1,13 @@
-import { selectChannelsData, selectSubscriptionLoading } from "../../features/userActivity/userActivitySlice";
-import { selectSavedDataLoading, selectIsSmall } from "../../features/home/homeSlice";
-import { useSelector } from "react-redux";
 import HorizontalCarousel from "../common/HorizontalCarousel";
 import ChannelCard from "../common/ChannelCard";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
-import { auth } from "../../utils/firebaseConfig";
-// import { useGetSubscriptionsQuery } from "../../features/userActivity/userActivityApiSlice";
+import useSubscribedChannels from "../../hooks/useSubscribedChannels";
 
 const Subscriptions = () => {
-    const userId = auth.currentUser?.uid;
-    // const result = useGetSubscriptionsQuery(userId);
-
-    // console.log("Subs", result)
-
-    const isSmall = useSelector(selectIsSmall);
-    const subscriptionData = useSelector(selectChannelsData);
-    const savedDataLoading = useSelector(selectSavedDataLoading);
-    const subscriptionLoading = useSelector(selectSubscriptionLoading);
-
-    console.log("USer", userId);
-
-    console.log("Subscriptions", subscriptionData);
-
+    const {channels, isLoading} =  useSubscribedChannels();
     const shimmerArray = Array.from({ length: 10 });
 
-    const showLoading = isSmall && (savedDataLoading || subscriptionLoading);
-
-    if (showLoading) {
+    if (isLoading) {
         return (
             <div className="my-3 flex flex-col gap-2.5 px-1">
                 <div className="w-32 h-6 md:h-7 rounded animate-shimmer-bg" />
@@ -39,7 +20,7 @@ const Subscriptions = () => {
         );
     }
 
-    if (subscriptionData.length === 0) {
+    if (channels.length === 0) {
         return null;
     }
 
@@ -48,7 +29,7 @@ const Subscriptions = () => {
             <HorizontalCarousel
                 Card={ChannelCard}
                 heading="Subscriptions"
-                dataToMap={[...subscriptionData].reverse()}
+                dataToMap={[...channels].reverse()}
             />
         </div>
     );

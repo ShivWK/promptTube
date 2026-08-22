@@ -1,59 +1,33 @@
-import watchApiSlice, { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
-import { selectSubscriptions, setSubscriptionLoading } from "../../features/userActivity/userActivitySlice";
-import { selectSavedDataLoading, selectIsSmall } from "../../features/home/homeSlice";
+import watchApiSlice from "../../features/watch/watchApiSlice";
+import { selectIsSmall } from "../../features/home/homeSlice";
 import { selectUserDetails, setEmailVerification, resetAuthSlice } from "../../features/auth/authSlice";
-import { manageSubscribedChannelData, resetUserActivitySlice } from "../../features/userActivity/userActivitySlice";
-import { CircleCheck, CircleUserRound, Info, LogOut } from "lucide-react";
+import { resetUserActivitySlice } from "../../features/userActivity/userActivitySlice";
+import { CircleCheck, Info, LogOut } from "lucide-react";
 import { setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import DotBounceLoader from "../common/DotBounceLoader";
 import ChannelCard from "../common/ChannelCard";
 import { auth } from "../../utils/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import useFetch from "./../../hooks/useFetch";
 import { signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
 import userActivityApiSlice from "../../features/userActivity/userActivityApiSlice";
 import { resetWatchSlice } from "../../features/watch/watchSlice";
 import ProfilePicture from "./ProfilePicture";
+import useSubscribedChannels from "../../hooks/useSubscribedChannels";
 
 const ProfileCard = () => {
-    const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
-
     const { name, email, isEmailVerified } = useSelector(selectUserDetails);
-    const savedDataLoading = useSelector(selectSavedDataLoading);
-    const subscriptions = useSelector(selectSubscriptions);
     const isSmall = useSelector(selectIsSmall);
 
-    const [subscribedChannels, setSubscribedChannels] = useState([]);
     const [logoutLoading, setLogoutLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
     const shimmerArray = Array.from({ length: 3 })
 
-    useFetch({
-        trigger,
-        setState: setSubscribedChannels,
-        fetchWhat: "subscribed channels",
-        id: subscriptions.join(","),
-        dependencies: [savedDataLoading]
-    })
-
-    useEffect(() => {
-        if (subscribedChannels.length) {
-            dispatch(manageSubscribedChannelData(subscribedChannels));
-        }
-    }, [subscribedChannels, dispatch])
-
-    useEffect(() => {
-        if (!isLoading) {
-            dispatch(setSubscriptionLoading(false))
-        } else {
-            dispatch(setSubscriptionLoading(true))
-        }
-    }, [isLoading, dispatch])
+    const { channels, isLoading } = useSubscribedChannels()
 
     const signoutClickHandler = (e) => {
         e.stopPropagation()
@@ -92,8 +66,7 @@ const ProfileCard = () => {
         }))
     }
 
-    const showLoading = isLoading || savedDataLoading;
-    const hasSubscriptions = subscribedChannels.length > 0;
+    const hasSubscriptions = channels.length > 0;
 
     return (
         <div className="flex flex-col gap-1 md:gap-2 max-md:rounded-2xl items-center text-white p-4 md:px-6 text-lg max-md:mx-auto self-stretch max-md:bg-primary/40 w-[80%] md:w-full mx-auto">
@@ -117,18 +90,18 @@ const ProfileCard = () => {
                 }
             </button>
 
-            {(showLoading || hasSubscriptions) && (
+            {(isLoading || hasSubscriptions) && (
                 <div id="subscriptions" className="self-start mt-1 hidden md:block w-full">
                     <h2 className="text-lg font-medium tracking-wider my-2">
                         Subscriptions
                     </h2>
 
                     <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden pretty-scrollbar pb-2 pr-0.5">
-                        {showLoading
+                        {isLoading
                             ? shimmerArray.map((_, index) => (
                                 <ChannelShimmerCard key={index} />
                             ))
-                            : subscribedChannels.map((channel) => (
+                            : channels.map((channel) => (
                                 <ChannelCard key={channel.id} object={channel} />
                             ))}
                     </div>
