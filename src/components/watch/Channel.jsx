@@ -1,9 +1,8 @@
-import { useLazyGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
+import { useGetChannelDetailsQuery } from "../../features/watch/watchApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuthLoading, selectUserDetails } from "../../features/auth/authSlice";
 import { useEffect, useMemo, useState } from "react";
 import countViews from "../../utils/countViews";
-import useFetch from "../../hooks/useFetch";
 import { setCurrentChannel } from "../../features/watch/watchSlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import AccountShimmer from "../shimmer/AccountShimmer";
@@ -30,9 +29,11 @@ const Channel = ({ channelId: id, videoId }) => {
     const [addVideo] = useAddSavedVideoMutation();
     const [removeVideo] = useRemoveSavedVideoMutation();
 
-    const [trigger, { isLoading }] = useLazyGetChannelDetailsQuery();
+    const { data: channelData, isLoading } = useGetChannelDetailsQuery({ ids: [id] })
+    const channel = channelData?.items?.[0];
+
     const [_, checkAuth] = useAuthCheck()
-    const [channel, setChannel] = useState([]);
+
     const [liked, setLiked] = useState(false);
     const [watchLaterSaved, setWatchLaterSaved] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
@@ -41,7 +42,7 @@ const Channel = ({ channelId: id, videoId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    useFetch({ trigger, id, setState: setChannel, fetchWhat: "channel details" });
+    console.log("Channel", channel);
 
     const likeClickHandler = (mode) => {
         const check = checkAuth();
@@ -147,20 +148,20 @@ const Channel = ({ channelId: id, videoId }) => {
                     <AccountShimmer />
                 </div>
                 : <button
-                    onClick={() => cardClickHandler(channel[0])}
+                    onClick={() => cardClickHandler(channel)}
                     className="flex items-center gap-2 md:gap-3 dark:text-gray-100 cursor-pointer"
                 >
                     <img
-                        src={channel[0]?.snippet?.thumbnails?.default?.url}
+                        src={channel?.snippet?.thumbnails?.default?.url}
                         alt="channel_logo"
                         className="rounded-full h-11 md:h-14 w-11 md:w-14 border border-gray-400"
                     />
                     <div className="h-fit">
                         <h2 className="text-sm md:text-lg leading-5 font-medium tracking-wider max-w-40 md:max-w-[26rem] truncate text-start" >
-                            {channel[0]?.snippet?.title}
+                            {channel?.snippet?.title}
                         </h2>
                         <p className="max-md:text-xs dark:text-gray-300 text-start">
-                            {countViews(channel[0]?.statistics?.subscriberCount)} Subscribers
+                            {countViews(channel?.statistics?.subscriberCount)} Subscribers
                         </p>
                     </div>
                 </button>}
