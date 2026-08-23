@@ -100,7 +100,6 @@ const userActivityApiSlice = createApi({
                                 })
 
                                 console.log("Update made 1")
-
                                 return;
                             };
 
@@ -109,7 +108,6 @@ const userActivityApiSlice = createApi({
                             }
 
                             console.log("Update made 2")
-
                         }
                     )
                 );

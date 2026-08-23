@@ -91,7 +91,7 @@ const ProfileCard = () => {
             </button>
 
             {(isLoading || hasSubscriptions) && (
-                <div id="subscriptions" className="self-start mt-1 hidden md:block w-full">
+                <div id="subscriptions" className="self-start mt-1 hidden md:block w-full max-h-52 pretty-scrollbar overflow-auto">
                     <h2 className="text-lg font-medium tracking-wider my-2">
                         Subscriptions
                     </h2>
