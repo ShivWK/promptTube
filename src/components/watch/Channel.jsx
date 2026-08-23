@@ -42,43 +42,41 @@ const Channel = ({ channelId: id, videoId }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log("Channel", channel);
-
-    const likeClickHandler = (mode) => {
+    const likeClickHandler = async (mode) => {
         const check = checkAuth();
         if (!check) return;
 
         if (mode === "add") {
-            dispatch(addVideo({
+            await addVideo({
                 userId,
                 videoType: "liked",
                 videoId
-            }))
+            })
         } else {
-            dispatch(removeVideo({
+            await removeVideo({
                 userId,
                 videoId,
                 videoType: "liked",
-            }))
+            })
         }
     }
 
-    const watchLaterClickHandler = (mode) => {
+    const watchLaterClickHandler = async (mode) => {
         const check = checkAuth();
         if (!check) return;
 
         if (mode === "add") {
-            dispatch(addVideo({
+            await addVideo({
                 userId,
                 videoType: "watch-later",
                 videoId
-            }))
+            })
         } else {
-            dispatch(removeVideo({
+            await removeVideo({
                 userId,
                 videoId,
                 videoType: "watch-later",
-            }))
+            })
         }
     }
 

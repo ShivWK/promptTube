@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToLocalStorage } from "../../utils/handleLocalStorage";
 import { selectUserDetails } from "../../features/auth/authSlice";
 import useAuthCheck from "../../hooks/useAuthCheck";
+import { useAddSavedVideoMutation } from "../../features/userActivity/userActivityApiSlice";
 
 const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
+    const [addVideo] = useAddSavedVideoMutation();
     const videoId = mode === "search" ? object.id.videoId : object.id;
     const [_, checkAuth] = useAuthCheck({ showToast: false });
     const { id } = useSelector(selectUserDetails);
@@ -16,10 +18,13 @@ const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
 
     const handleVideoClick = () => {
         dispatch(setCurrentPlaying(object));
-        dispatch(manageHistory({ mode: "add", videoId }));
 
-        if (checkAuth()) {
-            dispatch(addVideo({ method: "PATCH", userId: id, videoType: "history", videoId }));
+        if (checkAuth) {
+            addVideo({
+                videoId,
+                userId: id,
+                videoType: "history"
+            })
         }
 
         setVideoLoader(true)
@@ -30,11 +35,10 @@ const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
             behavior: "smooth"
         })
 
-        addToLocalStorage({ name: "currentPlayingVideo", add: object });
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
+        addToLocalStorage({
+            name: "currentPlayingVideo",
+            add: object
+        });
     }
 
     return (

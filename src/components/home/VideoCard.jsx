@@ -81,8 +81,9 @@ const VideoCard = ({
      * --------------------------------------------------
      */
 
-    const handleLinkClick = () => {
+    const handleLinkClick = async () => {
         if (!videoId) return;
+        dispatch(setCurrentPlaying(object));
 
         navigate(`/watch?id=${videoId}&channelid=${object?.snippet?.channelId || ""}&categoryid=${object?.snippet?.categoryId || 1}`);
 
@@ -91,15 +92,13 @@ const VideoCard = ({
             behavior: "smooth",
         });
 
-        dispatch(setCurrentPlaying(object));
 
-        // Add video to the DB if Authenticated
         if (checkAuth) {
-            dispatch(addVideo({
+            addVideo({
                 videoId,
                 userId: id,
                 videoType: "history"
-            }))
+            })
         }
 
         addToLocalStorage({
