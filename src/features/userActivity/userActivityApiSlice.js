@@ -86,15 +86,30 @@ const userActivityApiSlice = createApi({
                         (draft) => {
                             if (!draft?.data) return;
 
+                            console.log("Update ran")
+
                             const savedVideo = draft.data.find(
                                 item => item.videoType === videoType
                             );
 
-                            if (!savedVideo) return;
+                            if (!savedVideo) {
+                                draft.data.push({
+                                    userId,
+                                    videoId: [videoId],
+                                    videoType,
+                                })
+
+                                console.log("Update made 1")
+
+                                return;
+                            };
 
                             if (!savedVideo.videoId.includes(videoId)) {
                                 savedVideo.videoId.push(videoId);
                             }
+
+                            console.log("Update made 2")
+
                         }
                     )
                 );
