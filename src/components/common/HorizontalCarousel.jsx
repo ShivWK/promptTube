@@ -6,6 +6,7 @@ const HorizontalCarousel = memo(({
   heading = null,
   margin_bottom = 0,
   dataToMap,
+  cardProps,
   Card,
 }) => {
   const [disableLeft, setDisableLeft] = useState(true);
@@ -104,7 +105,7 @@ const HorizontalCarousel = memo(({
           ref={containerRef}
           className="w-full flex justify-start gap-3 md:gap-4 overflow-x-auto scrollbar-hide py-2"
         >
-          {dataToMap.map((video) => <Card key={video.id} object={video} />)}
+          {dataToMap.map((video) => <Card key={video.id} object={video} {...cardProps} />)}
         </div>
       </div>
     </div>

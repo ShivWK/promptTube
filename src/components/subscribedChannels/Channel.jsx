@@ -7,16 +7,90 @@ import calUploadTime from "../../utils/calUploadTime";
 import useFetch from "../../hooks/useFetch";
 import VideoCard from "../home/VideoCard";
 
+import {
+    useGetSubscriptionsQuery,
+    useSubscriptionMutation,
+    useUnsubscribeMutation,
+} from "../../features/userActivity/userActivityApiSlice";
+
+import {
+    selectUserDetails,
+    selectAuthLoading,
+} from "../../features/auth/authSlice";
+
 const Channel = () => {
-    const [triggerVideos, { isLoading }] = useLazyGetChannelVideosQuery();
+    const [triggerVideos, { isLoading }] =
+        useLazyGetChannelVideosQuery();
+
     const currentChannel = useSelector(selectCurrentChannel);
-    const uploadsId = currentChannel?.contentDetails?.relatedPlaylists?.uploads;
+    const { id: userId } = useSelector(selectUserDetails);
+    const authLoading = useSelector(selectAuthLoading);
+
+    const uploadsId =
+        currentChannel?.contentDetails?.relatedPlaylists?.uploads;
+
+    const channelId = currentChannel?.id;
+
+    const [subscribe] = useSubscriptionMutation();
+    const [unsubscribe] = useUnsubscribeMutation();
 
     const [readMore, setReadMore] = useState(false);
     const [showButton, setShowButton] = useState(false);
     const [newUploads, setNewUploads] = useState([]);
 
     const descriptionRef = useRef(null);
+
+    /*
+     * Get user's subscriptions.
+     *
+     * skip prevents the request from being made while
+     * Firebase auth/user information is not available.
+     */
+    const {
+        data: subscriptionData,
+        isLoading: subscriptionsLoading,
+    } = useGetSubscriptionsQuery(
+        { userId },
+        {
+            skip: !userId || authLoading,
+        }
+    );
+
+    /*
+     * Your backend returns:
+     *
+     * {
+     *   status: "success",
+     *   data: [
+     *     {
+     *       userId: "...",
+     *       channelId: ["UC123", "UC456"]
+     *     }
+     *   ]
+     * }
+     */
+    const subscribedChannelIds =
+        subscriptionData?.data?.[0]?.channelId ?? [];
+
+    const isSubscribed =
+        !!channelId &&
+        subscribedChannelIds.includes(channelId);
+
+    const handleSubscription = () => {
+        if (!userId || !channelId) return;
+
+        if (isSubscribed) {
+            unsubscribe({
+                userId,
+                channelId,
+            });
+        } else {
+            subscribe({
+                userId,
+                channelId,
+            });
+        }
+    };
 
     useFetch({
         trigger: triggerVideos,
@@ -36,20 +110,59 @@ const Channel = () => {
 
     return (
         <main className="md:max-w-[1150px] md:mx-auto pt-20 md:pt-24 max-md:px-1 flex flex-col gap-5 md:gap-8 pb-12">
+
+            {/* Channel Banner */}
             <section className="relative">
                 <img
-                    src={currentChannel?.brandingSettings?.image?.bannerExternalUrl}
+                    src={
+                        currentChannel?.brandingSettings?.image
+                            ?.bannerExternalUrl
+                    }
                     alt="Banner"
                     className="w-full object-cover h-40 md:h-60 rounded-2xl"
                 />
 
+                {/* Channel Avatar */}
                 <img
-                    src={currentChannel?.snippet?.thumbnails?.default?.url}
+                    src={
+                        currentChannel?.snippet?.thumbnails?.default?.url
+                    }
                     alt="Channel thumbnail"
                     className="absolute left-[5%] -bottom-8 md:-bottom-11 rounded-full h-16 w-16 md:h-28 md:w-28 border border-gray-700"
                 />
+
+                {/* Subscribe Button */}
+                {!authLoading && userId && (
+                    <button
+                        type="button"
+                        onClick={handleSubscription}
+                        disabled={subscriptionsLoading}
+                        className={`
+                            absolute right-4 bottom-4
+                            px-3 py-1.5
+                            md:px-5 md:py-2
+                            rounded-md
+                            font-semibold
+                            text-sm md:text-base
+                            transition-all duration-150
+                            cursor-pointer
+                            disabled:opacity-60
+                            disabled:cursor-not-allowed
+                            ${
+                                isSubscribed
+                                    ? "bg-gray-700 text-white hover:bg-gray-600"
+                                    : "bg-primary text-white hover:bg-[#91082c]"
+                            }
+                        `}
+                    >
+                        {isSubscribed
+                            ? "Subscribed"
+                            : "Subscribe"}
+                    </button>
+                )}
             </section>
 
+            {/* Channel Information */}
             <section className="text-center text-white flex flex-col gap-1 md:gap-2.5">
                 <h1 className="text-xl md:text-3xl font-bold tracking-wider">
                     {currentChannel?.brandingSettings?.channel?.title}
@@ -57,18 +170,25 @@ const Channel = () => {
 
                 <div className="self-center flex items-center gap-2">
                     <span>
-                        {countViews(currentChannel?.statistics?.subscriberCount)}{" "}
+                        {countViews(
+                            currentChannel?.statistics?.subscriberCount
+                        )}{" "}
                         subscribers
                     </span>
 
-                    <span className="text-xl font-bold">·</span>
+                    <span className="text-xl font-bold">
+                        ·
+                    </span>
 
                     <span className="truncate max-md:max-w-52">
                         Published{" "}
-                        {calUploadTime(currentChannel?.snippet?.publishedAt)}
+                        {calUploadTime(
+                            currentChannel?.snippet?.publishedAt
+                        )}
                     </span>
                 </div>
 
+                {/* Description */}
                 <div className="flex flex-col items-center">
                     <p
                         ref={descriptionRef}
@@ -78,27 +198,39 @@ const Channel = () => {
                                 : ""
                         }`}
                     >
-                        {currentChannel?.brandingSettings?.channel?.description}
+                        {
+                            currentChannel?.brandingSettings?.channel
+                                ?.description
+                        }
                     </p>
 
                     {showButton && (
                         <button
-                            onClick={() => setReadMore((prev) => !prev)}
+                            type="button"
+                            onClick={() =>
+                                setReadMore((prev) => !prev)
+                            }
                             className="mt-2 text-blue-400 hover:text-blue-300 font-medium transition-colors"
                         >
-                            {readMore ? "Read Less" : "Read More"}
+                            {readMore
+                                ? "Read Less"
+                                : "Read More"}
                         </button>
                     )}
                 </div>
             </section>
 
+            {/* Videos Heading */}
             <h2 className="text-white text-center font-medium tracking-wide text-xl md:text-2xl">
                 Videos
             </h2>
 
+            {/* Videos */}
             <section className="flex items-center gap-4 flex-wrap">
                 {isLoading ? (
-                    <p>Loading...</p>
+                    <p className="text-white">
+                        Loading...
+                    </p>
                 ) : (
                     newUploads.map((video) => (
                         <VideoCard

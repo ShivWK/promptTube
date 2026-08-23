@@ -88,6 +88,7 @@ const SavedVideosSection = () => {
                         Card={VideoCard}
                         heading="History"
                         dataToMap={[...historyVideos].reverse()}
+                        cardProps={{ videoType: "history" }}
                     />
                 </div>
             )}
@@ -98,6 +99,7 @@ const SavedVideosSection = () => {
                         Card={VideoCard}
                         heading="Liked Videos"
                         dataToMap={[...likedVideos].reverse()}
+                        cardProps={{ videoType: "liked" }}
                     />
                 </div>
             )}
@@ -108,6 +110,7 @@ const SavedVideosSection = () => {
                         Card={VideoCard}
                         heading="Watch Later"
                         dataToMap={[...watchLaterVideos].reverse()}
+                        cardProps={{ videoType: "watch-later" }}
                     />
                 </div>
             )}
