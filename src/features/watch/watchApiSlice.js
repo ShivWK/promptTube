@@ -42,24 +42,6 @@ const watchApiSlice = createApi({
 
         }),
 
-        // getChannelDetails: builder.query({
-        //     query: ({ id }) => ({
-        //         url: `channels?part=snippet%2CcontentDetails%2Cstatistics%2CbrandingSettings&id=${id}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
-        //         method: "GET"
-        //     }),
-
-        //     providesTags: (result, error, { id }) => {
-        //         if (!result?.items?.length) return [];
-
-        //         return [
-        //             { type: "Watch", id: "List" },
-        //             { type: "Channel", id }
-        //         ]
-        //     },
-
-        //     refetchOnMount: true
-        // }),
-
         getChannelDetails: builder.query({
             query: ({ ids }) => ({
                 url: `channels?part=snippet%2CcontentDetails%2Cstatistics%2CbrandingSettings&id=${ids.join(",")}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,

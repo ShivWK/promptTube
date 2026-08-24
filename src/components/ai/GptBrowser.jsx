@@ -1,5 +1,4 @@
 import LogoAndMenu from "../layout/header/LogoAndMenu";
-import { LoaderPinwheel, Sparkles } from "lucide-react";
 import SmartSearch from "./SmartSearch";
 
 const GptBrowser = () => {

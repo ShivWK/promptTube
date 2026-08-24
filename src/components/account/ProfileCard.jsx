@@ -1,7 +1,6 @@
 import watchApiSlice from "../../features/watch/watchApiSlice";
 import { selectIsSmall } from "../../features/home/homeSlice";
 import { selectUserDetails, setEmailVerification, resetAuthSlice } from "../../features/auth/authSlice";
-import { resetUserActivitySlice } from "../../features/userActivity/userActivitySlice";
 import { CircleCheck, Info, LogOut } from "lucide-react";
 import { setToast } from "../../features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +12,6 @@ import { signOut } from "firebase/auth";
 import { useState } from "react";
 import ChannelShimmerCard from "../shimmer/ChannelShimmerCard";
 import userActivityApiSlice from "../../features/userActivity/userActivityApiSlice";
-import { resetWatchSlice } from "../../features/watch/watchSlice";
 import ProfilePicture from "./ProfilePicture";
 import useSubscribedChannels from "../../hooks/useSubscribedChannels";
 
@@ -40,8 +38,6 @@ const ProfileCard = () => {
                 setLogoutLoading(false);
 
                 dispatch(resetAuthSlice());
-                dispatch(resetUserActivitySlice());
-                dispatch(resetWatchSlice());
                 dispatch(userActivityApiSlice.util.resetApiState());
                 dispatch(watchApiSlice.util.resetApiState());
 

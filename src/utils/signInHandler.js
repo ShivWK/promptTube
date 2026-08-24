@@ -13,6 +13,7 @@ async function signInHandler({ email, password, dispatch, setAuthLoading, naviga
         setAuthLoading(false);
         navigate("/")
     } catch (err) {
+        console.log("Error in signing in", err)
         dispatch(setToast({
             show: true,
             error: true,

@@ -40,12 +40,6 @@ const Channel = () => {
 
     const descriptionRef = useRef(null);
 
-    /*
-     * Get user's subscriptions.
-     *
-     * skip prevents the request from being made while
-     * Firebase auth/user information is not available.
-     */
     const {
         data: subscriptionData,
         isLoading: subscriptionsLoading,
@@ -56,19 +50,6 @@ const Channel = () => {
         }
     );
 
-    /*
-     * Your backend returns:
-     *
-     * {
-     *   status: "success",
-     *   data: [
-     *     {
-     *       userId: "...",
-     *       channelId: ["UC123", "UC456"]
-     *     }
-     *   ]
-     * }
-     */
     const subscribedChannelIds =
         subscriptionData?.data?.[0]?.channelId ?? [];
 
@@ -103,7 +84,7 @@ const Channel = () => {
         if (descriptionRef.current) {
             setShowButton(
                 descriptionRef.current.scrollHeight >
-                    descriptionRef.current.clientHeight
+                descriptionRef.current.clientHeight
             );
         }
     }, [currentChannel, readMore]);
@@ -137,27 +118,13 @@ const Channel = () => {
                         type="button"
                         onClick={handleSubscription}
                         disabled={subscriptionsLoading}
-                        className={`
-                            absolute right-4 bottom-4
-                            px-3 py-1.5
-                            md:px-5 md:py-2
-                            rounded-md
-                            font-semibold
-                            text-sm md:text-base
-                            transition-all duration-150
-                            cursor-pointer
-                            disabled:opacity-60
-                            disabled:cursor-not-allowed
-                            ${
-                                isSubscribed
-                                    ? "bg-gray-700 text-white hover:bg-gray-600"
-                                    : "bg-primary text-white hover:bg-[#91082c]"
+                        className={`absolute right-4 bottom-4 px-3 py-1.5 md:px-5 md:py-2 rounded-md font-semibold text-sm md:text-base transition-all duration-150 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${isSubscribed
+                                ? "bg-gray-700 text-white hover:bg-gray-600"
+                                : "bg-primary text-white hover:bg-[#91082c]"
                             }
                         `}
                     >
-                        {isSubscribed
-                            ? "Subscribed"
-                            : "Subscribe"}
+                        {isSubscribed ? "Subscribed" : "Subscribe"}
                     </button>
                 )}
             </section>
@@ -192,11 +159,10 @@ const Channel = () => {
                 <div className="flex flex-col items-center">
                     <p
                         ref={descriptionRef}
-                        className={`text-sm md:text-lg tracking-wide ${
-                            !readMore
+                        className={`text-sm md:text-lg tracking-wide ${!readMore
                                 ? "line-clamp-3 md:line-clamp-4"
                                 : ""
-                        }`}
+                            }`}
                     >
                         {
                             currentChannel?.brandingSettings?.channel

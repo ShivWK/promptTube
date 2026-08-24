@@ -19,15 +19,11 @@ const useFetchSavedData = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (userId && !authLoading) {
-                const [videos, subscriptions, comments] = await Promise.all([
+                await Promise.all([
                     triggerVideos({ userId }).unwrap(),
                     triggerSubscriptions({ userId }).unwrap(),
                     triggerComments({ userId }).unwrap(),
                 ])
-
-                // console.log("Got Videos", videos);
-                // console.log("Got subscription", subscriptions);
-                // console.log("Got comments", comments);
             }
         }
 

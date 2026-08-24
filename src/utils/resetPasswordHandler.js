@@ -1,4 +1,4 @@
-import { sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { setToast } from "../features/auth/authSlice";
 

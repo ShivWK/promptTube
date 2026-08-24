@@ -1,7 +1,4 @@
-import {
-    calculateTextRelevance,
-    calculateTitleRelevance,
-} from "./textRelevance.js";
+import { calculateTextRelevance, calculateTitleRelevance } from "./textRelevance.js";
 
 const getRecencyScore = (publishTime) => {
     if (!publishTime) return 0;

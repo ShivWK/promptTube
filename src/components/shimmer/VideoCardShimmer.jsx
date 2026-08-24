@@ -1,22 +1,6 @@
 const VideoCardShimmer = ({ smartSearch = false }) => {
     return (
-        <div
-            className="
-                basis-full
-                sm:basis-[48%]
-                md:basis-[30%]
-                lg:basis-[31%]
-                xl:basis-[32%]
-                self-start
-                overflow-hidden
-                rounded-2xl
-                border
-                border-shimmerBorder
-                dark:bg-gray-900
-                flex
-                flex-col
-            "
-        >
+        <div className=" basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] self-start overflow-hidden rounded-2xl border border-shimmerBorder dark:bg-gray-900 flex flex-col">
             {/* Thumbnail */}
             <div className="relative aspect-video w-full animate-shimmer-bg">
                 {smartSearch && (
