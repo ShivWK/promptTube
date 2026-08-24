@@ -288,13 +288,22 @@ const userActivityApiSlice = createApi({
                         (draft) => {
                             if (!draft?.data) return;
 
-                            draft.data.push({
-                                // temporary ID for optimistic UI
-                                _id: `temp-${Date.now()}`,
-                                userId,
-                                videoId,
-                                comment,
-                            });
+                            const videoComments = draft?.data.find(item => {
+                                item.userId === userId
+                                    && item.videoId === videoId
+                            })
+
+                            if (videoComments) {
+                                videoComments.comment.unshift(comment);
+                            } else {
+                                draft.data.push({
+                                    _id: `tem_${Date.now()}`,
+                                    userId,
+                                    videoId,
+                                    comment: [comment],
+                                    createdAt: new Date().toISOString(),
+                                })
+                            }
                         }
                     )
                 );
