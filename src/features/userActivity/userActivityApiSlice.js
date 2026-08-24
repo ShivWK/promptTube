@@ -193,13 +193,21 @@ const userActivityApiSlice = createApi({
                         "getSubscriptions",
                         { userId },
                         (draft) => {
-                            if (!draft?.data?.length) return;
+                            if (!draft?.data) return;
+
+                            if (draft.data?.length === 0) {
+                                draft.data.push({
+                                    userId,
+                                    channelId: [channelId]
+                                })
+
+                                return;
+                            }
 
                             const subscription = draft.data[0];
 
                             if (!subscription.channelId.includes(channelId)) {
                                 subscription.channelId.push(channelId);
-                                console.log("Added Optimistically")
                             }
                         }
                     )
