@@ -8,10 +8,11 @@ import VideoByCategory from "../components/home/VideoByCategory";
 import Account from "../components/account/Account";
 import authCheckLoader from "../components/account/authCheckLoader";
 import Channel from "../components/subscribedChannels/Channel";
+import RouterErrorBoundary from "../RouterErrorBoundary";
 
 const AppRouter = () => {
     const router = createBrowserRouter(createRoutesFromElements(
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout />} errorElement={<RouterErrorBoundary />}>
             <Route index element={<Home />} />
             <Route path="watch" element={<Watch />} />
             <Route path="gptBrowser" element={<GptBrowser />} />
