@@ -14,53 +14,87 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
     isLoading,
     isFetchingNextPage,
     fetchNextPage,
-    hasNextPage
+    hasNextPage,
+    isError,
   } = useGetCategoryVideosInfiniteQuery(id);
 
   const loaderRef = useIntersectionObserver({
     onIntersect: fetchNextPage,
     enabled: hasNextPage && !isFetchingNextPage && isSmall,
     threshold: 0.5,
-    rootMargin: "300px"
-  })
-
-  let relatedVideos = [];
-
-  if (!isLoading) {
-    relatedVideos = data.pages.flatMap(page => page.items);
-  }
+    rootMargin: "300px",
+  });
 
   const currentVideo = useSelector(selectCurrentPlaying);
+
+  const relatedVideos =
+    data?.pages?.flatMap((page) => page.items ?? []) ?? [];
+
+  const filteredVideos = relatedVideos.filter(
+    (video) => video.id !== currentVideo?.id
+  );
+
   const shimmerArray = Array.from({ length: 10 });
 
   return (
     <>
-      <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">Related Videos</h2>
+      <h2 className="dark:text-gray-200 text-xl font-medium mt-3 mb-4">
+        Related Videos
+      </h2>
+
       <div className="w-full">
-        {isLoading
-          ? <div className="flex flex-col gap-5 md:gap-4 w-full">
-            {shimmerArray.map((_, index) => <RelatedVideoCardShimmer key={index} />)}
+
+        {/* Loading */}
+        {isLoading && (
+          <div className="flex flex-col gap-5 md:gap-4 w-full">
+            {shimmerArray.map((_, index) => (
+              <RelatedVideoCardShimmer key={index} />
+            ))}
           </div>
-          : <div className="flex flex-col gap-5 md:gap-4 w-full">
-            {relatedVideos.map((video) => {
-              if (video.id !== currentVideo.id) {
-                return <RelatedVideoCard
-                  key={video.id}
-                  setVideoLoader={setVideoLoader}
-                  object={video}
-                  mode="related"
-                  flexMode="flex-col md:flex-row"
-                />
-              }
-            })}
-            {isFetchingNextPage
-              && shimmerArray.map((_, index) => <RelatedVideoCardShimmer key={index} />)
+        )}
+
+        {/* API Error */}
+        {!isLoading && isError && (
+          <div className="py-8 text-center text-gray-500">
+            Unable to load related videos.
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !isError && filteredVideos.length === 0 && (
+          <div className="py-8 text-center text-gray-500">
+            No related videos available.
+          </div>
+        )}
+
+        {/* Videos */}
+        {!isLoading && !isError && filteredVideos.length > 0 && (
+          <div className="flex flex-col gap-5 md:gap-4 w-full">
+
+            {filteredVideos.map((video) => (
+              <RelatedVideoCard
+                key={video.id}
+                setVideoLoader={setVideoLoader}
+                object={video}
+                mode="related"
+                flexMode="flex-col md:flex-row"
+              />
+            ))}
+
+            {/* Loading next page */}
+            {isFetchingNextPage &&
+              shimmerArray.map((_, index) => (
+                <RelatedVideoCardShimmer key={index} />
+              ))
             }
+
             <div ref={loaderRef} className="h-0 w-0" />
-          </div>}
+          </div>
+        )}
+
       </div>
     </>
-  )
-}
+  );
+};
 
 export default RelatedVideos
