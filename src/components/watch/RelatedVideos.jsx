@@ -1,12 +1,14 @@
 import { useGetCategoryVideosInfiniteQuery } from "../../features/home/homeApiSlice";
 import RelatedVideoCard from "./RelatedVideoCard";
-import { selectCurrentPlaying } from "../../features/watch/watchSlice";
-import { useSelector } from "react-redux";
 import RelatedVideoCardShimmer from "../shimmer/RelatedVideoCardShimmer";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import useIsSmall from "../../hooks/useIsSmall";
+import { useSearchParams } from "react-router-dom";
 
 const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
+  const [searchParam] = useSearchParams();
+  const currentPlaying = searchParam.get("id");
+  
   const isSmall = useIsSmall();
 
   const {
@@ -25,11 +27,10 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
     rootMargin: "300px",
   });
 
-  const currentVideo = useSelector(selectCurrentPlaying);
   const relatedVideos = data?.pages?.flatMap((page) => page.items ?? []) ?? [];
 
   const filteredVideos = relatedVideos.filter(
-    (video) => video.id !== currentVideo?.id
+    (video) => video.id !== currentPlaying
   );
 
   const shimmerArray = Array.from({ length: 10 });

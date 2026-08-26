@@ -86,8 +86,6 @@ const userActivityApiSlice = createApi({
                         (draft) => {
                             if (!draft?.data) return;
 
-                            console.log("Update ran")
-
                             const savedVideo = draft.data.find(
                                 item => item.videoType === videoType
                             );
@@ -99,15 +97,12 @@ const userActivityApiSlice = createApi({
                                     videoType,
                                 })
 
-                                console.log("Update made 1")
                                 return;
                             };
 
                             if (!savedVideo.videoId.includes(videoId)) {
                                 savedVideo.videoId.push(videoId);
                             }
-
-                            console.log("Update made 2")
                         }
                     )
                 );

@@ -17,9 +17,7 @@ const VideoCard = ({ object, videoType }) => {
   const cardClickHandler = () => {
     if (isRemoving) return;
 
-    navigate(
-      `/watch?id=${object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`
-    );
+    navigate(`/watch?id=${object.id}&channelid=${object.snippet.channelId}&categoryid=${object.snippet.categoryId}`);
 
     window.scrollTo({
       top: 0,

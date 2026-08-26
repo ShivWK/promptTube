@@ -10,11 +10,7 @@ import { Star, Trophy, Check, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useAddSavedVideoMutation } from "../../features/userActivity/userActivityApiSlice";
 
-const VideoCard = ({
-    object,
-    mode = "search",
-    flexMode = "flex-col",
-}) => {
+const VideoCard = ({ object, mode = "search", flexMode = "flex-col" }) => {
     const [addVideo] = useAddSavedVideoMutation();
     const isSmartSearch = mode === "smartSearch";
 
@@ -29,12 +25,6 @@ const VideoCard = ({
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    /*
-     * --------------------------------------------------
-     * Thumbnail fallback
-     * --------------------------------------------------
-     */
 
     const thumbnails = object?.snippet?.thumbnails;
 
@@ -56,12 +46,6 @@ const VideoCard = ({
         }
     };
 
-    /*
-     * --------------------------------------------------
-     * Basic data
-     * --------------------------------------------------
-     */
-
     const title = object?.snippet?.localized?.title || object?.snippet?.title;
     const channelTitle = object?.snippet?.channelTitle;
     const publishedAt = object?.snippet?.publishedAt;
@@ -75,12 +59,6 @@ const VideoCard = ({
 
     const hasPublishedAt = publishedAt && !Number.isNaN(new Date(publishedAt).getTime());
 
-    /*
-     * --------------------------------------------------
-     * Navigation
-     * --------------------------------------------------
-     */
-
     const handleLinkClick = async () => {
         if (!videoId) return;
         dispatch(setCurrentPlaying(object));
@@ -91,7 +69,6 @@ const VideoCard = ({
             top: 0,
             behavior: "smooth",
         });
-
 
         if (checkAuth) {
             addVideo({
@@ -107,12 +84,6 @@ const VideoCard = ({
         });
     };
 
-    /*
-     * --------------------------------------------------
-     * Don't render a broken card
-     * --------------------------------------------------
-     */
-
     if (!object || !videoId) {
         return null;
     }
@@ -122,8 +93,6 @@ const VideoCard = ({
             onClick={handleLinkClick}
             className={`basis-full sm:basis-[48%] md:basis-[30%] lg:basis-[31%] xl:basis-[32%] rounded-2xl overflow-hidden flex ${flexMode} items-center self-start bg-gray-900 transform hover:scale-[1.02]transition-all duration-150 ease-linear cursor-pointer ${isSmartSearch && "border border-gray-700"}`}
         >
-            {/* Thumbnail */}
-
             {thumbnailUrl && (
                 <div className="relative w-full">
                     <img
@@ -133,30 +102,11 @@ const VideoCard = ({
                         className="w-full object-cover self-start rounded-t-2xl aspect-video"
                     />
 
-                    {/* AI Rank */}
-
                     {isSmartSearch &&
                         Number.isFinite(Number(object?.rank)) && (
-                            <div
-                                className="
-                                    absolute top-3 left-3
-                                    flex items-center gap-1.5
-                                    rounded-full
-                                    bg-gray-950/90
-                                    backdrop-blur-sm
-                                    px-3 py-1.5
-                                    text-sm font-semibold
-                                    text-white
-                                "
-                            >
-                                <Trophy
-                                    size={15}
-                                    className="text-yellow-400"
-                                />
-
-                                <span>
-                                    #{object.rank}
-                                </span>
+                            <div className=" absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-gray-950/90 backdrop-blur-sm px-3 py-1.5 text-sm font-semibold text-white">
+                                <Trophy size={15} className="text-yellow-400" />
+                                <span>#{object.rank}</span>
                             </div>
                         )}
 
@@ -164,52 +114,24 @@ const VideoCard = ({
 
                     {isSmartSearch &&
                         Number.isFinite(Number(object?.score)) && (
-                            <div
-                                className="
-                                    absolute top-3 right-3
-                                    flex items-center gap-1
-                                    rounded-full
-                                    bg-gray-950/90
-                                    backdrop-blur-sm
-                                    px-2.5 py-1.5
-                                    text-sm font-semibold
-                                    text-white
-                                "
-                            >
+                            <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full  bg-gray-950/90 backdrop-blur-sm px-2.5 py-1.5 text-sm font-semibold text-white">
                                 <Star
                                     size={15}
                                     fill="currentColor"
                                     className="text-yellow-400"
                                 />
-
                                 <span>{object.score}</span>
                             </div>
                         )}
                 </div>
             )}
 
-            {/* Content */}
-
             <div className="p-3 dark:text-white w-full flex flex-col gap-1">
-
-                {/* Title */}
-
                 {title && (
-                    <h2
-                        className="
-                            text-start
-                            font-medium
-                            tracking-wide
-                            line-clamp-2
-                            leading-5
-                            break-all
-                        "
-                    >
+                    <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5 break-all">
                         {title}
                     </h2>
                 )}
-
-                {/* Channel */}
 
                 {channelTitle && (
                     <p className="text-sm dark:text-gray-300 line-clamp-1">
@@ -217,34 +139,19 @@ const VideoCard = ({
                     </p>
                 )}
 
-                {/* Views / Date */}
-
                 {(hasViews || hasPublishedAt) && (
-                    <div
-                        className="
-                            text-sm flex items-center gap-1.5
-                            dark:text-gray-300
-                            -mt-1.5
-                        "
-                    >
+                    <div className="text-sm flex items-center gap-1.5 dark:text-gray-300-mt-1.5">
                         {mode !== "search" && hasViews && (
                             <>
-                                <span>
-                                    {`${countViews(viewCount)} views`}
-                                </span>
-
+                                <span>{`${countViews(viewCount)} views`}</span>
                                 {hasPublishedAt && (
-                                    <span className="text-xl font-bold">
-                                        ·
-                                    </span>
+                                    <span className="text-xl font-bold">·</span>
                                 )}
                             </>
                         )}
 
                         {hasPublishedAt && (
-                            <span>
-                                {calUploadTime(publishedAt)}
-                            </span>
+                            <span>{calUploadTime(publishedAt)}</span>
                         )}
                     </div>
                 )}

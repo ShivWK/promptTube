@@ -9,6 +9,7 @@ const homeApiSlice = createApi({
             return headers;
         }
     }),
+    tagTypes: ["VideoDetails"],
 
     endpoints: (builder) => ({
         getPopularVideos: builder.infiniteQuery({
@@ -70,11 +71,11 @@ const homeApiSlice = createApi({
 
         getSearchInfiniteVideos: builder.infiniteQuery({
             query: ({ queryArg, pageParam }) => ({
-                url: `/search?part=snippet&maxResults=25`
+                url: `/search?part=snippet`
                     + `&type=video&order=rating`
                     + `&q=${queryArg}`
                     + `&maxResults=50`
-                    + `${pageParam ? `&pageToken=${pageParam}`: ""}`
+                    + `${pageParam ? `&pageToken=${pageParam}` : ""}`
                     + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
                 method: "GET",
             }),
@@ -87,13 +88,29 @@ const homeApiSlice = createApi({
                 getPreviousPageParam: () => undefined,
                 maxPages: 5,
             },
-        })
+        }),
+
+        getVideoDetails: builder.query({
+            query: ({ id }) => ({
+                url: `/videos`
+                    + `?part=snippet,contentDetails,statistics`
+                    + `&id=${id}`
+                    + `&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`,
+                method: "GET",
+            }),
+
+            providesTags: (result, error, { id }) => {
+                if (!result) return;
+                return [{ type: "VideoDetails", id }]
+            }
+        }),
     })
 });
 
 export default homeApiSlice;
 
 export const {
+    useGetVideoDetailsQuery,
     useGetPopularVideosInfiniteQuery,
     useGetCategoryVideosInfiniteQuery,
     useGetSearchInfiniteVideosInfiniteQuery,
