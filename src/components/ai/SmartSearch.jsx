@@ -30,8 +30,6 @@ const SmartSearch = () => {
             setResults(result?.data || result || []);
         } catch (err) {
             console.log("Smart search error", err);
-
-            // Clear previous results if the new request fails
             setResults([]);
         }
     };
@@ -42,7 +40,7 @@ const SmartSearch = () => {
 
     const getErrorMessage = () => {
         const status = error?.status;
-        console.log("Error we got", error)
+        // console.log("Error we got", error)
 
         if (status === 429) {
             return "Smart Search is temporarily rate limited. Please try again in a little while.";
@@ -56,7 +54,7 @@ const SmartSearch = () => {
             return "Smart Search quota has been reached. Please try again later.";
         }
 
-        return error?.data?.message || error?.error || "Something went wrong while processing your search.";
+        return "Something went wrong while processing your search.";
     };
 
     return (

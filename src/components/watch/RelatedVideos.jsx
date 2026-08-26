@@ -26,9 +26,7 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
   });
 
   const currentVideo = useSelector(selectCurrentPlaying);
-
-  const relatedVideos =
-    data?.pages?.flatMap((page) => page.items ?? []) ?? [];
+  const relatedVideos = data?.pages?.flatMap((page) => page.items ?? []) ?? [];
 
   const filteredVideos = relatedVideos.filter(
     (video) => video.id !== currentVideo?.id
@@ -44,7 +42,6 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
 
       <div className="w-full">
 
-        {/* Loading */}
         {isLoading && (
           <div className="flex flex-col gap-5 md:gap-4 w-full">
             {shimmerArray.map((_, index) => (
@@ -53,21 +50,18 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
           </div>
         )}
 
-        {/* API Error */}
         {!isLoading && isError && (
           <div className="py-8 text-center text-gray-500">
             Unable to load related videos.
           </div>
         )}
 
-        {/* Empty State */}
         {!isLoading && !isError && filteredVideos.length === 0 && (
           <div className="py-8 text-center text-gray-500">
             No related videos available.
           </div>
         )}
 
-        {/* Videos */}
         {!isLoading && !isError && filteredVideos.length > 0 && (
           <div className="flex flex-col gap-5 md:gap-4 w-full">
 
@@ -81,7 +75,6 @@ const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
               />
             ))}
 
-            {/* Loading next page */}
             {isFetchingNextPage &&
               shimmerArray.map((_, index) => (
                 <RelatedVideoCardShimmer key={index} />
