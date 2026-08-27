@@ -25,7 +25,7 @@ const Comment = ({ data }) => {
                     <p>{calUploadTime(data?.publishedAt)}</p>
                 </div>
 
-                <p ref={commentPara} className={`text-sm leading-4.5 w-full truncate whitespace-normal break-all ${showMore ? "max-h-auto" : "max-h-9"} `} dangerouslySetInnerHTML={{ __html: data?.textDisplay }}></p>
+                <p ref={commentPara} className={`text-sm leading-4.5 w-full text-justify truncate whitespace-normal break-words ${showMore ? "max-h-auto" : "max-h-9"} `} dangerouslySetInnerHTML={{ __html: data?.textDisplay }}></p>
 
                 {overflowing && <button onClick={() => setShowMore(!showMore)} className="text-xs tracking-wide text-blue-400 cursor-pointer self-start">{
                     showMore ? "show less" : "show more"

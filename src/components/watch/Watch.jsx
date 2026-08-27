@@ -7,7 +7,7 @@ import Comments from "./Comments";
 import AIAssistant from "../ai/AiAssistant";
 import { useGetVideoDetailsQuery } from "../../features/home/homeApiSlice";
 import YouTubePlayer from "./YoutubePlayer";
-import VideoDetails from "./VideoDetails";
+import VideoDescription from "./VideoDescription";
 
 const Watch = () => {
   const [searchParam] = useSearchParams();
@@ -54,7 +54,7 @@ const Watch = () => {
           <Channel channelId={channelId} videoId={id} />
           {videoDetailsLoading
             ? <div className="w-[95%] md:my-0.5 h-5 md:h-6 rounded animate-shimmer-bg" />
-            : <VideoDetails data={videoDetails} />}
+            : <VideoDescription videoDetails={videoDetails} />}
           <AIAssistant />
           <Comments id={id} />
         </div>

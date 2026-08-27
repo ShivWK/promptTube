@@ -128,7 +128,7 @@ const VideoCard = ({ object, mode = "search", flexMode = "flex-col" }) => {
 
             <div className="p-3 dark:text-white w-full flex flex-col gap-1">
                 {title && (
-                    <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5 break-all">
+                    <h2 className="text-start font-medium tracking-wide line-clamp-2 leading-5 break-words">
                         {title}
                     </h2>
                 )}

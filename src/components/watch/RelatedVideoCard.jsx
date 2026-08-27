@@ -49,9 +49,11 @@ const RelatedVideoCard = ({ object, mode = "search", setVideoLoader }) => {
                 className="w-full object-cover self-start max-md:rounded-t-2xl aspect-video md:w-60 md:h-full"
             ></img>
             <div className="p-2 dark:text-white w-full flex flex-col gap-1">
-                <h2 className="text-start font-medium tracking-wide md:text line-clamp-2 break-all hyphens-auto leading-5">{mode === "search" ?
-                    object.snippet?.title
-                    : object.snippet?.localized?.title}</h2>
+                <h2 className="text-start font-medium tracking-wide line-clamp-2 break-words leading-5">
+                    {mode === "search" ?
+                        object.snippet?.title
+                        : object.snippet?.localized?.title}
+                </h2>
                 <p className="text-sm dark:text-gray-300">{object.snippet?.channelTitle}</p>
                 <div className="text-sm flex items-center gap-1.5 dark:text-gray-300 -mt-1.5">
                     {mode !== "search" && <>
