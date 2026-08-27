@@ -15,7 +15,7 @@ const Comment = ({ data }) => {
     }, [])
 
     return (
-        <div className="mt-2 flex gap-2 md:gap-3 p-1 my-2.5 w-full">
+        <div className="mt-2 flex gap-2 md:gap-3 p-1 my-2.5 w-full overflow-x-hidden">
             <img src={(errorInImage || data?.authorProfileImageUrl === "") ? "/images/profile-icon.png" : data?.authorProfileImageUrl} alt="commenter_profile" className="rounded-full h-9 w-9 md:h-11 md:w-11 self-start" onError={() => setErrorInImage(true)} />
 
             <div className={`flex flex-col`}>
@@ -25,7 +25,7 @@ const Comment = ({ data }) => {
                     <p>{calUploadTime(data?.publishedAt)}</p>
                 </div>
 
-                <p ref={commentPara} className={`text-sm leading-4.5 w-full text-justify truncate whitespace-normal break-words ${showMore ? "max-h-auto" : "max-h-9"} `} dangerouslySetInnerHTML={{ __html: data?.textDisplay }}></p>
+                <p ref={commentPara} className={`text-sm leading-4.5 w-full text-justify truncate whitespace-normal hyphens-auto ${showMore ? "max-h-auto" : "max-h-9"} `} dangerouslySetInnerHTML={{ __html: data?.textDisplay }}></p>
 
                 {overflowing && <button onClick={() => setShowMore(!showMore)} className="text-xs tracking-wide text-blue-400 cursor-pointer self-start">{
                     showMore ? "show less" : "show more"
