@@ -60,12 +60,7 @@ const YouTubePlayer = ({ videoId, onLoad }) => {
             },
 
             events: {
-                onReady: (event) => {
-                    console.log("PLAYER:", event.target);
-                    console.log("PLAYER IFRAME:", event.target.getIframe());
-                    console.log("IFRAME WIDTH:", event.target.getIframe().offsetWidth);
-                    console.log("IFRAME HEIGHT:", event.target.getIframe().offsetHeight);
-
+                onReady: () => {
                     onLoad?.();
                 },
             },
