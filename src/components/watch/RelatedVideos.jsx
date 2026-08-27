@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 const RelatedVideos = ({ categoryId: id, setVideoLoader }) => {
   const [searchParam] = useSearchParams();
   const currentPlaying = searchParam.get("id");
-  
+
   const isSmall = useIsSmall();
 
   const {

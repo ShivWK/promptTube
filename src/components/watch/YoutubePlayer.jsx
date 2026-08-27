@@ -6,7 +6,6 @@ const YouTubePlayer = ({ videoId, onLoad }) => {
     const previousVideoIdRef = useRef(null);
     const [apiReady, setApiReady] = useState(false);
 
-    // Load YouTube IFrame Player API
     useEffect(() => {
         if (window.YT?.Player) {
             setApiReady(true);
@@ -41,7 +40,6 @@ const YouTubePlayer = ({ videoId, onLoad }) => {
         };
     }, []);
 
-    // Create player
     useEffect(() => {
         if (!apiReady || !containerRef.current || !videoId) {
             return;
@@ -62,7 +60,12 @@ const YouTubePlayer = ({ videoId, onLoad }) => {
             },
 
             events: {
-                onReady: () => {
+                onReady: (event) => {
+                    console.log("PLAYER:", event.target);
+                    console.log("PLAYER IFRAME:", event.target.getIframe());
+                    console.log("IFRAME WIDTH:", event.target.getIframe().offsetWidth);
+                    console.log("IFRAME HEIGHT:", event.target.getIframe().offsetHeight);
+
                     onLoad?.();
                 },
             },
@@ -76,7 +79,6 @@ const YouTubePlayer = ({ videoId, onLoad }) => {
         };
     }, [apiReady, onLoad, videoId]);
 
-    // Load new video when URL id changes
     useEffect(() => {
         if (
             !playerRef.current ||

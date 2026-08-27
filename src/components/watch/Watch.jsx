@@ -7,6 +7,7 @@ import Comments from "./Comments";
 import AIAssistant from "../ai/AiAssistant";
 import { useGetVideoDetailsQuery } from "../../features/home/homeApiSlice";
 import YouTubePlayer from "./YoutubePlayer";
+import VideoDetails from "./VideoDetails";
 
 const Watch = () => {
   const [searchParam] = useSearchParams();
@@ -22,7 +23,7 @@ const Watch = () => {
 
   return (
     <main className='pt-16 pb-20 lg:pt-24 flex flex-col gap-2 md:gap-0 md:flex-row items-center justify-between max-w-[1300px] mx-auto'>
-      <section className='basis-full md:basis-[61%] self-start'>
+      <section className='w-full md:basis-[61%] self-start'>
         <div className='w-full lg:rounded-2xl overflow-hidden md:shadow-[0_0_15px_1px_rgba(255,255,255,0.4)]'>
           <div className="relative h-[14rem] md:h-[28rem] w-full">
             <YouTubePlayer
@@ -42,15 +43,18 @@ const Watch = () => {
           </div>
         </div>
 
-        <div className="mt-2 md:mt-5 max-md:px-2 flex flex-col gap-2 md:gap-2.5 justify-center">
+        <div className="mt-2 md:mt-5 max-md:px-2 w-full flex flex-col gap-2 md:gap-2.5 justify-center">
           {
             videoDetailsLoading
-              ? <div className="w-[95%] my-0.5 h-5 md:h-6 rounded animate-shimmer-bg" />
+              ? <div className="w-[95%] md:my-0.5 h-5 md:h-6 rounded animate-shimmer-bg" />
               : <h1 className="dark:text-gray-200 md:text-xl font-medium line-clamp-2">
                 {videoDetails?.items?.[0]?.snippet.title}
               </h1>
           }
           <Channel channelId={channelId} videoId={id} />
+          {videoDetailsLoading
+            ? <div className="w-[95%] md:my-0.5 h-5 md:h-6 rounded animate-shimmer-bg" />
+            : <VideoDetails data={videoDetails} />}
           <AIAssistant />
           <Comments id={id} />
         </div>
