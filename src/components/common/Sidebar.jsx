@@ -55,7 +55,7 @@ const Sidebar = () => {
         <div onClick={divClickHandler} className="fixed top-0 left-0 h-full w-full bg-black/60 flex items-center justify-center z-60">
             <aside onClick={(e) => e.stopPropagation()} onAnimationEnd={animationEndHandler} className={`absolute left-0 h-full overflow-y-auto p-3 pr-5 flex flex-col gap-3 items-center bg-gray-800 pretty-scrollbar ${slideOpenSidebar ? "animate-slideShow" : "animate-slideHide"}`}>
                 <button onClick={divClickHandler} className="self-start mt-2.5">
-                    <X className="size-7.5 dark:text-white mr-auto rounded-full hover:bg-white/30 transition-all duration-100 ease-linear cursor-pointer" />
+                    <X className="size-8 p-1 dark:text-white mr-auto rounded-full hover:bg-white/20 transition-all duration-100 ease-linear cursor-pointer" />
                 </button>
 
                 <div className="border-b-[1px] border-gray-400 pb-2 w-full">

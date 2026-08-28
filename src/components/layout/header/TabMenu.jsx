@@ -80,7 +80,7 @@ const TabMenu = () => {
           className="absolute -left-0.5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer rounded-e-full bg-gray-800 p-1.5 transition-all duration-75 ease-linear active:scale-95 md:block"
         >
           <ChevronLeft
-            size={isSmall ? 30 : 40}
+            size={isSmall ? 30 : 35}
             className="text-gray-200"
           />
         </button>
@@ -116,7 +116,7 @@ const TabMenu = () => {
                   <button
                     key={item.id}
                     onClick={() => categoryClickHandler(item.id)}
-                    className={`rounded-md px-3 py-1 whitespace-nowrap tracking-wide transition-all duration-150 lg:rounded-xl lg:py-1.5 lg:text-lg ${
+                    className={`rounded-md px-3 py-1 whitespace-nowrap tracking-wide transition-all duration-150 lg:rounded-xl lg:py-1.5 ${
                       isActive
                         ? "bg-[#ff0044] text-white"
                         : "bg-gray-400/30 text-white hover:bg-gray-400/50"
@@ -134,7 +134,7 @@ const TabMenu = () => {
           className="absolute -right-0.5 top-1/2 z-20 hidden -translate-y-1/2 cursor-pointer rounded-s-full bg-gray-900 p-1.5 transition-all duration-75 ease-linear active:scale-95 md:block"
         >
           <ChevronRight
-            size={isSmall ? 30 : 40}
+            size={isSmall ? 30 : 35}
             className="text-gray-200"
           />
         </button>

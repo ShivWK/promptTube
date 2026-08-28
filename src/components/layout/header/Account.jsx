@@ -71,7 +71,7 @@ const Account = () => {
   if (isLoggedIn) {
     return (
       <div className="relative flex items-center gap-2.5">
-        <span className="dark:text-gray-200 text-xl tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
+        <span className="dark:text-gray-200 text-lg tracking-wide max-md:hidden max-w-28 truncate">{name}</span>
         <div onClick={handleAccountClick} onMouseEnter={handleMouseEnter} onMouseLeave={disableAccountCard} >
           {currentPhotoURL ? (
             <img
