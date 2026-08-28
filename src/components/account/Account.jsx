@@ -28,7 +28,7 @@ const Account = () => {
   }, [section]);
 
   return (
-    <main className="pt-20 pb-12 md:pb-2 min-h-screen">
+    <main className="pt-20 md:pt-22 pb-12 md:pb-2 min-h-screen">
       <section className="mx-auto md:min-h-[calc(100vh-6rem)] flex max-w-[1210px] flex-col gap-4 md:flex-row md:items-stretch md:gap-1 md:rounded-2xl">
         <div className="basis-full md:basis-[22%] min-w-0 w-full md:rounded-s-2xl md:bg-primary/40">
           <ProfileCard />

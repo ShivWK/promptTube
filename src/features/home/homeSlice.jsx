@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isSmall: false,
+    isSmall: true,
     homeVideos: [],
     homeVideosLoading: false,
     categoryVideosLoading: false,
