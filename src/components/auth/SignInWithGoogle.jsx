@@ -13,14 +13,13 @@ const SignInWithGoogle = () => {
     const signInHandler = async () => {
         try {
             setGAuthLoading(true)
-            const result = await signInWithPopup(auth, provider);
-            console.log(result)
+            await signInWithPopup(auth, provider);
             dispatch(setOpenAuthForm({
                 mode: "slide",
                 value: false
             }))
         } catch (err) {
-            console.log(err);
+            // console.log(err);
             dispatch(setOpenAuthForm({
                 mode: "slide",
                 value: false
