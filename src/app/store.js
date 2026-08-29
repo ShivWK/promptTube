@@ -9,6 +9,7 @@ import searchSliceReducer from "../features/search/searchSlice";
 import userActivityApiSlice from "../features/userActivity/userActivityApiSlice";
 import aiApiSlice from "../features/ai/aiApiSlice";
 import searchApiSlice from "../features/search/searchApiSlice";
+import smartSearchSliceReducer from "../features/ai/aiSlice";
 
 const store = configureStore({
     reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
         [userActivityApiSlice.reducerPath]: userActivityApiSlice.reducer,
         [aiApiSlice.reducerPath]: aiApiSlice.reducer,
         [searchApiSlice.reducerPath]: searchApiSlice.reducer,
+        ai: smartSearchSliceReducer,
         auth: AuthSliceReducer,
         home: homeSliceReducer,
         watch: watchSliceReducer,

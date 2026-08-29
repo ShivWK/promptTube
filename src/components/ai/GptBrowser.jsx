@@ -2,7 +2,6 @@ import LogoAndMenu from "../layout/header/LogoAndMenu";
 import SmartSearch from "./SmartSearch";
 
 const GptBrowser = () => {
-    
     return (
         <>
             <header className="absolute left-0 w-full h-30 lg:h-45">
@@ -27,7 +26,6 @@ const GptBrowser = () => {
             </header>
             <main className={"animate-smoothShow pt-34 pb-16 lg:pt-50 flex flex-col justify-center gap-8"}>
                 <SmartSearch />
-                {/* <section className="content border-red-400 border-2 md:pl-28 p-3"></section> */}
             </main>
         </>
     )

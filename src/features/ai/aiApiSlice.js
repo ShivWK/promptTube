@@ -5,7 +5,7 @@ const aiApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${import.meta.env.VITE_BASE_SERVER_URL}/api/v1/ai`,
     }),
-    tagTypes: ["Transcript", "KeyTakeaways", "Summary", "Question", "MetaData"],
+    tagTypes: ["Transcript", "KeyTakeaways", "Summary", "SmartSearch", "MetaData"],
     keepUnusedDataFor: 60 * 60 * 24,
 
     endpoints: (builder) => ({
@@ -90,7 +90,13 @@ const aiApiSlice = createApi({
                 url: "/smartQuery",
                 method: "POST",
                 body: { smartQuery }
-            })
+            }),
+
+            providesTags: (result, error, { smartQuery }) => {
+                if (!result.success) return;
+
+                return [{ type: "SmartSearch", id: smartQuery }]
+            }
         })
     })
 });
@@ -103,5 +109,6 @@ export const {
     useLazyGetKeyTakeawaysQuery,
     useLazyAskQuestionQuery,
     useLazySmartSearchQuery,
+    useSmartSearchQuery,
     useLazyGetVideoMetaDataQuery,
 } = aiApiSlice;

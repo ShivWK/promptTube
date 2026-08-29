@@ -1,46 +1,55 @@
-import { Search, Sparkles, X, AlertCircle, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useLazySmartSearchQuery } from "../../features/ai/aiApiSlice";
+import {
+    Search,
+    Sparkles,
+    X,
+    AlertCircle,
+    Loader2,
+} from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSmartSearchQuery } from "../../features/ai/aiApiSlice";
+import { setSmartSearchQuery, selectSmartSearchQuery } from "../../features/ai/aiSlice";
 import VideoCard from "../home/VideoCard";
 import VideoCardShimmer from "../shimmer/VideoCardShimmer";
 
 const SmartSearch = () => {
-    const [smartSearch, { isLoading, isFetching, isError, error }] =
-        useLazySmartSearchQuery();
+    const dispatch = useDispatch();
+    const query = useSelector(selectSmartSearchQuery);
 
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState(null);
+    const {
+        data,
+        isLoading,
+        isFetching,
+        isError,
+        error,
+    } = useSmartSearchQuery({ smartQuery: query }, { skip: !query.trim() });
 
     const loading = isLoading || isFetching;
+    const results = data?.data || data || null;
 
-    const submitHandler = async (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
 
         const trimmedQuery = query.trim();
 
         if (!trimmedQuery || loading) return;
 
-        try {
-            const result = await smartSearch({
-                smartQuery: trimmedQuery,
-            }).unwrap();
+        dispatch(setSmartSearchQuery(trimmedQuery));
+    };
 
-            console.log("Smart search result", result);
+    const handleQueryChange = (e) => {
+        dispatch(setSmartSearchQuery(e.target.value));
+    };
 
-            setResults(result?.data || result || []);
-        } catch (err) {
-            console.log("Smart search error", err);
-            setResults([]);
-        }
+    const handleSuggestionClick = (suggestion) => {
+        dispatch(setSmartSearchQuery(suggestion));
     };
 
     const clearSearch = () => {
-        setQuery("");
+        dispatch(setSmartSearchQuery(""));
     };
 
     const getErrorMessage = () => {
         const status = error?.status;
-        // console.log("Error we got", error)
 
         if (status === 429) {
             return "Smart Search is temporarily rate limited. Please try again in a little while.";
@@ -61,17 +70,20 @@ const SmartSearch = () => {
         <section className="w-full px-3 md:px-6">
             <div className="w-full max-w-6xl mx-auto">
 
-                {/* Description */}
-                {!results?.length && !loading && !isError && (
-                    <div className="text-center mb-6">
-                        <p className="text-sm md:text-base text-gray-400">
-                            Find the best videos for what you're actually
-                            looking for with Promptly Smart Search.
-                        </p>
-                    </div>
-                )}
+                {/* ================= INTRO ================= */}
+                {!results?.length &&
+                    !loading &&
+                    !isError &&
+                    !query && (
+                        <div className="text-center mb-6">
+                            <p className="text-sm md:text-base text-gray-400">
+                                Find the best videos for what you're actually
+                                looking for with Promptly Smart Search.
+                            </p>
+                        </div>
+                    )}
 
-                {/* Search */}
+                {/* ================= SEARCH FORM ================= */}
                 <form
                     onSubmit={submitHandler}
                     className="flex items-center w-full max-w-5xl mx-auto bg-gray-900 border border-gray-500 rounded-full p-1.5 focus-within:border-primary transition-colors"
@@ -84,7 +96,7 @@ const SmartSearch = () => {
                     <input
                         type="text"
                         value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={handleQueryChange}
                         placeholder="What do you want to learn or find?"
                         className="flex-1 min-w-0 bg-transparent text-white placeholder:text-gray-500 outline-none border-none px-1 py-2.5 text-sm md:text-base"
                     />
@@ -106,7 +118,10 @@ const SmartSearch = () => {
                     >
                         {loading ? (
                             <>
-                                <Loader2 size={17} className="animate-spin" />
+                                <Loader2
+                                    size={17}
+                                    className="animate-spin"
+                                />
                                 Searching
                             </>
                         ) : (
@@ -126,6 +141,7 @@ const SmartSearch = () => {
                                 size={22}
                                 className="animate-spin text-primary"
                             />
+
                             <span>
                                 AI is finding the best videos for you...
                             </span>
@@ -143,7 +159,6 @@ const SmartSearch = () => {
                 {!loading && isError && (
                     <section className="mt-6 md:mt-10 flex justify-center">
                         <div className="w-full max-w-2xl rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-center">
-
                             <div className="flex justify-center mb-3">
                                 <div className="p-3 rounded-full bg-red-500/10">
                                     <AlertCircle
@@ -162,8 +177,17 @@ const SmartSearch = () => {
                             </p>
 
                             <button
-                                onClick={submitHandler}
-                                disabled={!query.trim()}
+                                type="button"
+                                onClick={() => {
+                                    // Change the query to itself to force
+                                    // a refetch only if needed.
+                                    dispatch(
+                                        setSmartSearchQuery(
+                                            query.trim()
+                                        )
+                                    );
+                                }}
+                                disabled={!query.trim() || loading}
                                 className="mt-5 bg-primary text-white rounded-full px-5 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 cursor-pointer"
                             >
                                 Try Again
@@ -178,7 +202,6 @@ const SmartSearch = () => {
                     results &&
                     results.length > 0 && (
                         <section className="mt-6 md:mt-10">
-
                             <div className="flex items-center gap-2 mb-6">
                                 <Sparkles
                                     size={20}
@@ -222,6 +245,7 @@ const SmartSearch = () => {
                 {/* ================= SUGGESTIONS ================= */}
                 {!loading &&
                     !isError &&
+                    !query &&
                     !results && (
                         <div className="flex flex-col items-center justify-center gap-2 mt-20 md:mt-10">
                             {[
@@ -233,8 +257,10 @@ const SmartSearch = () => {
                                 <button
                                     key={suggestion}
                                     type="button"
-                                    onClick={() => setQuery(suggestion)}
-                                    className="rounded-full border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-gray-300 hover:border-primary hover:text-white transition cursor-pointer"
+                                    onClick={() =>
+                                        handleSuggestionClick(suggestion)
+                                    }
+                                    className="rounded-full border border-gray-700 bg-gray-800 px-4 py-1.5 text-gray-300 hover:border-primary hover:text-white transition cursor-pointer"
                                 >
                                     {suggestion}
                                 </button>
