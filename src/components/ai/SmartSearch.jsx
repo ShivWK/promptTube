@@ -1,51 +1,82 @@
-import {
-    Search,
-    Sparkles,
-    X,
-    AlertCircle,
-    Loader2,
-} from "lucide-react";
+import { Search, Sparkles, X, AlertCircle, Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSmartSearchQuery } from "../../features/ai/aiApiSlice";
-import { setSmartSearchQuery, selectSmartSearchQuery } from "../../features/ai/aiSlice";
+import aiApiSlice, { useLazySmartSearchQuery } from "../../features/ai/aiApiSlice";
+import { setSmartSearchQuery } from "../../features/ai/aiSlice";
 import VideoCard from "../home/VideoCard";
 import VideoCardShimmer from "../shimmer/VideoCardShimmer";
 
 const SmartSearch = () => {
     const dispatch = useDispatch();
-    const query = useSelector(selectSmartSearchQuery);
+    const query = useSelector((state) => state.ai.smartSearchQuery);
 
-    const {
-        data,
-        isLoading,
-        isFetching,
-        isError,
-        error,
-    } = useSmartSearchQuery({ smartQuery: query }, { skip: !query.trim() });
+    const [
+        smartSearch,
+        {
+            isLoading,
+            isFetching,
+            isError: requestIsError,
+            error: requestError,
+        },
+    ] = useLazySmartSearchQuery();
 
     const loading = isLoading || isFetching;
-    const results = data?.data || data || null;
 
-    const submitHandler = (e) => {
+    const { data: cachedResult } = aiApiSlice.endpoints.smartSearch.useQueryState({
+        smartQuery: query.trim(),
+    });
+
+    const results = cachedResult?.data || cachedResult || [];
+    const isError = requestIsError || cachedResult?.isError;
+    const error = requestError || cachedResult?.error;
+
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         const trimmedQuery = query.trim();
 
         if (!trimmedQuery || loading) return;
 
-        dispatch(setSmartSearchQuery(trimmedQuery));
+        try {
+            await smartSearch({
+                smartQuery: trimmedQuery,
+            }, true).unwrap();
+        } catch (err) {
+            console.log("Smart search error", err);
+        }
     };
 
     const handleQueryChange = (e) => {
         dispatch(setSmartSearchQuery(e.target.value));
     };
 
-    const handleSuggestionClick = (suggestion) => {
+    const handleSuggestionClick = async (suggestion) => {
         dispatch(setSmartSearchQuery(suggestion));
+
+        try {
+            await smartSearch({
+                smartQuery: suggestion,
+            }).unwrap();
+        } catch (err) {
+            console.log("Smart search error", err);
+        }
     };
 
     const clearSearch = () => {
         dispatch(setSmartSearchQuery(""));
+    };
+
+    const tryAgain = async () => {
+        const trimmedQuery = query.trim();
+
+        if (!trimmedQuery || loading) return;
+
+        try {
+            await smartSearch({
+                smartQuery: trimmedQuery,
+            }).unwrap();
+        } catch (err) {
+            console.log("Smart search error", err);
+        }
     };
 
     const getErrorMessage = () => {
@@ -70,20 +101,20 @@ const SmartSearch = () => {
         <section className="w-full px-3 md:px-6">
             <div className="w-full max-w-6xl mx-auto">
 
-                {/* ================= INTRO ================= */}
-                {!results?.length &&
+                {/* INTRO */}
+                {!query &&
                     !loading &&
-                    !isError &&
-                    !query && (
+                    !isError && (
                         <div className="text-center mb-6">
                             <p className="text-sm md:text-base text-gray-400">
-                                Find the best videos for what you're actually
-                                looking for with Promptly Smart Search.
+                                Find the best videos for what you're
+                                actually looking for with Promptly
+                                Smart Search.
                             </p>
                         </div>
                     )}
 
-                {/* ================= SEARCH FORM ================= */}
+                {/* SEARCH */}
                 <form
                     onSubmit={submitHandler}
                     className="flex items-center w-full max-w-5xl mx-auto bg-gray-900 border border-gray-500 rounded-full p-1.5 focus-within:border-primary transition-colors"
@@ -133,7 +164,7 @@ const SmartSearch = () => {
                     </button>
                 </form>
 
-                {/* ================= LOADING ================= */}
+                {/* LOADING */}
                 {loading && (
                     <section className="mt-6 md:mt-10">
                         <div className="flex items-center justify-center gap-2 mb-6 text-gray-300">
@@ -141,24 +172,28 @@ const SmartSearch = () => {
                                 size={22}
                                 className="animate-spin text-primary"
                             />
-
                             <span>
                                 AI is finding the best videos for you...
                             </span>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                            {Array.from({ length: 6 }).map((_, index) => (
-                                <VideoCardShimmer key={index} />
-                            ))}
+                            {Array.from({ length: 6 }).map(
+                                (_, index) => (
+                                    <VideoCardShimmer
+                                        key={index}
+                                    />
+                                )
+                            )}
                         </div>
                     </section>
                 )}
 
-                {/* ================= ERROR ================= */}
+                {/* ERROR */}
                 {!loading && isError && (
                     <section className="mt-6 md:mt-10 flex justify-center">
                         <div className="w-full max-w-2xl rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-center">
+
                             <div className="flex justify-center mb-3">
                                 <div className="p-3 rounded-full bg-red-500/10">
                                     <AlertCircle
@@ -178,15 +213,7 @@ const SmartSearch = () => {
 
                             <button
                                 type="button"
-                                onClick={() => {
-                                    // Change the query to itself to force
-                                    // a refetch only if needed.
-                                    dispatch(
-                                        setSmartSearchQuery(
-                                            query.trim()
-                                        )
-                                    );
-                                }}
+                                onClick={tryAgain}
                                 disabled={!query.trim() || loading}
                                 className="mt-5 bg-primary text-white rounded-full px-5 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 cursor-pointer"
                             >
@@ -196,12 +223,13 @@ const SmartSearch = () => {
                     </section>
                 )}
 
-                {/* ================= RESULTS ================= */}
+                {/* RESULTS */}
                 {!loading &&
                     !isError &&
                     results &&
                     results.length > 0 && (
                         <section className="mt-6 md:mt-10">
+
                             <div className="flex items-center gap-2 mb-6">
                                 <Sparkles
                                     size={20}
@@ -230,23 +258,23 @@ const SmartSearch = () => {
                         </section>
                     )}
 
-                {/* ================= NO RESULTS ================= */}
+                {/* NO RESULTS */}
                 {!loading &&
                     !isError &&
                     results &&
                     results.length === 0 && (
                         <section className="mt-6 md:mt-10 text-center">
                             <p className="text-gray-400">
-                                No suitable videos were found for this query.
+                                No suitable videos were found for this
+                                query.
                             </p>
                         </section>
                     )}
 
-                {/* ================= SUGGESTIONS ================= */}
+                {/* SUGGESTIONS */}
                 {!loading &&
                     !isError &&
-                    !query &&
-                    !results && (
+                    !query && (
                         <div className="flex flex-col items-center justify-center gap-2 mt-20 md:mt-10">
                             {[
                                 "Best React authentication tutorial",
@@ -258,7 +286,9 @@ const SmartSearch = () => {
                                     key={suggestion}
                                     type="button"
                                     onClick={() =>
-                                        handleSuggestionClick(suggestion)
+                                        handleSuggestionClick(
+                                            suggestion
+                                        )
                                     }
                                     className="rounded-full border border-gray-700 bg-gray-800 px-4 py-1.5 text-gray-300 hover:border-primary hover:text-white transition cursor-pointer"
                                 >
